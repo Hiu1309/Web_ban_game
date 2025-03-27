@@ -510,5 +510,4 @@
           "description": "Himari, nữ sinh mới lên cấp ba, đã đem lòng ngưỡng mộ Yori, ca sĩ hát chính của ban nhạc biểu diễn trong buổi lễ chào đón học sinh mới.\nKhi tình cờ gặp nhau ở trường, Himari bèn bày tỏ cảm xúc của mình với Yori. Ấn tượng với thái độ thẳng thắn ấy, Yori nhanh chóng nảy sinh tình cảm với Himari…\nMời các bạn đón đọc câu chuyện về tình yêu nảy sinh từ hiểu lầm của hai cô gái trong Khẽ hát lời yêu – Whispering you a love song tập 1!"
      }
 ]
-
 */

@@ -180,12 +180,36 @@ function resizeSmNav(elementsObj) {
 }
 
 // default add header footer and initProducts
+<<<<<<< Updated upstream
 async function addDOMHeaderFooter(elementsObj) {
   try {
     const DOM = await Bridge.promiseDOMHandler("../HTML/header_footer/headerFooter.html");
     const header = DOM.getElementById("header-container");
     //const subHeader = DOM.getElementById("sub-header");
    // const footer = DOM.getElementById("footer-container");
+=======
+async function addDOMFooter(elementsObj) {
+  try {
+    const DOM = await Bridge.promiseDOMHandler("../gui/footer.php");
+    const header = DOM.getElementById("header-container");
+    //const subHeader = DOM.getElementById("sub-header");
+    //const footer = DOM.getElementById("footer-container");
+    let placeInsert = elementsObj.getMainContainer();
+    // add elements into DOM
+    placeInsert.insertAdjacentElement("beforebegin", header);
+    placeInsert.insertAdjacentElement("afterEnd", footer);
+    placeInsert.insertAdjacentElement("afterbegin", subHeader);
+  } catch (error) {
+    console.error(error);
+  }
+}
+async function addDOMHeader(elementsObj) {
+  try {
+    const DOM = await Bridge.promiseDOMHandler("../gui/header.php");
+    const header = DOM.getElementById("header-container");
+    //const subHeader = DOM.getElementById("sub-header");
+    //const footer = DOM.getElementById("footer-container");
+>>>>>>> Stashed changes
     let placeInsert = elementsObj.getMainContainer();
     // add elements into DOM
     placeInsert.insertAdjacentElement("beforebegin", header);
@@ -216,4 +240,8 @@ async function getInitProducts(elementsObj) {
 }
 
 export { formatPrices, isEmpty, categoryIsEmpty, getInitProducts, hiddenException, scrollView, fakeOverlay, disableSiblingContainer };
+<<<<<<< Updated upstream
 export { resizeSmNav, resizeImages, addDOMHeaderFooter, headerUserInfo };
+=======
+export { resizeSmNav, resizeImages, addDOMHeader, addDOMFooter, headerUserInfo };
+>>>>>>> Stashed changes
