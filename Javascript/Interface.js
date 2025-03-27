@@ -192,6 +192,7 @@ function resizeSmNav(elementsObj) {
 }
 
 // default add header footer and initProducts
+<<<<<<< Updated upstream
 
 export {
   formatPrices,
@@ -204,3 +205,56 @@ export {
   disableSiblingContainer,
 };
 export { resizeSmNav, resizeImages, headerUserInfo };
+=======
+async function addDOMHeader(elementsObj) {
+  try {
+    const DOM = await Bridge.promiseDOMHandler("../gui/header.php");
+    const header = DOM.getElementById("header-container");
+    //const subHeader = DOM.getElementById("sub-header");
+   // const footer = DOM.getElementById("footer-container");
+    let placeInsert = elementsObj.getMainContainer();
+    // add elements into DOM
+    placeInsert.insertAdjacentElement("beforebegin", header);
+
+   
+  } catch (error) {
+    console.error(error);
+  }
+}
+async function addDOMFooter(elementsObj) {
+  try {
+    const DOM = await Bridge.promiseDOMHandler("../gui/footer.php");
+    const header = DOM.getElementById("header-container");
+    //const subHeader = DOM.getElementById("sub-header");
+   // const footer = DOM.getElementById("footer-container");
+    let placeInsert = elementsObj.getMainContainer();
+    // add elements into DOM
+   
+
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+async function getInitProducts(elementsObj) {
+  try {
+    const storage = await fetch("../Javascript/Storage.js");
+    const jsonArray = await storage.json();
+    const productsList = Array.from(jsonArray);
+    localStorage.setItem("products", JSON.stringify(productsList));
+
+    // render init products
+    RenderProducts.productContainers(productsList);
+    FlashSale.setTimeFS(elementsObj);
+    RenderProducts.renderProducts(productsList);
+    formatPrices(elementsObj);
+    resizeImages(elementsObj);
+    categoryIsEmpty();
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+export { formatPrices, isEmpty, categoryIsEmpty, getInitProducts, hiddenException, scrollView, fakeOverlay, disableSiblingContainer };
+export { resizeSmNav, resizeImages, addDOMFooter,addDOMHeader, headerUserInfo };
+>>>>>>> Stashed changes
