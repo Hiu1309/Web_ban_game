@@ -22,11 +22,7 @@ document.addEventListener("DOMContentLoaded", () => {
   Navigate.forbiddenDOM();
   Interface.addDOMHeaderFooter(elementsObj);
   const checkDOM = setInterval(() => {
-    if (
-      elementsObj.getHeader() &&
-      elementsObj.getSubHeader() &&
-      elementsObj.getFooter()
-    ) {
+    {
       // call funcs
       Interface.resizeSmNav(elementsObj);
       Interface.headerUserInfo(elementsObj);

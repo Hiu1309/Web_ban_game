@@ -184,8 +184,8 @@ async function addDOMHeaderFooter(elementsObj) {
   try {
     const DOM = await Bridge.promiseDOMHandler("../HTML/header_footer/headerFooter.html");
     const header = DOM.getElementById("header-container");
-    const subHeader = DOM.getElementById("sub-header");
-    const footer = DOM.getElementById("footer-container");
+    //const subHeader = DOM.getElementById("sub-header");
+   // const footer = DOM.getElementById("footer-container");
     let placeInsert = elementsObj.getMainContainer();
     // add elements into DOM
     placeInsert.insertAdjacentElement("beforebegin", header);
