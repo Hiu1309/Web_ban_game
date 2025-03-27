@@ -12,9 +12,9 @@ function getElementsHandler() {
     // containers
     getWebContent: () => $(".web-content"),
     getHeader: () => $("#header-container"),
-    getSubHeader: () => $("#sub-header"),
+    //getSubHeader: () => $("#sub-header"),
     getMainContainer: () => $("#main-container"),
-    getFooter: () => $("#footer-container"),
+    //getFooter: () => $("#footer-container"),
     getCategories: () => $$(".category-tab"),
     getProductContainer: () => $$(".product-container"),
     getSameAuthorContainer: () => $("#same-author-container"),
