@@ -192,47 +192,7 @@ function resizeSmNav(elementsObj) {
 }
 
 // default add header footer and initProducts
-<<<<<<< Updated upstream
 
-=======
-async function addDOMHeaderFooter(elementsObj) {
-  try {
-    const DOM = await Bridge.promiseDOMHandler(
-      "../HTML/header_footer/headerFooter.html"
-    );
-    const header = DOM.getElementById("header-container");
-    const subHeader = DOM.getElementById("sub-header");
-    const footer = DOM.getElementById("footer-container");
-    let placeInsert = elementsObj.getMainContainer();
-    // add elements into DOM
-    placeInsert.insertAdjacentElement("beforebegin", header);
-    placeInsert.insertAdjacentElement("afterEnd", footer);
-    placeInsert.insertAdjacentElement("afterbegin", subHeader);
-  } catch (error) {
-    console.error(error);
-  }
-}
-
-async function getInitProducts(elementsObj) {
-  try {
-    const storage = await fetch("../Javascript/Storage.js");
-    const jsonArray = await storage.json();
-    const productsList = Array.from(jsonArray);
-    localStorage.setItem("products", JSON.stringify(productsList));
-
-    // render init products
-    RenderProducts.productContainers(productsList);
-    FlashSale.setTimeFS(elementsObj);
-    RenderProducts.renderProducts(productsList);
-    formatPrices(elementsObj);
-    resizeImages(elementsObj);
-    categoryIsEmpty();
-  } catch (error) {
-    console.error(error);
-  }
-}
-
->>>>>>> Stashed changes
 export {
   formatPrices,
   isEmpty,
@@ -243,8 +203,5 @@ export {
   fakeOverlay,
   disableSiblingContainer,
 };
-<<<<<<< Updated upstream
+
 export { resizeSmNav, resizeImages, headerUserInfo };
-=======
-export { resizeSmNav, resizeImages, addDOMHeaderFooter, headerUserInfo };
->>>>>>> Stashed changes
