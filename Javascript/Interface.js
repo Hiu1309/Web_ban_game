@@ -29,10 +29,11 @@ function headerUserInfo(elementsObj) {
     registerBtn?.forEach((btn) => btn.classList.add("disable"));
     logoutBtn?.forEach((btn) => btn.classList.remove("disable"));
     container.classList.remove("disable");
-    userName.innerHTML =
-      hasLoginAccount.lastName + " " + hasLoginAccount.firstName;
+    userName.innerHTML = hasLoginAccount.lastName + " " + hasLoginAccount.firstName;
     container.addEventListener("click", () => userDetail(elementsObj));
-  } else {
+
+  }
+  else {
     noSignIn.classList.remove("disable");
     loginBtn?.forEach((btn) => btn.classList.remove("disable"));
     registerBtn?.forEach((btn) => btn.classList.remove("disable"));
@@ -46,20 +47,18 @@ function headerUserInfo(elementsObj) {
 function disableSiblingContainer(container) {
   if (!container) return;
   Array.of(...container.children).forEach((child) => {
-    child.classList.contains("active")
-      ? child.classList.remove("active")
-      : child;
+    child.classList.contains("active") ? child.classList.remove("active") : child;
     child.offsetWidth > 0 ? child.classList.add("disable") : child;
   });
 }
 
 async function fakeOverlay(container, time) {
-  const overlay = document.createElement("div");
-  overlay.className = "overlay";
-  overlay.innerHTML = "Loading... :3";
-  overlay.style.display = "flex";
-  overlay.style.alignItems = "center";
-  overlay.style.justifyContent = "center";
+  const overlay = document.createElement('div');
+  overlay.className = 'overlay';
+  overlay.innerHTML = 'Loading... :3';
+  overlay.style.display = 'flex';
+  overlay.style.alignItems = 'center';
+  overlay.style.justifyContent = 'center';
   overlay.style.fontSize = 3 + "em";
   overlay.style.color = "var(--primary-white)";
   document.body.appendChild(overlay);
@@ -100,22 +99,19 @@ function formatPrices(elementsObj) {
 function hiddenException(exception) {
   exception = !exception ? "index-content" : exception;
   let getHandler = Bridge.default();
-  let container = getHandler
-    .getMainContainer()
-    .querySelector("#main-content .grid-row")?.children;
+  let container = getHandler.getMainContainer().querySelector("#main-content .grid-row")?.children;
   let newsContainer = getHandler.getNewsBlogs();
   container = Array.of(...container);
 
   container.forEach((element) => {
     if (element.getAttribute("id") !== exception)
       element.classList.add("disable");
-    else element.classList.remove("disable");
+    else
+      element.classList.remove("disable");
   });
 
   if (exception === "index-content") {
-    newsContainer?.classList.contains("disable")
-      ? newsContainer.classList.remove("disable")
-      : newsContainer;
+    newsContainer?.classList.contains("disable") ? newsContainer.classList.remove("disable") : newsContainer;
     return;
   }
   newsContainer?.classList.add("disable");
@@ -123,23 +119,15 @@ function hiddenException(exception) {
 
 //change DOM on categories if it not have any product inside
 function categoryIsEmpty() {
-  Bridge.default()
-    .getCategories()
-    .forEach((category) => {
-      const container = category.querySelector(".product-container");
-      if (isEmpty(container)) {
-        container.innerHTML =
-          '<div class="empty-mess font-size-20 font-bold">Không có sản phẩm trong phần này</div>';
-        container.classList.add(
-          "flex",
-          "full-height",
-          "align-center",
-          "justify-center"
-        );
-        container.querySelector(".nav-btn")?.classList.add("disable");
-        category.querySelector(".category-btn")?.classList.add("disable");
-      }
-    });
+  Bridge.default().getCategories().forEach((category) => {
+    const container = category.querySelector(".product-container");
+    if (isEmpty(container)) {
+      container.innerHTML = '<div class="empty-mess font-size-20 font-bold">Không có sản phẩm trong phần này</div>';
+      container.classList.add("flex", "full-height", "align-center", "justify-center");
+      container.querySelector(".nav-btn")?.classList.add("disable");
+      category.querySelector(".category-btn")?.classList.add("disable");
+    }
+  });
 }
 
 // fix bug interface func
@@ -192,15 +180,40 @@ function resizeSmNav(elementsObj) {
 }
 
 // default add header footer and initProducts
+async function addDOMHeaderFooter(elementsObj) {
+  try {
+    const DOM = await Bridge.promiseDOMHandler("../HTML/header_footer/headerFooter.html");
+    const header = DOM.getElementById("header-container");
+    const subHeader = DOM.getElementById("sub-header");
+    const footer = DOM.getElementById("footer-container");
+    let placeInsert = elementsObj.getMainContainer();
+    // add elements into DOM
+    placeInsert.insertAdjacentElement("beforebegin", header);
+    placeInsert.insertAdjacentElement("afterEnd", footer);
+    placeInsert.insertAdjacentElement("afterbegin", subHeader);
+  } catch (error) {
+    console.error(error);
+  }
+}
 
-export {
-  formatPrices,
-  isEmpty,
-  categoryIsEmpty,
-  getInitProducts,
-  hiddenException,
-  scrollView,
-  fakeOverlay,
-  disableSiblingContainer,
-};
-export { resizeSmNav, resizeImages, headerUserInfo };
+async function getInitProducts(elementsObj) {
+  try {
+    const storage = await fetch("../Javascript/Storage.js");
+    const jsonArray = await storage.json();
+    const productsList = Array.from(jsonArray);
+    localStorage.setItem("products", JSON.stringify(productsList));
+
+    // render init products
+    RenderProducts.productContainers(productsList);
+    FlashSale.setTimeFS(elementsObj);
+    RenderProducts.renderProducts(productsList);
+    formatPrices(elementsObj);
+    resizeImages(elementsObj);
+    categoryIsEmpty();
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+export { formatPrices, isEmpty, categoryIsEmpty, getInitProducts, hiddenException, scrollView, fakeOverlay, disableSiblingContainer };
+export { resizeSmNav, resizeImages, addDOMHeaderFooter, headerUserInfo };
