@@ -10,9 +10,9 @@
   --bg-red: #e94f52;
   --bg-flash-sale: linear-gradient(rgba(255, 136, 136, 0.4), rgb(255, 87, 87));
   --body-theme: #232627;
-  --btn-hover: #fc5a5a;
+  --btn-hover: #689af2;
   --border: rgba(113, 156, 227, 0.3);
-  --price-color: #f57f7f;
+  --price-color: #7fc8f5;
   --overlay: rgba(0, 0, 0, 0.5);
   --filter: linear-gradient(rgba(174, 241, 255, 0.5), rgba(255, 255, 255, 0));
   --filter-reverse: linear-gradient(

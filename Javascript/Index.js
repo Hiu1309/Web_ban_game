@@ -20,8 +20,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // DOM ON action.js
   Navigate.forbiddenDOM();
-  Interface.addDOMFooter(elementsObj);
-  Interface.addDOMHeader(elementsObj);
+  Interface.addDOMHeaderFooter(elementsObj);
   const checkDOM = setInterval(() => {
     if (
       elementsObj.getHeader() &&

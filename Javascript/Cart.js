@@ -342,7 +342,7 @@ function attachAddToCartEvents() {
         console.log(`Đang thêm sản phẩm và chuyển đến giỏ hàng: ${productName}`);
         addToCart(productName);
         increaseCartCount();
-        window.location.href = "cart.php";
+        window.location.href = "cart.html";
       } else {
         alert("Phải đăng nhập trước");
       }
@@ -371,7 +371,7 @@ function handleCartNavigation() {
   categoryButtons.forEach((button) => {
     button.addEventListener("click", (event) => {
       event.preventDefault();
-      window.location.href = "cart.php";
+      window.location.href = "cart.html";
     });
   });
 }
@@ -638,7 +638,7 @@ function attachAddToCartInDetails() {
 
     addToCart(productName);
     increaseCartCount();
-    window.location.href = "cart.php";
+    window.location.href = "cart.html";
   })), 200, "buy-now");
 
 }
