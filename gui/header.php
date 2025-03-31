@@ -15,7 +15,7 @@
     />
     <link rel="stylesheet" href="../Assets/CSS/index.css" />
     <link rel="stylesheet" href="../Assets/CSS/Responsive.css" />
-    <script type="module" src="../Javascript/Index.js"></script>
+    <!-- <script type="module" src="../Javascript/Index.js"></script> -->
     <title>Welcome to MT3H</title>
   </head>
 
@@ -36,55 +36,7 @@
                   style="color: var(--main-color)"
                 ></i>
 
-                <div class="overlay">
-                  <div class="s-m-nav-content s-m-content">
-                    <div class="s-m-nav-btn flex align-center margin-y-12">
-                      <button
-                        type="button"
-                        title="Đăng nhập"
-                        class="lnw-btn js-login active"
-                      >
-                        <div class="font-bold uppercase">Đăng nhập</div>
-                      </button>
-                      <button
-                        type="button"
-                        title="Đăng ký"
-                        class="lnw-btn js-register margin-left-16 active"
-                      >
-                        <div class="font-bold uppercase">Đăng ký</div>
-                      </button>
-                      <button
-                        type="button"
-                        title="Đăng xuất"
-                        class="lnw-btn js-signout margin-left-16"
-                      >
-                        <div class="font-bold uppercase">Đăng xuất</div>
-                      </button>
-                    </div>
-
-                    <ul class="s-m-nav-list">
-                      <li class="web-logo">
-                        <div>Trang chủ</div>
-                      </li>
-
-                      <li class="history-order-link">
-                        <div>Lịch sử mua hàng</div>
-                      </li>
-
-                      <li class="books-store">
-                        <div>Tủ sách thương hiệu</div>
-                      </li>
-
-                      <li class="news-nav">
-                        <div>Tin tức & Sự kiện</div>
-                      </li>
-
-                      <li class="services">
-                        <div>Liên hệ</div>
-                      </li>
-                    </ul>
-                  </div>
-                </div>
+               
               </div>
 
               <div class="web-logo full-height">
@@ -209,13 +161,12 @@
                   </div>
 
                   <!-- account -->
-                  <nav
-                    class="nav-account flex justify-center align-center flex-direction-y"
-                  >
+                  <nav class="nav-account flex justify-center align-center flex-direction-y">
                     <button
                       type="button"
                       title="Đăng nhập"
-                      class="lnw-btn active js-login margin-bottom-16"
+                      class="lnw-btn active margin-bottom-16"
+                      onclick="window.location.href='/gui/login.php'"
                     >
                       <div class="font-bold uppercase">Đăng nhập</div>
                     </button>
@@ -223,7 +174,8 @@
                     <button
                       type="button"
                       title="Đăng ký"
-                      class="lnw-btn js-register"
+                      class="lnw-btn"
+                      onclick="window.location.href='gui/register.php'"
                     >
                       <div class="font-bold uppercase">Đăng ký</div>
                     </button>
@@ -231,11 +183,12 @@
                     <button
                       type="button"
                       title="Đăng xuất"
-                      class="lnw-btn js-signout disable"
+                      class="lnw-btn disable"
                     >
                       <div class="font-bold uppercase">Đăng xuất</div>
                     </button>
                   </nav>
+
                 </div>
               </div>
             </section>
