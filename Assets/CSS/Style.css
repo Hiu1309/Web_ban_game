@@ -444,7 +444,8 @@
   line-height: 1.4;
   padding-inline: 1.75em;
   display: flex;
-  align-items: center;
+  justify-content: center;
+  align-items:center;
 }
 
 #main-content .services-container .service-content:not(:last-child) {
@@ -552,7 +553,11 @@
   cursor: pointer;
   border-radius: 4px;
 }
-
+ .action .buy-btn,
+ .action .add-to-cart {
+     padding: 0.5em 1.25em;
+     background: var(--main-color);
+}
 .page-button:hover {
   background-color: var(--btn-hover);
 }
