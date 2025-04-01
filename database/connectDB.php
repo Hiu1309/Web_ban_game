@@ -4,7 +4,7 @@ class connectDB {
         $servername = "localhost";  
         $username = "root";
         $password = "";
-        $database = "web_ban_game_mt3h";
+        $database = "htttgame";
 
         // Kết nối MySQL
         $conn = mysqli_connect($servername, $username, $password, $database);
