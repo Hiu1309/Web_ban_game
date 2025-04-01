@@ -113,10 +113,7 @@
                                                   }
                                              } else {
                                                   echo '<p>Không có sản phẩm nào thuộc danh mục này.</p>';
-                                             }
-
-                                             // Đóng kết nối
-                                             connectDB::closeConnection($conn);
+                                             }                                             
                                         ?>
                                    </div>
 
@@ -137,10 +134,6 @@
 
                                    <div class="product-container">
                                         <?php
-                                        // Kết nối cơ sở dữ liệu
-                                        require_once "database/connectDB.php"; 
-                                        $conn = connectDB::getConnection();
-
                                         // Truy vấn lấy 5 sản phẩm thuộc thể loại "Hành động" (AC001)
                                         $sql = "SELECT p.ProductID, p.ProductName, p.ProductImg, p.Price, p.Quantity 
                                                   FROM product p
@@ -187,9 +180,6 @@
                                         } else {
                                              echo '<p>Không có sản phẩm nào thuộc thể loại này.</p>';
                                         }
-
-                                        // Đóng kết nối
-                                        connectDB::closeConnection($conn);
                                         ?>
                                    </div>
 
@@ -210,9 +200,6 @@
 
                                    <div class="product-container">
                                         <?php
-                                        // Kết nối cơ sở dữ liệu
-                                        require_once "database/connectDB.php"; 
-                                        $conn = connectDB::getConnection();
 
                                         // Truy vấn lấy 5 sản phẩm thuộc thể loại "Nhập vai" (RP001)
                                         $sql = "SELECT p.ProductID, p.ProductName, p.ProductImg, p.Price, p.Quantity 
@@ -258,10 +245,7 @@
                                              }
                                         } else {
                                              echo '<p>Không có sản phẩm nào thuộc thể loại này.</p>';
-                                        }
-
-                                        // Đóng kết nối
-                                        connectDB::closeConnection($conn);
+                                        }                                   
                                         ?>
                                    </div>
 
@@ -281,11 +265,7 @@
                                    </div>
 
                                    <div class="product-container">
-                                        <?php
-                                             // Kết nối cơ sở dữ liệu
-                                             require_once "database/connectDB.php"; 
-                                             $conn = connectDB::getConnection();
-
+                                        <?php                                             
                                              // Truy vấn lấy 5 sản phẩm Free-to-Play (F2P001)
                                              $sql = "SELECT p.ProductID, p.ProductName, p.ProductImg, p.Price, p.Quantity 
                                                   FROM product p
@@ -329,10 +309,7 @@
                                                   }
                                              } else {
                                                   echo '<p>Không có sản phẩm nào thuộc thể loại này.</p>';
-                                             }
-
-                                             // Đóng kết nối
-                                             connectDB::closeConnection($conn);
+                                             }                                             
                                         ?>
                                    </div>
 
@@ -352,11 +329,7 @@
                                    </div>
 
                                    <div class="product-container">
-                                        <?php
-                                             // Kết nối cơ sở dữ liệu
-                                             require_once "database/connectDB.php"; 
-                                             $conn = connectDB::getConnection();
-
+                                        <?php                                             
                                              // Truy vấn lấy 5 sản phẩm thuộc thể loại Open World (OW001)
                                              $sql = "SELECT p.ProductID, p.ProductName, p.ProductImg, p.Price, p.Quantity 
                                                   FROM product p
