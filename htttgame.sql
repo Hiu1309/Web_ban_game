@@ -222,11 +222,16 @@ CREATE TABLE `supplier` (
 -- Cấu trúc bảng cho bảng `type_product`
 --
 
+-- CREATE TABLE `type_product` (
+--   `TypeID` varchar(10) NOT NULL,
+--   `ProductID` varchar(10) DEFAULT NULL
+-- ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 CREATE TABLE `type_product` (
   `TypeID` varchar(10) NOT NULL,
-  `ProductID` varchar(10) DEFAULT NULL
+  `ProductID` varchar(10) NOT NULL,
+  PRIMARY KEY (`TypeID`, `ProductID`),  -- Sử dụng khóa hợp nhất
+  CONSTRAINT `fk_product_type` FOREIGN KEY (`ProductID`) REFERENCES `product` (`ProductID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
 --
 -- Chỉ mục cho các bảng đã đổ
 --
@@ -331,11 +336,11 @@ ALTER TABLE `supplier`
 --
 -- Chỉ mục cho bảng `type_product`
 --
-ALTER TABLE `type_product`
-  ADD PRIMARY KEY (`TypeID`),
-  ADD KEY `ProductID` (`ProductID`);
+-- ALTER TABLE `type_product`
+--   ADD PRIMARY KEY (`TypeID`),
+--   ADD KEY `ProductID` (`ProductID`);
 
---
+-- --
 -- Các ràng buộc cho các bảng đã đổ
 --
 

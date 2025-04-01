@@ -62,7 +62,7 @@
   justify-content: space-around;
 }
 
-#header-container .header-items>div {
+#header-container .header-items > div {
   cursor: pointer;
   font-size: var(--font-size-13);
 }
@@ -127,7 +127,6 @@
 .header-user-info .user-img {
   overflow: hidden;
   border-radius: 50%;
-  
 }
 
 .header-user-info .user-img {
@@ -183,7 +182,7 @@
 }
 
 #user-account .nav-account .lnw-btn.active {
-  background:  rgb(226, 138, 138);
+  background: rgb(226, 138, 138);
 }
 
 .nav-account .lnw-btn:hover div {
@@ -215,7 +214,7 @@
   padding: 0.5em 0;
 }
 
-.s-m-nav-content .s-m-nav-list li+li {
+.s-m-nav-content .s-m-nav-list li + li {
   border-top: 1px solid var(--main-color);
 }
 
@@ -241,25 +240,21 @@
   justify-content: center;
 }
 
-#sub-header .sub-menu .sub-menu-item+.sub-menu-item {
+#sub-header .sub-menu .sub-menu-item + .sub-menu-item {
   border-left: 1px solid var(--border);
   border-right: 1px solid var(--border);
 }
 
 #sub-header .sub-menu-item.history-order-link:hover {
-
   cursor: pointer;
   box-shadow: unset;
   /* box-shadow: 0 0 1px var(--primary-dark); */
-
 }
 
 #sub-header .sub-menu-item.history-order-link:hover {
-
   cursor: pointer;
   box-shadow: unset;
   /* box-shadow: 0 0 1px var(--primary-dark); */
-
 }
 
 /*list-btn */
@@ -299,14 +294,14 @@
 
 .qr-code-container {
   display: block;
-  text-align: center; 
+  text-align: center;
   margin-top: 10px;
   width: 100%;
-  max-width: 900px; 
+  max-width: 900px;
 }
 
 .qr-code-container img {
-  width: 100%; 
+  width: 100%;
   height: auto;
 }
 
@@ -345,12 +340,12 @@
   align-items: center;
 }
 
-.breadcrumb-list ol>li+li {
+.breadcrumb-list ol > li + li {
   opacity: 0.6;
   font-weight: 200;
 }
 
-.breadcrumb-list ol>li+li::before {
+.breadcrumb-list ol > li + li::before {
   content: "/";
   opacity: 0.6;
   font-weight: 500;
@@ -382,11 +377,9 @@
 /* banner homepage */
 #main-content .homepage {
   position: relative;
-
 }
 
-
-#main-content .homepage>a>video {
+#main-content .homepage > a > video {
   max-width: 100%;
   border-radius: var(--higher-radius);
 }
@@ -462,7 +455,7 @@
   opacity: 0.8;
 }
 
-.services-container .service-content>img {
+.services-container .service-content > img {
   max-width: 4em;
   margin-left: 1.5em;
 }
@@ -576,7 +569,6 @@
 .block-product {
   cursor: pointer;
   position: relative;
- 
 }
 
 .product-container .block-product {
@@ -675,42 +667,37 @@
 /* end css for action */
 /* end container css using on other html */
 
-.category-tab .heading #new-book-label {
-  background: url("../Images/Icons/Other_icons/new-book.jpg") top left / cover no-repeat;
-}
-
 .category-tab .heading #best-selling-label {
-  background: url("../Images/Icons/Other_icons/best-selling.jpg") top left / cover no-repeat;
+  background: url("/Assets/Images/Icons/Other_icons/best-selling.jpg") top left /
+    cover no-repeat;
 }
 
-.category-tab .heading .light-novel-label {
-  border-radius: var(--higher-radius);
-  background: url("../Images/Icons/Other_icons/LN.webp") top left / cover no-repeat;
+.category-tab .heading #action-game-label {
+  background: url("/Assets/Images/Icons/Other_icons/hq720.jpg") top left / cover
+    no-repeat;
 }
 
-.category-tab .heading .manga-label {
-  border-radius: var(--higher-radius);
-  background: url("../Images/Icons/Other_icons/Manga.webp") top left / cover no-repeat;
+.category-tab .heading #role-playing-label {
+  background: url("/Assets/Images/Icons/Other_icons/LN.webp") top left / cover
+    no-repeat;
 }
 
-.category-tab .heading #other-book-label {
+.category-tab .heading #free-to-play-label {
   border-radius: var(--higher-radius);
-  background: url("../Images/Icons/Other_icons/Manga-list.jpg") top left / cover no-repeat;
+  background: url("/Assets/Images/Icons/Other_icons/Manga.webp") top left /
+    cover no-repeat;
 }
 
-.category-tab .heading #search-book-label {
+.category-tab .heading #open-world-label {
   border-radius: var(--higher-radius);
-  background: url("../Images/Icons/Other_icons/search.jpg") top left / cover no-repeat;
+  background: url("/Assets/Images/Icons/Other_icons/Collage-Maker-15-Sep-2023-02-43-PM-9410.jpg")
+    top left / cover no-repeat;
 }
 
-.category-tab .heading .education-label {
+.category-tab .heading #search-game-label {
   border-radius: var(--higher-radius);
-  background: url("../Images/Icons/Other_icons/new-book.jpg") top left / cover no-repeat;
-}
-
-.category-tab .heading .literary-label {
-  border-radius: var(--higher-radius);
-  background: url("../Images/Icons/Other_icons/sach-thieu-nhi.jpg") top left / cover no-repeat;
+  background: url("Images/Icons/Other_icons/search.jpg") top left / cover
+    no-repeat;
 }
 
 /* load more item */
@@ -723,7 +710,6 @@
   overflow: hidden;
   height: auto;
 }
-
 
 #news-blogs-container {
   min-height: fit-content;
@@ -747,8 +733,8 @@
 
 .news-blogs-inner .nav-btn {
   top: 15em;
-  left: 1.0%;
-  right: 1.0%;
+  left: 1%;
+  right: 1%;
 }
 
 #news-blogs-container .news-blogs-inner .news-blogs-items {
@@ -757,24 +743,22 @@
   flex-flow: row nowrap;
 }
 
-.news-blogs-items>.news-item {
+.news-blogs-items > .news-item {
   display: none;
   min-height: 25em;
 }
 
-.news-blogs-items>.news-item.active {
+.news-blogs-items > .news-item.active {
   animation: fadeIn linear 0.4s;
 }
 
 .news-blogs-items .news-blogs-image {
   overflow: hidden;
   position: relative;
-  
 }
 
 #news-blogs-container .news-blogs img {
   width: 100%;
-   
 }
 
 #news-blogs-container .news-blogs-image .date {
@@ -797,7 +781,6 @@
   font-weight: bold;
   text-align: center;
   margin-bottom: 0.75em;
-  
 }
 
 .news-blogs .news-blogs-detail .news-blogs-info {
@@ -866,7 +849,7 @@
   background: #dad6d6;
 }
 
-#footer-container .footer-col-container+.footer-col-container {
+#footer-container .footer-col-container + .footer-col-container {
   border-left: 1px solid var(--main-color);
 }
 
@@ -906,7 +889,7 @@
   justify-content: space-between;
 }
 
-.footer-input>form {
+.footer-input > form {
   position: relative;
 }
 

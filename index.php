@@ -1,4 +1,4 @@
-<?php include('gui/header.php') ?>
+<?php include('gui/header_footer/header.php') ?>
 
 
                     <!-- homepage -->
@@ -8,8 +8,8 @@
                                      <div class="homepage grid-col col-l-12 col-m-12 col-s-12 no-gutter">
                                           <a data-panel="{&quot;focusable&quot;:false}" href="" class="promo_link" style="display: block;">
                                           <video loop muted autoplay playsinline preload="none'" id="home_video_desktop" alt="Feature red Promotion" class="fullscreen-bg__video">
-                                               <source src="../Assets/Web-Games-Store/Assets/Videos/BackGrounds/webm_page_bg_english.webm/BackGrounds/webm_page_bg_english.webm" type="video/webm">
-                                               <source src="../Assets/Videos/BackGrounds/webm_page_bg_english.webm" type="video/mp4">
+                                               <source src="/Assets/Web-Games-Store/Assets/Videos/BackGrounds/webm_page_bg_english.webm/BackGrounds/webm_page_bg_english.webm" type="video/webm">
+                                               <source src="/Assets/Videos/BackGrounds/webm_page_bg_english.webm" type="video/mp4">
 
                                           </video>
                                           </a>
@@ -21,7 +21,7 @@
                            <section class="grid-col col-l-12 no-gutter margin-y-16 full-width">
                                 <div class="services-container flex justify-center align-center">
                                      <div class="service-content grid-col col-l-3 col-m-3 col-s-6">
-                                          <img src="../Assets/Images/Icons/Service/icon-sv1.jpg"
+                                          <img src="/Assets/Images/Icons/Service/icon-sv1.jpg"
                                                alt="Thanh toán" />
                                           <div class="flex-direction-y padding-left-8">
                                                <h5 class="font-bold uppercase font-size-13">Thanh toán</h5>
@@ -30,7 +30,7 @@
                                      </div>
 
                                      <div class="service-content grid-col col-l-3 col-m-3 col-s-6">
-                                          <img src="../Assets/Images/Icons/Service/icon-sv2.jpg"
+                                          <img src="/Assets/Images/Icons/Service/icon-sv2.jpg"
                                                alt="Quà tặng" />
                                           <div class="flex-direction-y padding-left-8">
                                                <h5 class="font-bold uppercase font-size-13">Quà tặng</h5>
@@ -39,7 +39,7 @@
                                      </div>
 
                                      <div class="service-content grid-col col-l-3 col-m-3 col-s-6">
-                                          <img src="../Assets/Images/Icons/Service/icon-sv3.jpg"
+                                          <img src="/Assets/Images/Icons/Service/icon-sv3.jpg"
                                                alt="Bảo mật" />
                                           <div class="flex-direction-y padding-left-8">
                                                <h5 class="font-bold uppercase font-size-13">Bảo mật</h5>
@@ -49,7 +49,7 @@
                                      </div>
 
                                      <div class="service-content grid-col col-l-3 col-m-3 col-s-6">
-                                          <img src="../Assets/Images/Icons/Service/icon-sv4.jpg" alt="Hỗ trợ" />
+                                          <img src="/Assets/Images/Icons/Service/icon-sv4.jpg" alt="Hỗ trợ" />
                                           <div class="flex-direction-y padding-left-8">
                                                <h5 class="font-bold uppercase font-size-13">Hỗ trợ</h5>
                                                <p class="font-size-13 font-light capitalize">24/7</p>
@@ -57,250 +57,367 @@
                                      </div>
                                 </div>
                            </section>
+
                            <!-- best selling -->
-                           <section id="best-selling-container"
-                                class="container flex grid-col col-l-12 col-m-12 col-s-12 no-gutter">
-                                <div class="category-tab">
-                                     <div class="heading">
-                                          <div id="best-selling-label" class="heading-label"></div>
-                                          <div class="uppercase font-bold font-size-20 padding-left-8" style="color: white;">Featured & Recommended</div>
-                                     </div>
+                           <section id="best-selling-container" class="container flex grid-col col-l-12 col-m-12 col-s-12 no-gutter">
+                              <div class="category-tab">
+                                   <div class="heading">
+                                        <div id="best-selling-label" class="heading-label"></div>
+                                        <div class="uppercase font-bold font-size-20 padding-left-8" style="color: white;">Featured & Recommended</div>
+                                   </div>
 
-                                     <div class="product-container"></div>
-                                </div>
-                                <div class="nav-btn margin-inline-8">
-                                     <div class="prev-btn font-size-13">
-                                          <i class="fa-solid fa-angle-left fa-lg"
-                                               style="color: var(--primary-white)"></i>
-                                     </div>
-                                     <div class="next-btn font-size-13">
-                                          <i class="fa-solid fa-angle-right fa-lg"
-                                               style="color: var(--primary-white)"></i>
-                                     </div>
-                                </div>
-                           </section> 
+                                   <div class="product-container">
+                                        <?php
+                                             // Kết nối cơ sở dữ liệu
+                                             require_once "database/connectDB.php"; 
+                                             $conn = connectDB::getConnection();
 
-                           <!-- flash-sale -->
-                           <section id="fs-container"
-                                class="container flex grid-col col-l-12 col-m-12 col-s-12 no-gutter">
-                                <div class="category-tab">
-                                     <div class="heading">
-                                          <span id="fs-label" class="heading-label"></span>
-                                          <span
-                                               class="fs-countdown flex justify-center align-center padding-left-8 font-bold">
-                                               <p class="s-m-hidden padding-right-8">kết thúc trong:</p>
-                                               <div class="fs-time">
-                                                    <span class="fs-number">01</span>
-                                                    <span>:</span>
-                                                    <span class="fs-number">59</span>
-                                                    <span>:</span>
-                                                    <span class="fs-number">59</span>
-                                               </div>
-                                          </span>
-                                     </div>
+                                             // Truy vấn lấy danh sách 5 sản phẩm bán chạy nhất
+                                             $sql = "SELECT ProductID, ProductName, ProductImg, Price, Quantity FROM product ORDER BY Quantity DESC LIMIT 5";
+                                             $result = mysqli_query($conn, $sql);
 
-                                     <!-- container for products -->
-                                     <div class="product-container"></div>
+                                             // Kiểm tra và hiển thị sản phẩm   
+                                             if (mysqli_num_rows($result) > 0) {
+                                                  while ($product = mysqli_fetch_assoc($result)) {
+                                                       $price = ($product['Price'] > 0) ? number_format($product['Price'], 0, ',', '.') . ' đ' : 'Miễn phí';
 
-                                     <div class="nav-btn margin-inline-8 disable">
-                                          <div class="prev-btn font-size-13">
-                                               <i class="fa-solid fa-angle-left fa-lg"
-                                                    style="color: var(--primary-white);"></i>
-                                          </div>
-                                          <div class="next-btn font-size-13">
-                                               <i class="fa-solid fa-angle-right fa-lg"
-                                                    style="color: var(--primary-white);"></i>
-                                          </div>
-                                     </div>
 
-                                     <div
-                                          class="flex justify-center align-center font-bold capitalize margin-bottom-16">
-                                          <a href="#" target="_blank" class="category-btn button">Xem thêm</a>
-                                     </div>
-                                </div>
-                           </section>
+                                                       $availabilityClass = ($product['Quantity'] > 0) ? '' : 'active'; // Kiểm tra số lượng
 
-                           <!-- new offers -->
-                           <section id="new-books-container"
-                                class="container flex grid-col col-l-12 col-m-12 col-s-12 no-gutter">
-                                <div class="category-tab">
-                                     <div class="heading">
-                                          <div id="new-book-label" class="heading-label"></div>
-                                          <div class="uppercase font-bold font-size-20 padding-left-8 "style="color: white;">NEW OFFERS
-                                          </div>
-                                     </div>
+                                                       echo '<div class="product-item grid-col col-l-2-4 col-m-3 col-s-6">';
+                                                       echo '  <div class="block-product product-resize">';
+                                                       echo '    <span class="product-image js-item">';
+                                                       echo '      <img src="' . $product['ProductImg'] . '" alt="' . $product['ProductName'] . '">';
+                                                       echo '    </span>';
+                                                       echo '    <div class="sale-off font-bold capitalize ' . $availabilityClass . '">hết hàng</div>';
+                                                       echo '    <div class="info-inner flex justify-center align-center line-height-1-6">';
+                                                       echo '      <h4 class="font-light capitalize" title="' . $product['ProductName'] . '">' . $product['ProductName'] . '</h4>';
+                                                       echo '      <div class="margin-y-4">';
+                                                       echo '        <span class="price font-bold">' . $price . '</span>';
+                                                       echo '      </div>';
+                                                       echo '    </div>';
+                                                       echo '  </div>';
+                                                       echo '  <div class="action ' . ($product['Quantity'] > 0 ? '' : 'disable') . '">';
+                                                       echo '    <div class="buy-btn">';
+                                                       echo '      <div title="Mua ngay" class="button">';
+                                                       echo '        <i class="fa-solid fa-bag-shopping fa-lg" style="color: var(--primary-white);"></i>';
+                                                       echo '      </div>';
+                                                       echo '    </div>';
+                                                       echo '    <div class="add-to-cart">';
+                                                       echo '      <div title="Thêm vào giỏ hàng" class="button">';
+                                                       echo '        <i class="fa-solid fa-basket-shopping fa-lg" style="color: var(--primary-white);"></i>';
+                                                       echo '      </div>';
+                                                       echo '    </div>';
+                                                       echo '  </div>';
+                                                       echo '</div>';
+                                                  }
+                                             } else {
+                                                  echo '<p>Không có sản phẩm nào thuộc danh mục này.</p>';
+                                             }
 
-                                     <!-- container for products -->
-                                     <div class="product-container"></div>
+                                             // Đóng kết nối
+                                             connectDB::closeConnection($conn);
+                                        ?>
+                                   </div>
 
-                                     <div
-                                          class="flex justify-center align-center font-bold capitalize margin-bottom-16">
-                                          <a href="#" class="category-btn button">Xem thêm</a>
-                                     </div>
-                                </div>
-                           </section>
+                                   <div class="flex justify-center align-center font-bold capitalize margin-bottom-16">
+                                        <a href="#" class="category-btn button">Xem thêm</a>
+                                   </div>
+                              </div>
+                              </section>
 
-                           
+
+                           <!-- action -->
+                           <section id="action-game-container" class="container flex grid-col col-l-12 col-m-12 col-s-12 no-gutter">
+                              <div class="category-tab">
+                                   <div class="heading">
+                                        <div id="action-game-label" class="heading-label"></div>
+                                        <div class="uppercase font-bold font-size-20 padding-left-8" style="color: white;">ACTION</div>
+                                   </div>
+
+                                   <div class="product-container">
+                                        <?php
+                                        // Kết nối cơ sở dữ liệu
+                                        require_once "database/connectDB.php"; 
+                                        $conn = connectDB::getConnection();
+
+                                        // Truy vấn lấy 5 sản phẩm thuộc thể loại "Hành động" (AC001)
+                                        $sql = "SELECT p.ProductID, p.ProductName, p.ProductImg, p.Price, p.Quantity 
+                                                  FROM product p
+                                                  JOIN type_product tp ON p.ProductID = tp.ProductID
+                                                  WHERE tp.TypeID = 'AC001'
+                                                  LIMIT 5";
+
+                                        $result = mysqli_query($conn, $sql);
+
+                                        // Kiểm tra và hiển thị sản phẩm   
+                                        if (mysqli_num_rows($result) > 0) {
+                                             while ($product = mysqli_fetch_assoc($result)) {
+                                                  $price = ($product['Price'] > 0) ? number_format($product['Price'], 0, ',', '.') . ' đ' : 'Miễn phí';
+
+                                                  $availabilityClass = ($product['Quantity'] > 0) ? '' : 'active'; // Kiểm tra số lượng
+
+                                                  echo '<div class="product-item grid-col col-l-2-4 col-m-3 col-s-6">';
+                                                  echo '  <div class="block-product product-resize">';
+                                                  echo '    <span class="product-image js-item">';
+                                                  echo '      <img src="' . $product['ProductImg'] . '" alt="' . $product['ProductName'] . '">';
+                                                  echo '    </span>';
+                                                  echo '    <div class="sale-off font-bold capitalize ' . $availabilityClass . '">Hết hàng</div>';
+                                                  echo '    <div class="info-inner flex justify-center align-center line-height-1-6">';
+                                                  echo '      <h4 class="font-light capitalize" title="' . $product['ProductName'] . '">' . $product['ProductName'] . '</h4>';
+                                                  echo '      <div class="margin-y-4">';
+                                                  echo '        <span class="price font-bold">' . $price . '</span>'; // Sửa lại hiển thị tiền Việt
+                                                  echo '      </div>';
+                                                  echo '    </div>';
+                                                  echo '  </div>';
+                                                  echo '  <div class="action ' . ($product['Quantity'] > 0 ? '' : 'disable') . '">';
+                                                  echo '    <div class="buy-btn">';
+                                                  echo '      <div title="Mua ngay" class="button">';
+                                                  echo '        <i class="fa-solid fa-bag-shopping fa-lg" style="color: var(--primary-white);"></i>';
+                                                  echo '      </div>';
+                                                  echo '    </div>';
+                                                  echo '    <div class="add-to-cart">';
+                                                  echo '      <div title="Thêm vào giỏ hàng" class="button">';
+                                                  echo '        <i class="fa-solid fa-basket-shopping fa-lg" style="color: var(--primary-white);"></i>';
+                                                  echo '      </div>';
+                                                  echo '    </div>';
+                                                  echo '  </div>';
+                                                  echo '</div>';
+                                             }
+                                        } else {
+                                             echo '<p>Không có sản phẩm nào thuộc thể loại này.</p>';
+                                        }
+
+                                        // Đóng kết nối
+                                        connectDB::closeConnection($conn);
+                                        ?>
+                                   </div>
+
+                                   <div class="flex justify-center align-center font-bold capitalize margin-bottom-16">
+                                        <a href="#" class="category-btn button">Xem thêm</a>
+                                   </div>
+                              </div>
+                              </section>
+                        
 
                            <!-- Role-playing  -->
-                           <section id="light-novel-container"
-                                class="container flex grid-col col-l-12 col-m-12 col-s-12 no-gutter">
-                                <div class="category-tab">
-                                     <div class="heading">
-                                          <div class="heading-label light-novel-label"></div>
-                                          <div class="uppercase font-bold font-size-20 padding-left-8"style="color: white;"> ROLE-PLAYING</div>
-                                     </div>
+                           <section id="role-playing-container" class="container flex grid-col col-l-12 col-m-12 col-s-12 no-gutter">
+                              <div class="category-tab">
+                                   <div class="heading">
+                                        <div id="role-playing-label" class="heading-label"></div>
+                                        <div class="uppercase font-bold font-size-20 padding-left-8" style="color: white;">ROLE-PLAYING</div>
+                                   </div>
 
-                                     <!-- container for products -->
-                                     <div class="product-container"></div>
+                                   <div class="product-container">
+                                        <?php
+                                        // Kết nối cơ sở dữ liệu
+                                        require_once "database/connectDB.php"; 
+                                        $conn = connectDB::getConnection();
 
-                                     <div
-                                          class="flex justify-center align-center font-bold capitalize margin-bottom-16">
-                                          <a href="#" class="category-btn button">Xem thêm</a>
-                                     </div>
-                                </div>
-                           </section>
+                                        // Truy vấn lấy 5 sản phẩm thuộc thể loại "Nhập vai" (RP001)
+                                        $sql = "SELECT p.ProductID, p.ProductName, p.ProductImg, p.Price, p.Quantity 
+                                                  FROM product p
+                                                  JOIN type_product tp ON p.ProductID = tp.ProductID
+                                                  WHERE tp.TypeID = 'RPG001'
+                                                  LIMIT 5";
 
-                           <!-- freetoplay -->
-                           <section id="manga-container"
-                                class="container flex grid-col col-l-12 col-m-12 col-s-12 no-gutter">
-                                <div class="category-tab">
-                                     <div class="heading">
-                                          <div class="heading-label manga-label"></div>
-                                          <div class="uppercase font-bold font-size-20 padding-left-8"style="color: white;">FREE TO PLAY
-                                          </div>
-                                     </div>
+                                        $result = mysqli_query($conn, $sql);
 
-                                     <!-- container for products -->
-                                     <div class="product-container"></div>
+                                        // Kiểm tra và hiển thị sản phẩm   
+                                        if (mysqli_num_rows($result) > 0) {
+                                             while ($product = mysqli_fetch_assoc($result)) {
+                                                  $price = ($product['Price'] > 0) ? number_format($product['Price'], 0, ',', '.') . ' đ' : 'Miễn phí';
+                                                  $availabilityClass = ($product['Quantity'] > 0) ? '' : 'active'; // Kiểm tra số lượng
 
-                                     <div
-                                          class="flex justify-center align-center font-bold capitalize margin-bottom-16">
-                                          <a href="#" class="category-btn button">Xem thêm</a>
-                                     </div>
-                                </div>
-                           </section>
+                                                  echo '<div class="product-item grid-col col-l-2-4 col-m-3 col-s-6">';
+                                                  echo '  <div class="block-product product-resize">';
+                                                  echo '    <span class="product-image js-item">';
+                                                  echo '      <img src="' . $product['ProductImg'] . '" alt="' . $product['ProductName'] . '">';
+                                                  echo '    </span>';
+                                                  echo '    <div class="sale-off font-bold capitalize ' . $availabilityClass . '">Hết hàng</div>';
+                                                  echo '    <div class="info-inner flex justify-center align-center line-height-1-6">';
+                                                  echo '      <h4 class="font-light capitalize" title="' . $product['ProductName'] . '">' . $product['ProductName'] . '</h4>';
+                                                  echo '      <div class="margin-y-4">';
+                                                  echo '        <span class="price font-bold">' . $price . '</span>'; // Sửa lại hiển thị tiền Việt
+                                                  echo '      </div>';
+                                                  echo '    </div>';
+                                                  echo '  </div>';
+                                                  echo '  <div class="action ' . ($product['Quantity'] > 0 ? '' : 'disable') . '">';
+                                                  echo '    <div class="buy-btn">';
+                                                  echo '      <div title="Mua ngay" class="button">';
+                                                  echo '        <i class="fa-solid fa-bag-shopping fa-lg" style="color: var(--primary-white);"></i>';
+                                                  echo '      </div>';
+                                                  echo '    </div>';
+                                                  echo '    <div class="add-to-cart">';
+                                                  echo '      <div title="Thêm vào giỏ hàng" class="button">';
+                                                  echo '        <i class="fa-solid fa-basket-shopping fa-lg" style="color: var(--primary-white);"></i>';
+                                                  echo '      </div>';
+                                                  echo '    </div>';
+                                                  echo '  </div>';
+                                                  echo '</div>';
+                                             }
+                                        } else {
+                                             echo '<p>Không có sản phẩm nào thuộc thể loại này.</p>';
+                                        }
+
+                                        // Đóng kết nối
+                                        connectDB::closeConnection($conn);
+                                        ?>
+                                   </div>
+
+                                   <div class="flex justify-center align-center font-bold capitalize margin-bottom-16">
+                                        <a href="#" class="category-btn button">Xem thêm</a>
+                                   </div>
+                              </div>
+                              </section>
+
+
+                           <!-- free to play -->
+                           <section id="free-to-play-container" class="container flex grid-col col-l-12 col-m-12 col-s-12 no-gutter">
+                              <div class="category-tab">
+                                   <div class="heading">
+                                        <div id="free-to-play-label" class="heading-label"></div>
+                                        <div class="uppercase font-bold font-size-20 padding-left-8" style="color: white;">FREE TO PLAY</div>
+                                   </div>
+
+                                   <div class="product-container">
+                                        <?php
+                                             // Kết nối cơ sở dữ liệu
+                                             require_once "database/connectDB.php"; 
+                                             $conn = connectDB::getConnection();
+
+                                             // Truy vấn lấy 5 sản phẩm Free-to-Play (F2P001)
+                                             $sql = "SELECT p.ProductID, p.ProductName, p.ProductImg, p.Price, p.Quantity 
+                                                  FROM product p
+                                                  JOIN type_product tp ON p.ProductID = tp.ProductID
+                                                  WHERE tp.TypeID = 'F2P001'
+                                                  LIMIT 5";
+
+                                             $result = mysqli_query($conn, $sql);
+
+                                             // Kiểm tra và hiển thị sản phẩm   
+                                             if (mysqli_num_rows($result) > 0) {
+                                                  while ($product = mysqli_fetch_assoc($result)) {
+                                                  $availabilityClass = ($product['Quantity'] > 0) ? '' : 'active'; // Kiểm tra số lượng
+
+                                                  echo '<div class="product-item grid-col col-l-2-4 col-m-3 col-s-6">';
+                                                  echo '  <div class="block-product product-resize">';
+                                                  echo '    <span class="product-image js-item">';
+                                                  echo '      <img src="' . $product['ProductImg'] . '" alt="' . $product['ProductName'] . '">';
+                                                  echo '    </span>';
+                                                  echo '    <div class="sale-off font-bold capitalize ' . $availabilityClass . '">hết hàng</div>';
+                                                  echo '    <div class="info-inner flex justify-center align-center line-height-1-6">';
+                                                  echo '      <h4 class="font-light capitalize" title="' . $product['ProductName'] . '">' . $product['ProductName'] . '</h4>';
+                                                  echo '      <div class="margin-y-4">';
+                                                  echo '        <span class="price font-bold">Miễn phí</span>';
+                                                  echo '      </div>';
+                                                  echo '    </div>';
+                                                  echo '  </div>';
+                                                  echo '  <div class="action ' . ($product['Quantity'] > 0 ? '' : 'disable') . '">';
+                                                  echo '    <div class="buy-btn">';
+                                                  echo '      <div title="chơi ngay" class="button">';
+                                                  echo '        <i class="fa-solid fa-play-circle fa-lg" style="color: var(--primary-white);"></i>';
+                                                  echo '      </div>';
+                                                  echo '    </div>';
+                                                  echo '    <div class="add-to-cart">';
+                                                  echo '      <div title="thêm vào thư viện" class="button">';
+                                                  echo '        <i class="fa-solid fa-plus-square fa-lg" style="color: var(--primary-white);"></i>';
+                                                  echo '      </div>';
+                                                  echo '    </div>';
+                                                  echo '  </div>';
+                                                  echo '</div>';
+                                                  }
+                                             } else {
+                                                  echo '<p>Không có sản phẩm nào thuộc thể loại này.</p>';
+                                             }
+
+                                             // Đóng kết nối
+                                             connectDB::closeConnection($conn);
+                                        ?>
+                                   </div>
+
+                                   <div class="flex justify-center align-center font-bold capitalize margin-bottom-16">
+                                        <a href="#" class="category-btn button">Xem thêm</a>
+                                   </div>
+                              </div>
+                              </section>
 
                            <!-- open word -->
-                           <section id="other-books-container"
-                                class="container flex grid-col col-l-12 col-m-12 col-s-12 no-gutter">
-                                <div class="category-tab">
-                                     <div class="heading">
-                                          <div id="other-book-label" class="heading-label"></div>
-                                          <div class="uppercase font-bold font-size-20 padding-left-8"style="color: white;">OPEN WORLD</div>
-                                     </div>
+                            
+                           <section id="open-world-container" class="container flex grid-col col-l-12 col-m-12 col-s-12 no-gutter">
+                              <div class="category-tab">
+                                   <div class="heading">
+                                        <div id="open-world-label" class="heading-label"></div>
+                                        <div class="uppercase font-bold font-size-20 padding-left-8" style="color: white;">OPEN WORLD</div>
+                                   </div>
 
-                                     <div class="product-container"></div>
+                                   <div class="product-container">
+                                        <?php
+                                             // Kết nối cơ sở dữ liệu
+                                             require_once "database/connectDB.php"; 
+                                             $conn = connectDB::getConnection();
 
-                                     <div
-                                          class="flex justify-center align-center font-bold capitalize margin-bottom-16">
-                                          <a href="#" class="category-btn button">Xem thêm</a>
-                                     </div>
-                                </div>
-                           </section>
+                                             // Truy vấn lấy 5 sản phẩm thuộc thể loại Open World (OW001)
+                                             $sql = "SELECT p.ProductID, p.ProductName, p.ProductImg, p.Price, p.Quantity 
+                                                  FROM product p
+                                                  JOIN type_product tp ON p.ProductID = tp.ProductID
+                                                  WHERE tp.TypeID = 'OW001'
+                                                  LIMIT 5";
+
+                                             $result = mysqli_query($conn, $sql);
+
+                                             // Kiểm tra và hiển thị sản phẩm   
+                                             if (mysqli_num_rows($result) > 0) {
+                                                  while ($product = mysqli_fetch_assoc($result)) {
+                                                  $price = number_format($product['Price'], 0, ',', '.') . "₫"; // Định dạng giá tiền
+                                                  $availabilityClass = ($product['Quantity'] > 0) ? '' : 'active'; // Kiểm tra số lượng
+
+                                                  echo '<div class="product-item grid-col col-l-2-4 col-m-3 col-s-6">';
+                                                  echo '  <div class="block-product product-resize">';
+                                                  echo '    <span class="product-image js-item">';
+                                                  echo '      <img src="' . $product['ProductImg'] . '" alt="' . $product['ProductName'] . '">';
+                                                  echo '    </span>';
+                                                  echo '    <div class="sale-off font-bold capitalize ' . $availabilityClass . '">hết hàng</div>';
+                                                  echo '    <div class="info-inner flex justify-center align-center line-height-1-6">';
+                                                  echo '      <h4 class="font-light capitalize" title="' . $product['ProductName'] . '">' . $product['ProductName'] . '</h4>';
+                                                  echo '      <div class="margin-y-4">';
+                                                  echo '        <span class="price font-bold">' . $price . '</span>';
+                                                  echo '      </div>';
+                                                  echo '    </div>';
+                                                  echo '  </div>';
+                                                  echo '  <div class="action ' . ($product['Quantity'] > 0 ? '' : 'disable') . '">';
+                                                  echo '    <div class="buy-btn">';
+                                                  echo '      <div title="Mua ngay" class="button">';
+                                                  echo '        <i class="fa-solid fa-bag-shopping fa-lg" style="color: var(--primary-white);"></i>';
+                                                  echo '      </div>';
+                                                  echo '    </div>';
+                                                  echo '    <div class="add-to-cart">';
+                                                  echo '      <div title="Thêm vào giỏ hàng" class="button">';
+                                                  echo '        <i class="fa-solid fa-basket-shopping fa-lg" style="color: var(--primary-white);"></i>';
+                                                  echo '      </div>';
+                                                  echo '    </div>';
+                                                  echo '  </div>';
+                                                  echo '</div>';
+                                                  }
+                                             } else {
+                                                  echo '<p>Không có sản phẩm nào thuộc thể loại này.</p>';
+                                             }
+
+                                             // Đóng kết nối
+                                             connectDB::closeConnection($conn);
+                                        ?>
+                                   </div>
+
+                                   <div class="flex justify-center align-center font-bold capitalize margin-bottom-16">
+                                        <a href="#" class="category-btn button">Xem thêm</a>
+                                   </div>
+                              </div>
+                              </section>
+
                       </div>
 
                       <!-- account -->
                       <div id="account-content" class="grid-col col-l-12 col-m-12 col-s-12 no-gutter disable">
-                           <section id="login-registration-form" class="js-account-form">
-                                <div class="user-box">
-                                     <div id="login" class="text-center">
-                                          <div class="font-size-20 uppercase font-bold">đăng nhập</div>
-                                          <div id="login-layout">
-                                               <form action="" method="post">
-                                                    <div class="js-email-login">
-                                                         <input type="email" name="customer-email-login"
-                                                              id="customer-email-login" placeholder="Email" autocomplete="on" required>
-                                                         <div class="error-message"></div>
-                                                    </div>
-                                                    <div class="js-pass-login">
-                                                         <input type="password" name="customer-password-login" id="customer-password-login" 
-                                                              placeholder="Mật khẩu" autocomplete="current-password" required>
-                                                         <div class="error-message"></div>
-                                                    </div>
-
-                                                    <p class="font-size-13 capitalize js-forgot-password">
-                                                         <span>quên mật khẩu?</span>
-                                                    </p>
-
-                                                    <button type="submit" id="login-btn" class="button">
-                                                         <p class="capitalize font-bold">đăng nhập</p>
-                                                    </button>
-                                               </form>
-
-                                               <div class="font-size-14 margin-y-12 js-register">
-                                                    <span>Không có tài khoản ?</span>
-                                                    <span>đăng ký</span>
-                                               </div>
-                                          </div>
-                                     </div>
-
-                                     <div id="register" class="text-center">
-                                          <div class="font-size-20 uppercase font-bold">đăng ký</div>
-                                          <div id="register-layout">
-                                               <form action="" method="post">
-                                                    <div class="js-fname-register">
-                                                         <input type="text" name="customer-last-name" id="customer-last-name" placeholder="Họ" required>
-                                                         <div class="error-message"></div>
-                                                    </div>
-                                                    <div class="js-lname-register">
-                                                         <input type="text" name="customer-first-name" id="customer-first-name" placeholder="Tên" required>
-                                                         <div class="error-message"></div>
-                                                    </div>
-                                                    <div class="js-email-register">
-                                                         <input type="email" name="customer-email-register"
-                                                              id="customer-email-register" placeholder="Email" autocomplete="on" required>
-                                                         <div class="error-message"></div>
-                                                    </div>
-                                                    <div class="js-password-register">
-                                                         <input type="password"
-                                                              name="customer-password-register" id="customer-password-register" autocomplete="off"
-                                                              placeholder="Tạo mật khẩu" minlength="8" required>
-                                                         <div class="error-message"></div>
-                                                    </div>
-                                                    <div class="js-confirm-pass-register">
-                                                         <input type="password"
-                                                              name="customer-confirm-password-register" id="customer-confirm-password-register"
-                                                              autocomplete="off" placeholder="Xác nhận mật khẩu" minlength="8" required>
-                                                         <div class="error-message"></div>
-                                                    </div>
-                                                    <button type="submit" id="register-btn" class="button">
-                                                         <p class="capitalize font-bold">đăng ký</p>
-                                                    </button>
-                                               </form>
-
-                                               <div class="font-size-14 margin-y-12 js-login">
-                                                    <span>Đã có tài khoản ?</span>
-                                                    <span>đăng nhập</span>
-                                               </div>
-                                          </div>
-                                     </div>
-
-                                     <div id="forgot-password" class="text-center">
-                                          <div class="font-size-20 uppercase font-bold">quên mật khẩu</div>
-                                          <div id="forgot-pass-layout">
-                                               <form action="" method="post">
-                                                    <div class="js-email-forgot">
-                                                         <input type="email" name="customer-email-forgot"
-                                                              id="customer-email-forgot" placeholder="Email"
-                                                              autocomplete="on" required>
-                                                         <div class="error-message"></div>
-                                                    </div>
-
-                                                    <p class="font-size-13 capitalize js-cancel">
-                                                         <span>hủy</span>
-                                                    </p>
-
-                                                    <button type="submit" id="send-reset-pass-btn"
-                                                         class="button">
-                                                         <p class="capitalize font-bold">gửi</p>
-                                                    </button>
-                                               </form>
-                                          </div>
-                                     </div>
-                                </div>
-                           </section>
-
                            <div id="user-detail" class="grid-col col-l-12 col-m-12 col-s-12 disable">
                                 <div class="account-container">
                                      <div class="flex align-center margin-bottom-16">
@@ -660,4 +777,8 @@
 
                           
                       </div>
-<?php include('gui/footer.php') ?>
+                      </div>
+        </section>
+        <?php include('gui/header_footer/new_blog.php') ?>
+                      
+        <?php include('gui/header_footer/footer.php') ?>
