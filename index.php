@@ -25,7 +25,7 @@
                                                alt="Thanh toán" />
                                           <div class="flex-direction-y padding-left-8">
                                                <h5 class="font-bold uppercase font-size-13">Thanh toán</h5>
-                                               <p class="font-size-13 font-light capitalize">khi nhận hàng</p>
+                                               <p class="font-size-13 font-light capitalize">Giao dịch nhanh</p>
                                           </div>
                                      </div>
 
@@ -319,8 +319,7 @@
                               </div>
                               </section>
 
-                           <!-- open word -->
-                            
+                           <!-- open word -->                            
                            <section id="open-world-container" class="container flex grid-col col-l-12 col-m-12 col-s-12 no-gutter">
                               <div class="category-tab">
                                    <div class="heading">
@@ -572,11 +571,6 @@
                                      </div>
                                 </div>
                            </section>
-                      </div>
-
-                      <!-- search -->
-                      <div id="search-content" class="grid-col col-l-12 col-m-12 col-s-12 disable">
-
                       </div>
 
                       <!-- order tracking, history order -->

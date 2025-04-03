@@ -445,7 +445,7 @@
   padding-inline: 1.75em;
   display: flex;
   justify-content: center;
-  align-items:center;
+  align-items: center;
 }
 
 #main-content .services-container .service-content:not(:last-child) {
@@ -553,10 +553,10 @@
   cursor: pointer;
   border-radius: 4px;
 }
- .action .buy-btn,
- .action .add-to-cart {
-     padding: 0.5em 1.25em;
-     background: var(--main-color);
+.action .buy-btn,
+.action .add-to-cart {
+  padding: 0.5em 1.25em;
+  background: var(--main-color);
 }
 .page-button:hover {
   background-color: var(--btn-hover);
@@ -699,10 +699,10 @@
     top left / cover no-repeat;
 }
 
-.category-tab .heading #search-game-label {
+.category-tab .heading #shop-game-label {
   border-radius: var(--higher-radius);
-  background: url("Images/Icons/Other_icons/search.jpg") top left / cover
-    no-repeat;
+  background: url("/Assets/Images/Icons/Other_icons/gamepad.png") top left /
+    cover no-repeat;
 }
 
 /* load more item */
@@ -957,4 +957,68 @@
 .footer-col-container .footer-image-item img {
   max-width: 100%;
   max-height: auto;
+}
+
+.pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 20px;
+}
+
+.pagination button {
+  background-color: #f57f7f;
+  color: white;
+  border: 1px solid #000000;
+  padding: 8px 12px;
+  margin: 0 5px;
+  cursor: pointer;
+  border-radius: 5px;
+  transition: all 0.3s ease;
+}
+
+.pagination button:hover {
+  background-color: #444;
+}
+
+.pagination .active {
+  background-color: var(--main-color);
+  color: white;
+  border: none;
+}
+
+.pagination button:disabled {
+  background-color: #555;
+  cursor: not-allowed;
+}
+
+.price-filter-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+.price-filter {
+  background-color: var(--main-color);
+  color: white;
+  border: none;
+  padding: 8px 15px;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  border-radius: 5px;
+  transition: background-color 0.3s, transform 0.2s;
+}
+
+.price-filter:hover {
+  background-color: var(--btn-hover);
+  transform: scale(1.05);
+}
+
+.price-filter.active {
+  background-color: var(--btn-hover);
+  border: 2px solid #fff;
+  transform: scale(1.1);
 }
