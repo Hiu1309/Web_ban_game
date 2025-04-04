@@ -15,7 +15,8 @@
     />
     <link rel="stylesheet" href="/Assets/CSS/index.css" />
     <link rel="stylesheet" href="/Assets/CSS/Responsive.css" />
-    <!-- <script type="module" src="../Javascript/Index.js"></script> -->
+    <script type="module" src="/Javascript/end_user/search_filter.js"></script>
+    <script src="/Javascript/end_user/pagination.js"></script>
     <title>Welcome to MT3H</title>
   </head>
 
@@ -221,183 +222,32 @@
 
                     <!-- Nav content -->
                     <nav class="nav-categories js-bg-white full-width">
-                      <div class="nav-item">
-                        <a
-                          href=""
-                          class="manga flex full-width"
-                          title="manga-container"
-                        >
-                          <img
-                            src="/Assets/Images/Icons/Other_icons/Manga.webp"
-                            alt="FREE TO PLAY"
-                            width="20em"
-                          />
-                          <p class="padding-left-8 font-size-14 font-bold">
-                            FREE TO PLAY
-                          </p>
-                        </a>
+                    <div class="nav-item">
+                          <a class="filter-btn flex full-width" data-type="AC001">
+                              <img src="/Assets/Images/Icons/Other_icons/hq720.jpg" alt="ACTION" width="20em" />
+                              <p class="padding-left-8 font-size-14 font-bold">ACTION</p>
+                          </a>
                       </div>
                       <div class="nav-item">
-                        <a
-                          href=""
-                          class="light-novel flex full-width"
-                          title="light-novel-container"
-                        >
-                          <img
-                            src="/Assets/Images/Icons/Other_icons/LN.webp"
-                            alt="ROLE-PLAYING"
-                            width="20em"
-                          />
-                          <p class="padding-left-8 font-size-14 font-bold">
-                            ROLE-PLAYING
-                          </p>
-                        </a>
+                          <a class="filter-btn flex full-width" data-type="RPG001">
+                              <img src="/Assets/Images/Icons/Other_icons/LN.webp" alt="ROLE-PLAYING" width="20em" />
+                              <p class="padding-left-8 font-size-14 font-bold">ROLE-PLAYING</p>
+                          </a>
                       </div>
                       <div class="nav-item">
-                        <a
-                          href=""
-                          class="light-novel flex full-width"
-                          title="light-novel-container"
-                        >
-                          <img
-                            src="/Assets/Images/Icons/Other_icons/Collage-Maker-15-Sep-2023-02-43-PM-9410.jpg"
-                            alt="OPEN WORLD"
-                            width="20em"
-                          />
-                          <p class="padding-left-8 font-size-14 font-bold">
-                            OPEN WORLD
-                          </p>
-                        </a>
-                      </div>
+                          <a class="filter-btn flex full-width" data-type="F2P001">
+                              <img src="/Assets/Images/Icons/Other_icons/Manga.webp" alt="FREE TO PLAY" width="20em" />
+                              <p class="padding-left-8 font-size-14 font-bold">FREE TO PLAY</p>
+                          </a>
+                      </div>                  
                       <div class="nav-item">
-                        <a
-                          href=""
-                          class="light-novel flex full-width"
-                          title="light-novel-container"
-                        >
-                          <img
-                            src="/Assets/Images/Icons/Other_icons/ExitLag-Best-Sports-Games-for-All-Platforms-in-2024.webp"
-                            alt="ALL SPORTS"
-                            width="20em"
-                          />
-                          <p class="padding-left-8 font-size-14 font-bold">
-                            ALL SPORTS
-                          </p>
-                        </a>
-                      </div>
-                      <div class="nav-item">
-                        <a
-                          href=""
-                          class="light-novel flex full-width"
-                          title="light-novel-container"
-                        >
-                          <img
-                            src="/Assets/Images/Icons/Other_icons/hq720.jpg"
-                            alt="ACTION"
-                            width="20em"
-                          />
-                          <p class="padding-left-8 font-size-14 font-bold">
-                            ACTION
-                          </p>
-                        </a>
-                      </div>
-                      <div class="nav-item">
-                        <a
-                          href=""
-                          class="light-novel flex full-width"
-                          title="light-novel-container"
-                        >
-                          <img
-                            src="/Assets/Images/Icons/Other_icons/survivalgames-1576274136.jpg"
-                            alt="SURVIVAL"
-                            width="20em"
-                          />
-                          <p class="padding-left-8 font-size-14 font-bold">
-                            SURVIVAL
-                          </p>
-                        </a>
-                      </div>
-                      <div class="nav-item">
-                        <a
-                          href=""
-                          class="light-novel flex full-width"
-                          title="light-novel-container"
-                        >
-                          <img
-                            src="/Assets/Images/Icons/Other_icons/images.jpg"
-                            alt="HORROR"
-                            width="20em"
-                          />
-                          <p class="padding-left-8 font-size-14 font-bold">
-                            HORROR
-                          </p>
-                        </a>
-                      </div>
-                      <div class="nav-item">
-                        <a
-                          href=""
-                          class="light-novel flex full-width"
-                          title="light-novel-container"
-                        >
-                          <img
-                            src="/Assets/Images/Icons/Other_icons/best-nintendo-switch-couch-co-op-games.webp"
-                            alt="CO-OPERATTIVE"
-                            width="20em"
-                          />
-                          <p class="padding-left-8 font-size-14 font-bold">
-                            CO-OPERATTIVE
-                          </p>
-                        </a>
-                      </div>
-                      <div class="nav-item">
-                        <a
-                          href=""
-                          class="light-novel flex full-width"
-                          title="light-novel-container"
-                        >
-                          <img
-                            src="/Assets/Images/Icons/Other_icons/simulation.webp"
-                            alt="SIMULATOR"
-                            width="20em"
-                          />
-                          <p class="padding-left-8 font-size-14 font-bold">
-                            SIMULATOR
-                          </p>
-                        </a>
-                      </div>
-                      <div class="nav-item">
-                        <a
-                          href=""
-                          class="light-novel flex full-width"
-                          title="light-novel-container"
-                        >
-                          <img
-                            src="/Assets/Images/Icons/Other_icons/fighting_martial_arts.webp"
-                            alt="light novel"
-                            width="20em"
-                          />
-                          <p class="padding-left-8 font-size-14 font-bold">
-                            FIGHTING
-                          </p>
-                        </a>
-                      </div>
-                      <div class="nav-item">
-                        <a
-                          href=""
-                          class="light-novel flex full-width"
-                          title="light-novel-container"
-                        >
-                          <img
-                            src="/Assets/Images/Icons/Other_icons/story_rich.webp"
-                            alt="light novel"
-                            width="20em"
-                          />
-                          <p class="padding-left-8 font-size-14 font-bold">
-                            STORY-RICH
-                          </p>
-                        </a>
-                      </div>
-                    </nav>
+                          <a class="filter-btn flex full-width" data-type="OW001">
+                              <img src="/Assets/Images/Icons/Other_icons/Collage-Maker-15-Sep-2023-02-43-PM-9410.jpg" alt="OPEN WORLD" width="20em" />
+                              <p class="padding-left-8 font-size-14 font-bold">OPEN WORLD</p>
+                          </a>
+                      </div>                      
+                  </nav>
+
                   </div>
                 </div>
 

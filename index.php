@@ -25,7 +25,7 @@
                                                alt="Thanh toán" />
                                           <div class="flex-direction-y padding-left-8">
                                                <h5 class="font-bold uppercase font-size-13">Thanh toán</h5>
-                                               <p class="font-size-13 font-light capitalize">khi nhận hàng</p>
+                                               <p class="font-size-13 font-light capitalize">Giao dịch nhanh</p>
                                           </div>
                                      </div>
 
@@ -118,7 +118,7 @@
                                    </div>
 
                                    <div class="flex justify-center align-center font-bold capitalize margin-bottom-16">
-                                        <a href="#" class="category-btn button">Xem thêm</a>
+                                        <a href="gui/shop.php?featured=true" class="category-btn button">Xem thêm</a>
                                    </div>
                               </div>
                               </section>
@@ -184,7 +184,7 @@
                                    </div>
 
                                    <div class="flex justify-center align-center font-bold capitalize margin-bottom-16">
-                                        <a href="#" class="category-btn button">Xem thêm</a>
+                                        <a href="gui/shop.php?type=AC001" class="category-btn button">Xem thêm</a>
                                    </div>
                               </div>
                               </section>
@@ -250,7 +250,7 @@
                                    </div>
 
                                    <div class="flex justify-center align-center font-bold capitalize margin-bottom-16">
-                                        <a href="#" class="category-btn button">Xem thêm</a>
+                                        <a href="gui/shop.php?type=RPG001" class="category-btn button">Xem thêm</a>
                                    </div>
                               </div>
                               </section>
@@ -314,13 +314,12 @@
                                    </div>
 
                                    <div class="flex justify-center align-center font-bold capitalize margin-bottom-16">
-                                        <a href="#" class="category-btn button">Xem thêm</a>
+                                        <a href="gui/shop.php?type=F2P001" class="category-btn button">Xem thêm</a>
                                    </div>
                               </div>
                               </section>
 
-                           <!-- open word -->
-                            
+                           <!-- open word -->                            
                            <section id="open-world-container" class="container flex grid-col col-l-12 col-m-12 col-s-12 no-gutter">
                               <div class="category-tab">
                                    <div class="heading">
@@ -382,7 +381,7 @@
                                    </div>
 
                                    <div class="flex justify-center align-center font-bold capitalize margin-bottom-16">
-                                        <a href="#" class="category-btn button">Xem thêm</a>
+                                        <a href="gui/shop.php?type=OW001" class="category-btn button">Xem thêm</a>
                                    </div>
                               </div>
                               </section>
@@ -572,11 +571,6 @@
                                      </div>
                                 </div>
                            </section>
-                      </div>
-
-                      <!-- search -->
-                      <div id="search-content" class="grid-col col-l-12 col-m-12 col-s-12 disable">
-
                       </div>
 
                       <!-- order tracking, history order -->
