@@ -15,7 +15,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
     let url = `fetch_products.php?page=${page}&query=${query}&type=${type}&minPrice=${minPrice}&maxPrice=${maxPrice}`;
 
-    // Nếu là "featured", không cần phân trang và lấy tối đa 15 sản phẩm
     if (isFeatured) {
       url = `fetch_products.php?featured=true&query=${query}&type=${type}&minPrice=${minPrice}&maxPrice=${maxPrice}`;
     }
@@ -24,10 +23,13 @@ document.addEventListener("DOMContentLoaded", function () {
       .then((response) => response.json())
       .then((data) => {
         renderProducts(data.products);
-        if (!isFeatured) {
-          renderPagination(data.totalPages, page); // Chỉ render phân trang nếu không phải "featured"
+        if (!isFeatured && data.totalPages) {
+          renderPagination(data.totalPages, page);
+        } else {
+          paginationContainer.innerHTML = ""; // Xóa nút phân trang nếu là featured
         }
       })
+
       .catch((error) => console.error("Lỗi tải dữ liệu:", error));
   }
 

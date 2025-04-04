@@ -222,31 +222,31 @@
 
                     <!-- Nav content -->
                     <nav class="nav-categories js-bg-white full-width">
-    <div class="nav-item">
-        <a class="filter-btn flex full-width" data-type="F2P001">
-            <img src="/Assets/Images/Icons/Other_icons/Manga.webp" alt="FREE TO PLAY" width="20em" />
-            <p class="padding-left-8 font-size-14 font-bold">FREE TO PLAY</p>
-        </a>
-    </div>
-    <div class="nav-item">
-        <a class="filter-btn flex full-width" data-type="RPG001">
-            <img src="/Assets/Images/Icons/Other_icons/LN.webp" alt="ROLE-PLAYING" width="20em" />
-            <p class="padding-left-8 font-size-14 font-bold">ROLE-PLAYING</p>
-        </a>
-    </div>
-    <div class="nav-item">
-        <a class="filter-btn flex full-width" data-type="OW001">
-            <img src="/Assets/Images/Icons/Other_icons/Collage-Maker-15-Sep-2023-02-43-PM-9410.jpg" alt="OPEN WORLD" width="20em" />
-            <p class="padding-left-8 font-size-14 font-bold">OPEN WORLD</p>
-        </a>
-    </div>
-    <div class="nav-item">
-        <a class="filter-btn flex full-width" data-type="AC001">
-            <img src="/Assets/Images/Icons/Other_icons/hq720.jpg" alt="ACTION" width="20em" />
-            <p class="padding-left-8 font-size-14 font-bold">ACTION</p>
-        </a>
-    </div>
-</nav>
+                    <div class="nav-item">
+                          <a class="filter-btn flex full-width" data-type="AC001">
+                              <img src="/Assets/Images/Icons/Other_icons/hq720.jpg" alt="ACTION" width="20em" />
+                              <p class="padding-left-8 font-size-14 font-bold">ACTION</p>
+                          </a>
+                      </div>
+                      <div class="nav-item">
+                          <a class="filter-btn flex full-width" data-type="RPG001">
+                              <img src="/Assets/Images/Icons/Other_icons/LN.webp" alt="ROLE-PLAYING" width="20em" />
+                              <p class="padding-left-8 font-size-14 font-bold">ROLE-PLAYING</p>
+                          </a>
+                      </div>
+                      <div class="nav-item">
+                          <a class="filter-btn flex full-width" data-type="F2P001">
+                              <img src="/Assets/Images/Icons/Other_icons/Manga.webp" alt="FREE TO PLAY" width="20em" />
+                              <p class="padding-left-8 font-size-14 font-bold">FREE TO PLAY</p>
+                          </a>
+                      </div>                  
+                      <div class="nav-item">
+                          <a class="filter-btn flex full-width" data-type="OW001">
+                              <img src="/Assets/Images/Icons/Other_icons/Collage-Maker-15-Sep-2023-02-43-PM-9410.jpg" alt="OPEN WORLD" width="20em" />
+                              <p class="padding-left-8 font-size-14 font-bold">OPEN WORLD</p>
+                          </a>
+                      </div>                      
+                  </nav>
 
                   </div>
                 </div>
