@@ -11,14 +11,22 @@ document.addEventListener("DOMContentLoaded", function () {
     const type = urlParams.get("type") || "";
     const minPrice = urlParams.get("minPrice") || "0";
     const maxPrice = urlParams.get("maxPrice") || "999999999";
+    const isFeatured = urlParams.get("featured") === "true"; // Kiểm tra tham số featured
 
-    fetch(
-      `fetch_products.php?page=${page}&query=${query}&type=${type}&minPrice=${minPrice}&maxPrice=${maxPrice}`
-    )
+    let url = `fetch_products.php?page=${page}&query=${query}&type=${type}&minPrice=${minPrice}&maxPrice=${maxPrice}`;
+
+    // Nếu là "featured", không cần phân trang và lấy tối đa 15 sản phẩm
+    if (isFeatured) {
+      url = `fetch_products.php?featured=true&query=${query}&type=${type}&minPrice=${minPrice}&maxPrice=${maxPrice}`;
+    }
+
+    fetch(url)
       .then((response) => response.json())
       .then((data) => {
         renderProducts(data.products);
-        renderPagination(data.totalPages, page);
+        if (!isFeatured) {
+          renderPagination(data.totalPages, page); // Chỉ render phân trang nếu không phải "featured"
+        }
       })
       .catch((error) => console.error("Lỗi tải dữ liệu:", error));
   }
@@ -32,47 +40,43 @@ document.addEventListener("DOMContentLoaded", function () {
 
     products.forEach((product) => {
       const productHtml = `
-                <div class="product-item grid-col col-l-2-4 col-m-3 col-s-6">
-                    <div class="block-product product-resize">
-                        <span class="product-image js-item">
-                            <img src="${product.ProductImg}" alt="${
-        product.ProductName
-      }">
-                        </span>
-                        <div class="sale-off font-bold capitalize ${
-                          product.Quantity > 0 ? "" : "active"
-                        }">Hết hàng</div>
-                        <div class="info-inner flex justify-center align-center line-height-1-6">
-                            <h4 class="font-light capitalize" title="${
-                              product.ProductName
-                            }">${product.ProductName}</h4>
-                            <div class="margin-y-4">
-                                <span class="price font-bold">${
-                                  product.Price > 0
-                                    ? new Intl.NumberFormat().format(
-                                        product.Price
-                                      ) + " đ"
-                                    : "Miễn phí"
-                                }</span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="action ${
-                      product.Quantity > 0 ? "" : "disable"
-                    }">
-                        <div class="buy-btn">
-                            <div title="Mua ngay" class="button">
-                                <i class="fa-solid fa-bag-shopping fa-lg" style="color: var(--primary-white);"></i>
-                            </div>
-                        </div>
-                        <div class="add-to-cart">
-                            <div title="Thêm vào giỏ hàng" class="button">
-                                <i class="fa-solid fa-basket-shopping fa-lg" style="color: var(--primary-white);"></i>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            `;
+        <div class="product-item grid-col col-l-2-4 col-m-3 col-s-6">
+          <div class="block-product product-resize">
+            <span class="product-image js-item">
+              <img src="${product.ProductImg}" alt="${product.ProductName}">
+            </span>
+            <div class="sale-off font-bold capitalize ${
+              product.Quantity > 0 ? "" : "active"
+            }">Hết hàng</div>
+            <div class="info-inner flex justify-center align-center line-height-1-6">
+              <h4 class="font-light capitalize" title="${
+                product.ProductName
+              }">${product.ProductName}</h4>
+              <div class="margin-y-4">
+                <span class="price font-bold">
+                  ${
+                    product.Price > 0
+                      ? new Intl.NumberFormat().format(product.Price) + " đ"
+                      : "Miễn phí"
+                  }
+                </span>
+              </div>
+            </div>
+          </div>
+          <div class="action ${product.Quantity > 0 ? "" : "disable"}">
+            <div class="buy-btn">
+              <div title="Mua ngay" class="button">
+                <i class="fa-solid fa-bag-shopping fa-lg" style="color: var(--primary-white);"></i>
+              </div>
+            </div>
+            <div class="add-to-cart">
+              <div title="Thêm vào giỏ hàng" class="button">
+                <i class="fa-solid fa-basket-shopping fa-lg" style="color: var(--primary-white);"></i>
+              </div>
+            </div>
+          </div>
+        </div>
+      `;
       resultsContainer.innerHTML += productHtml;
     });
   }
