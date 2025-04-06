@@ -12,10 +12,9 @@
      $last_name = trim($_POST['customer-last-name']);
      $email = trim($_POST['customer-email-register']);
      $password = trim($_POST['customer-password-register']);
-     $confirm_password = trim($_POST['customer-confirm-password-register']);
-
-     $username = explode("@", $email)[0]; // Tạo username từ email
+     $confirm_password = trim($_POST['customer-confirm-password-register']);  
      $fullname = $last_name . " " . $first_name;
+     $username = $fullname;
 
      // Kiểm tra xác nhận mật khẩu
      if ($password !== $confirm_password) {

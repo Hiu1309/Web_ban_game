@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -149,14 +148,12 @@
                     <p class="padding-left-8">Tài khoản</p>
                   </div>
 
-                  <div
-                    class="header-user-info flex justify-center align-center disable"
-                  >
+                  <div class="header-user-info flex justify-center align-center disable">
                     <i
-                      class="fa-brands fa-napster"
+                      class="fa-brands fa-napster fa-xl"
                       style="color: var(--main-color)"
                     ></i>
-                    <div class="user-name font-bold font-size-14">
+                    <div class="user-name padding-left-8 uppercase">
                       user-profile
                     </div>
                   </div>

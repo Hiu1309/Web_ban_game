@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Apr 05, 2025 at 05:18 PM
+-- Generation Time: Apr 07, 2025 at 12:28 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -29,9 +29,16 @@ SET time_zone = "+00:00";
 
 CREATE TABLE `account` (
   `Username` varchar(50) NOT NULL,
-  `Password` varchar(50) NOT NULL,
+  `Password` varchar(100) NOT NULL,
   `RoleID` varchar(10) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `account`
+--
+
+INSERT INTO `account` (`Username`, `Password`, `RoleID`) VALUES
+('ngo hieu', '$2y$10$o0VrYk5oop8/Ex7GZViY1.9I27r1aXWEgnVkdwVZE2Lrmg7kaOEdG', 'R4');
 
 -- --------------------------------------------------------
 
@@ -48,6 +55,13 @@ CREATE TABLE `customer` (
   `Phone` varchar(25) DEFAULT NULL,
   `TotalSpending` double DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `customer`
+--
+
+INSERT INTO `customer` (`CustomerID`, `Fullname`, `Username`, `Email`, `Address`, `Phone`, `TotalSpending`) VALUES
+('MT3H00001', 'ngo hieu', 'ngo hieu', 'hiungo13@gmail.com', NULL, NULL, NULL);
 
 -- --------------------------------------------------------
 
