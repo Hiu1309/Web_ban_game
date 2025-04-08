@@ -52,10 +52,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
   //Lọc theo thể loại
   filterButtons.forEach((button) => {
-    if (button.getAttribute("data-type") === currentType) {
-      button.classList.add("active");
-    }
-
     button.addEventListener("click", function (event) {
       event.preventDefault();
       const type = this.getAttribute("data-type");
