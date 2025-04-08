@@ -17,11 +17,6 @@
                                                               placeholder="Mật khẩu" autocomplete="current-password" required>
                                                          <div class="error-message"></div>
                                                     </div>
-
-                                                    <p class="font-size-13 capitalize js-forgot-password">
-                                                         <span>quên mật khẩu?</span>
-                                                    </p>
-
                                                     <button type="submit" id="login-btn" class="button">
                                                          <p class="capitalize font-bold">đăng nhập</p>
                                                     </button>

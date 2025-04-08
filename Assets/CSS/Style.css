@@ -555,7 +555,9 @@
 }
 .action .buy-btn,
 .action .add-to-cart {
-  padding: 0.5em 1.25em;
+  transform: translateY(-78px);
+  position: relative;
+  left: 35px;
   background: var(--main-color);
 }
 .page-button:hover {

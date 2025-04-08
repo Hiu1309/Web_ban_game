@@ -98,14 +98,9 @@
                                                        echo '    </div>';
                                                        echo '  </div>';
                                                        echo '  <div class="action ' . ($product['Quantity'] > 0 ? '' : 'disable') . '">';
-                                                       echo '    <div class="buy-btn">';
-                                                       echo '      <div title="Mua ngay" class="button">';
-                                                       echo '        <i class="fa-solid fa-bag-shopping fa-lg" style="color: var(--primary-white);"></i>';
-                                                       echo '      </div>';
-                                                       echo '    </div>';
                                                        echo '    <div class="add-to-cart">';
                                                        echo '      <div title="Thêm vào giỏ hàng" class="button">';
-                                                       echo '        <i class="fa-solid fa-basket-shopping fa-lg" style="color: var(--primary-white);"></i>';
+                                                       echo '        <i class="fa-solid fa-plus" style="color: var(--primary-white);"></i>';
                                                        echo '      </div>';
                                                        echo '    </div>';
                                                        echo '  </div>';
@@ -164,14 +159,10 @@
                                                   echo '    </div>';
                                                   echo '  </div>';
                                                   echo '  <div class="action ' . ($product['Quantity'] > 0 ? '' : 'disable') . '">';
-                                                  echo '    <div class="buy-btn">';
-                                                  echo '      <div title="Mua ngay" class="button">';
-                                                  echo '        <i class="fa-solid fa-bag-shopping fa-lg" style="color: var(--primary-white);"></i>';
-                                                  echo '      </div>';
-                                                  echo '    </div>';
+                                                 
                                                   echo '    <div class="add-to-cart">';
                                                   echo '      <div title="Thêm vào giỏ hàng" class="button">';
-                                                  echo '        <i class="fa-solid fa-basket-shopping fa-lg" style="color: var(--primary-white);"></i>';
+                                                  echo '        <i class="fa-solid fa-plus" style="color: var(--primary-white);"></i>';
                                                   echo '      </div>';
                                                   echo '    </div>';
                                                   echo '  </div>';
@@ -230,14 +221,10 @@
                                                   echo '    </div>';
                                                   echo '  </div>';
                                                   echo '  <div class="action ' . ($product['Quantity'] > 0 ? '' : 'disable') . '">';
-                                                  echo '    <div class="buy-btn">';
-                                                  echo '      <div title="Mua ngay" class="button">';
-                                                  echo '        <i class="fa-solid fa-bag-shopping fa-lg" style="color: var(--primary-white);"></i>';
-                                                  echo '      </div>';
-                                                  echo '    </div>';
+                                             
                                                   echo '    <div class="add-to-cart">';
                                                   echo '      <div title="Thêm vào giỏ hàng" class="button">';
-                                                  echo '        <i class="fa-solid fa-basket-shopping fa-lg" style="color: var(--primary-white);"></i>';
+                                                  echo '        <i class="fa-solid fa-plus" style="color: var(--primary-white);"></i>';
                                                   echo '      </div>';
                                                   echo '    </div>';
                                                   echo '  </div>';
@@ -294,14 +281,10 @@
                                                   echo '    </div>';
                                                   echo '  </div>';
                                                   echo '  <div class="action ' . ($product['Quantity'] > 0 ? '' : 'disable') . '">';
-                                                  echo '    <div class="buy-btn">';
-                                                  echo '      <div title="chơi ngay" class="button">';
-                                                  echo '        <i class="fa-solid fa-play-circle fa-lg" style="color: var(--primary-white);"></i>';
-                                                  echo '      </div>';
-                                                  echo '    </div>';
+                                             
                                                   echo '    <div class="add-to-cart">';
-                                                  echo '      <div title="thêm vào thư viện" class="button">';
-                                                  echo '        <i class="fa-solid fa-plus-square fa-lg" style="color: var(--primary-white);"></i>';
+                                                  echo '      <div title="thêm vào giỏ hàng" class="button">';
+                                                  echo '        <i class="fa-solid fa-plus" style="color: var(--primary-white);"></i>';
                                                   echo '      </div>';
                                                   echo '    </div>';
                                                   echo '  </div>';
@@ -358,14 +341,10 @@
                                                   echo '    </div>';
                                                   echo '  </div>';
                                                   echo '  <div class="action ' . ($product['Quantity'] > 0 ? '' : 'disable') . '">';
-                                                  echo '    <div class="buy-btn">';
-                                                  echo '      <div title="Mua ngay" class="button">';
-                                                  echo '        <i class="fa-solid fa-bag-shopping fa-lg" style="color: var(--primary-white);"></i>';
-                                                  echo '      </div>';
-                                                  echo '    </div>';
+                                                 
                                                   echo '    <div class="add-to-cart">';
                                                   echo '      <div title="Thêm vào giỏ hàng" class="button">';
-                                                  echo '        <i class="fa-solid fa-basket-shopping fa-lg" style="color: var(--primary-white);"></i>';
+                                                  echo '        <i class="fa-solid fa-plus" style="color: var(--primary-white);"></i>';
                                                   echo '      </div>';
                                                   echo '    </div>';
                                                   echo '  </div>';
@@ -523,8 +502,7 @@
                                                     </div>
                                                     <div
                                                          class="grid-col col-l-8 col-m-6 col-s-12 no-gutter flex justify-space-between margin-bottom-12">
-                                                         <div class="buy-btn button margin-bottom-8">mua ngay
-                                                         </div>
+                                                       
                                                          <div class="add-to-cart button margin-bottom-8">thêm
                                                               vào giỏ hàng</div>
                                                     </div>
