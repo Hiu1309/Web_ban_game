@@ -553,11 +553,13 @@
   cursor: pointer;
   border-radius: 4px;
 }
+
 .action .buy-btn,
 .action .add-to-cart {
-  transform: translateY(-78px);
-  position: relative;
-  left: 35px;
+  position: absolute;
+  bottom: 27px; /* hoặc bất kỳ khoảng cách nào từ dưới lên */
+  left: 30%;
+  
   background: var(--main-color);
 }
 .page-button:hover {
