@@ -1,20 +1,55 @@
 <?php
 session_start();
+require_once "../database/connectDB.php";
+$conn = connectDB::getConnection();
 
-if (isset($_POST['product_id'])) {
-    $productId = $_POST['product_id'];
-
-    if (!isset($_SESSION['cart'])) {
-        $_SESSION['cart'] = [];
-    }
-
-    if (!isset($_SESSION['cart'][$productId])) {
-        $_SESSION['cart'][$productId] = 1;
-    } else {
-        $_SESSION['cart'][$productId]++;
-    }
-
-    echo array_sum($_SESSION['cart']); // Tổng số sản phẩm để cập nhật
-} else {
-    echo '0';
+// Kiểm tra người dùng đã đăng nhập hay chưa
+if (!isset($_SESSION['CustomerID'])) {
+    http_response_code(401); // Unauthorized
+    echo "Bạn cần đăng nhập để thêm sản phẩm vào giỏ hàng.";
+    exit;
 }
+
+$customerID = $_SESSION['CustomerID'];
+$productID = $_POST['productID'];
+
+// Kiểm tra xem giỏ hàng của người dùng đã tồn tại chưa
+$sqlCart = "SELECT CartID FROM cart WHERE CustomerID = ?";
+$stmtCart = $conn->prepare($sqlCart);
+$stmtCart->bind_param("s", $customerID);
+$stmtCart->execute();
+$result = $stmtCart->get_result();
+
+if ($result->num_rows > 0) {
+    $row = $result->fetch_assoc();
+    $cartID = $row['CartID'];
+} else {
+    $cartID = uniqid("CART");
+    $sqlCreateCart = "INSERT INTO cart (CartID, CustomerID) VALUES (?, ?)";
+    $stmtCreate = $conn->prepare($sqlCreateCart);
+    $stmtCreate->bind_param("ss", $cartID, $customerID);
+    $stmtCreate->execute();
+}
+
+// Kiểm tra nếu sản phẩm đã tồn tại trong giỏ thì cập nhật số lượng
+$sqlCheckItem = "SELECT * FROM cart_item WHERE CartID = ? AND ProductID = ?";
+$stmtCheck = $conn->prepare($sqlCheckItem);
+$stmtCheck->bind_param("ss", $cartID, $productID);
+$stmtCheck->execute();
+$resultItem = $stmtCheck->get_result();
+
+if ($resultItem->num_rows > 0) {
+    $sqlUpdate = "UPDATE cart_item SET Quantity = Quantity + 1 WHERE CartID = ? AND ProductID = ?";
+    $stmtUpdate = $conn->prepare($sqlUpdate);
+    $stmtUpdate->bind_param("ss", $cartID, $productID);
+    $stmtUpdate->execute();
+} else {
+    $cartItemID = uniqid("CI");
+    $sqlInsert = "INSERT INTO cart_item (CartItemID, CartID, ProductID, Quantity) VALUES (?, ?, ?, 1)";
+    $stmtInsert = $conn->prepare($sqlInsert);
+    $stmtInsert->bind_param("sss", $cartItemID, $cartID, $productID);
+    $stmtInsert->execute();
+}
+
+echo "Đã thêm vào giỏ hàng.";
+?>

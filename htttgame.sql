@@ -2,10 +2,10 @@
 -- version 5.2.1
 -- https://www.phpmyadmin.net/
 --
--- Máy chủ: 127.0.0.1
--- Thời gian đã tạo: Th4 10, 2025 lúc 11:18 AM
--- Phiên bản máy phục vụ: 10.4.32-MariaDB
--- Phiên bản PHP: 8.1.25
+-- Host: 127.0.0.1
+-- Generation Time: Apr 10, 2025 at 06:52 PM
+-- Server version: 10.4.32-MariaDB
+-- PHP Version: 8.1.25
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -18,60 +18,50 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Cơ sở dữ liệu: `htttgame`
+-- Database: `htttgame`
 --
 
 -- --------------------------------------------------------
 
 --
--- Cấu trúc bảng cho bảng `account`
+-- Table structure for table `account`
 --
 
 CREATE TABLE `account` (
-  `account_id` int(200) NOT NULL,
   `Username` varchar(50) NOT NULL,
-  `Password` varchar(100) NOT NULL,
+  `Password` varchar(50) NOT NULL,
   `RoleID` varchar(10) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
---
--- Dumping data for table `account`
---
-
-INSERT INTO `account` (`Username`, `Password`, `RoleID`) VALUES
-('ngo hieu', '$2y$10$o0VrYk5oop8/Ex7GZViY1.9I27r1aXWEgnVkdwVZE2Lrmg7kaOEdG', 'R4');
-
 -- --------------------------------------------------------
 
 --
--- Cấu trúc bảng cho bảng `cart`
+-- Table structure for table `cart`
 --
 
 CREATE TABLE `cart` (
-  `CartID` int(11) NOT NULL,
-  `CustomerID` varchar(10) DEFAULT NULL,
-  `CreatedAt` datetime DEFAULT current_timestamp(),
-  `Status` enum('Pending','Ordered','Cancelled') DEFAULT 'Pending'
+  `CartID` varchar(10) NOT NULL,
+  `CustomerID` varchar(10) NOT NULL,
+  `CreatedDate` datetime DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
 --
--- Cấu trúc bảng cho bảng `cart_item`
+-- Table structure for table `cart_item`
 --
 
 CREATE TABLE `cart_item` (
-  `CartItemID` int(11) NOT NULL,
-  `CartID` int(11) DEFAULT NULL,
-  `ProductID` varchar(10) DEFAULT NULL,
-  `Quantity` int(11) NOT NULL CHECK (`Quantity` > 0),
-  `PriceAtTime` decimal(10,2) DEFAULT NULL
+  `CartItemID` varchar(10) NOT NULL,
+  `CartID` varchar(10) NOT NULL,
+  `ProductID` varchar(10) NOT NULL,
+  `Quantity` int(11) DEFAULT 1
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
 --
--- Cấu trúc bảng cho bảng `customer`
+-- Table structure for table `customer`
 --
 
 CREATE TABLE `customer` (
@@ -84,18 +74,10 @@ CREATE TABLE `customer` (
   `TotalSpending` double DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
---
--- Đang đổ dữ liệu cho bảng `customer`
---
-
-INSERT INTO `customer` (`CustomerID`, `Fullname`, `Username`, `Email`, `Address`, `Phone`, `TotalSpending`) VALUES
-('MT3H00001', 'ngo hieu', 'ngo hieu', 'hiungo13@gmail.com', NULL, NULL, NULL),
-('MT3H00002', 'Hiếu Lê', 'Hiếu Lê', 'h@gmail.com', NULL, NULL, NULL);
-
 -- --------------------------------------------------------
 
 --
--- Cấu trúc bảng cho bảng `detail_import_invoice`
+-- Table structure for table `detail_import_invoice`
 --
 
 CREATE TABLE `detail_import_invoice` (
@@ -110,7 +92,7 @@ CREATE TABLE `detail_import_invoice` (
 -- --------------------------------------------------------
 
 --
--- Cấu trúc bảng cho bảng `detail_sales_invoice`
+-- Table structure for table `detail_sales_invoice`
 --
 
 CREATE TABLE `detail_sales_invoice` (
@@ -125,7 +107,7 @@ CREATE TABLE `detail_sales_invoice` (
 -- --------------------------------------------------------
 
 --
--- Cấu trúc bảng cho bảng `employee`
+-- Table structure for table `employee`
 --
 
 CREATE TABLE `employee` (
@@ -144,7 +126,7 @@ CREATE TABLE `employee` (
 -- --------------------------------------------------------
 
 --
--- Cấu trúc bảng cho bảng `genre`
+-- Table structure for table `genre`
 --
 
 CREATE TABLE `genre` (
@@ -155,7 +137,7 @@ CREATE TABLE `genre` (
 -- --------------------------------------------------------
 
 --
--- Cấu trúc bảng cho bảng `genre_detail`
+-- Table structure for table `genre_detail`
 --
 
 CREATE TABLE `genre_detail` (
@@ -166,7 +148,7 @@ CREATE TABLE `genre_detail` (
 -- --------------------------------------------------------
 
 --
--- Cấu trúc bảng cho bảng `import_invoice`
+-- Table structure for table `import_invoice`
 --
 
 CREATE TABLE `import_invoice` (
@@ -180,7 +162,7 @@ CREATE TABLE `import_invoice` (
 -- --------------------------------------------------------
 
 --
--- Cấu trúc bảng cho bảng `permissions`
+-- Table structure for table `permissions`
 --
 
 CREATE TABLE `permissions` (
@@ -191,7 +173,7 @@ CREATE TABLE `permissions` (
 -- --------------------------------------------------------
 
 --
--- Cấu trúc bảng cho bảng `product`
+-- Table structure for table `product`
 --
 
 CREATE TABLE `product` (
@@ -208,7 +190,7 @@ CREATE TABLE `product` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Đang đổ dữ liệu cho bảng `product`
+-- Dumping data for table `product`
 --
 
 INSERT INTO `product` (`ProductID`, `ProductName`, `ProductImg`, `Author`, `Publisher`, `Quantity`, `Price`, `Description`, `SupplierID`, `Status`) VALUES
@@ -256,7 +238,7 @@ INSERT INTO `product` (`ProductID`, `ProductName`, `ProductImg`, `Author`, `Publ
 -- --------------------------------------------------------
 
 --
--- Cấu trúc bảng cho bảng `role`
+-- Table structure for table `role`
 --
 
 CREATE TABLE `role` (
@@ -268,7 +250,7 @@ CREATE TABLE `role` (
 -- --------------------------------------------------------
 
 --
--- Cấu trúc bảng cho bảng `rolepermissions`
+-- Table structure for table `rolepermissions`
 --
 
 CREATE TABLE `rolepermissions` (
@@ -280,7 +262,7 @@ CREATE TABLE `rolepermissions` (
 -- --------------------------------------------------------
 
 --
--- Cấu trúc bảng cho bảng `sales_invoice`
+-- Table structure for table `sales_invoice`
 --
 
 CREATE TABLE `sales_invoice` (
@@ -294,7 +276,7 @@ CREATE TABLE `sales_invoice` (
 -- --------------------------------------------------------
 
 --
--- Cấu trúc bảng cho bảng `supplier`
+-- Table structure for table `supplier`
 --
 
 CREATE TABLE `supplier` (
@@ -306,7 +288,7 @@ CREATE TABLE `supplier` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Đang đổ dữ liệu cho bảng `supplier`
+-- Dumping data for table `supplier`
 --
 
 INSERT INTO `supplier` (`SupplierID`, `SupplierName`, `Phone`, `Email`, `Address`) VALUES
@@ -319,7 +301,7 @@ INSERT INTO `supplier` (`SupplierID`, `SupplierName`, `Phone`, `Email`, `Address
 -- --------------------------------------------------------
 
 --
--- Cấu trúc bảng cho bảng `type_product`
+-- Table structure for table `type_product`
 --
 
 CREATE TABLE `type_product` (
@@ -328,7 +310,7 @@ CREATE TABLE `type_product` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Đang đổ dữ liệu cho bảng `type_product`
+-- Dumping data for table `type_product`
 --
 
 INSERT INTO `type_product` (`TypeID`, `ProductID`) VALUES
@@ -374,27 +356,24 @@ INSERT INTO `type_product` (`TypeID`, `ProductID`) VALUES
 ('RPG001', 'GAME040');
 
 --
--- Chỉ mục cho các bảng đã đổ
+-- Indexes for dumped tables
 --
 
 --
--- Chỉ mục cho bảng `account`
+-- Indexes for table `account`
 --
 ALTER TABLE `account`
-  ADD PRIMARY KEY (`account_id`),
-  ADD UNIQUE KEY `Username` (`Username`),
-  ADD UNIQUE KEY `Username_2` (`Username`),
-  ADD UNIQUE KEY `Username_3` (`Username`);
+  ADD PRIMARY KEY (`Username`);
 
 --
--- Chỉ mục cho bảng `cart`
+-- Indexes for table `cart`
 --
 ALTER TABLE `cart`
   ADD PRIMARY KEY (`CartID`),
   ADD KEY `CustomerID` (`CustomerID`);
 
 --
--- Chỉ mục cho bảng `cart_item`
+-- Indexes for table `cart_item`
 --
 ALTER TABLE `cart_item`
   ADD PRIMARY KEY (`CartItemID`),
@@ -402,14 +381,14 @@ ALTER TABLE `cart_item`
   ADD KEY `ProductID` (`ProductID`);
 
 --
--- Chỉ mục cho bảng `customer`
+-- Indexes for table `customer`
 --
 ALTER TABLE `customer`
   ADD PRIMARY KEY (`CustomerID`),
   ADD UNIQUE KEY `Username` (`Username`);
 
 --
--- Chỉ mục cho bảng `detail_import_invoice`
+-- Indexes for table `detail_import_invoice`
 --
 ALTER TABLE `detail_import_invoice`
   ADD PRIMARY KEY (`DetailImportID`),
@@ -417,7 +396,7 @@ ALTER TABLE `detail_import_invoice`
   ADD KEY `ProductID` (`ProductID`);
 
 --
--- Chỉ mục cho bảng `detail_sales_invoice`
+-- Indexes for table `detail_sales_invoice`
 --
 ALTER TABLE `detail_sales_invoice`
   ADD PRIMARY KEY (`DetailSalesID`),
@@ -425,27 +404,27 @@ ALTER TABLE `detail_sales_invoice`
   ADD KEY `ProductID` (`ProductID`);
 
 --
--- Chỉ mục cho bảng `employee`
+-- Indexes for table `employee`
 --
 ALTER TABLE `employee`
   ADD PRIMARY KEY (`EmployeeID`),
   ADD UNIQUE KEY `Username` (`Username`);
 
 --
--- Chỉ mục cho bảng `genre`
+-- Indexes for table `genre`
 --
 ALTER TABLE `genre`
   ADD PRIMARY KEY (`GenreID`);
 
 --
--- Chỉ mục cho bảng `genre_detail`
+-- Indexes for table `genre_detail`
 --
 ALTER TABLE `genre_detail`
   ADD PRIMARY KEY (`ProductID`,`GenreID`),
   ADD KEY `GenreID` (`GenreID`);
 
 --
--- Chỉ mục cho bảng `import_invoice`
+-- Indexes for table `import_invoice`
 --
 ALTER TABLE `import_invoice`
   ADD PRIMARY KEY (`ImportID`),
@@ -453,33 +432,33 @@ ALTER TABLE `import_invoice`
   ADD KEY `SupplierID` (`SupplierID`);
 
 --
--- Chỉ mục cho bảng `permissions`
+-- Indexes for table `permissions`
 --
 ALTER TABLE `permissions`
   ADD PRIMARY KEY (`Permission_id`);
 
 --
--- Chỉ mục cho bảng `product`
+-- Indexes for table `product`
 --
 ALTER TABLE `product`
   ADD PRIMARY KEY (`ProductID`),
   ADD KEY `SupplierID` (`SupplierID`);
 
 --
--- Chỉ mục cho bảng `role`
+-- Indexes for table `role`
 --
 ALTER TABLE `role`
   ADD PRIMARY KEY (`RoleID`);
 
 --
--- Chỉ mục cho bảng `rolepermissions`
+-- Indexes for table `rolepermissions`
 --
 ALTER TABLE `rolepermissions`
   ADD PRIMARY KEY (`RoleID`,`Permission_id`),
   ADD KEY `Permission_id` (`Permission_id`);
 
 --
--- Chỉ mục cho bảng `sales_invoice`
+-- Indexes for table `sales_invoice`
 --
 ALTER TABLE `sales_invoice`
   ADD PRIMARY KEY (`SalesID`),
@@ -487,119 +466,97 @@ ALTER TABLE `sales_invoice`
   ADD KEY `CustomerID` (`CustomerID`);
 
 --
--- Chỉ mục cho bảng `supplier`
+-- Indexes for table `supplier`
 --
 ALTER TABLE `supplier`
   ADD PRIMARY KEY (`SupplierID`);
 
 --
--- Chỉ mục cho bảng `type_product`
+-- Indexes for table `type_product`
 --
 ALTER TABLE `type_product`
   ADD PRIMARY KEY (`TypeID`,`ProductID`),
   ADD KEY `ProductID` (`ProductID`);
 
 --
--- AUTO_INCREMENT cho các bảng đã đổ
+-- Constraints for dumped tables
 --
 
 --
--- AUTO_INCREMENT cho bảng `account`
---
-ALTER TABLE `account`
-  MODIFY `account_id` int(200) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
-
---
--- AUTO_INCREMENT cho bảng `cart`
+-- Constraints for table `cart`
 --
 ALTER TABLE `cart`
-  MODIFY `CartID` int(11) NOT NULL AUTO_INCREMENT;
+  ADD CONSTRAINT `cart_ibfk_1` FOREIGN KEY (`CustomerID`) REFERENCES `customer` (`CustomerID`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
--- AUTO_INCREMENT cho bảng `cart_item`
+-- Constraints for table `cart_item`
 --
 ALTER TABLE `cart_item`
-  MODIFY `CartItemID` int(11) NOT NULL AUTO_INCREMENT;
+  ADD CONSTRAINT `cart_item_ibfk_1` FOREIGN KEY (`CartID`) REFERENCES `cart` (`CartID`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `cart_item_ibfk_2` FOREIGN KEY (`ProductID`) REFERENCES `product` (`ProductID`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
--- Các ràng buộc cho các bảng đã đổ
---
-
---
--- Các ràng buộc cho bảng `cart`
---
-ALTER TABLE `cart`
-  ADD CONSTRAINT `cart_ibfk_1` FOREIGN KEY (`CustomerID`) REFERENCES `customer` (`CustomerID`);
-
---
--- Các ràng buộc cho bảng `cart_item`
---
-ALTER TABLE `cart_item`
-  ADD CONSTRAINT `cart_item_ibfk_1` FOREIGN KEY (`CartID`) REFERENCES `cart` (`CartID`) ON DELETE CASCADE,
-  ADD CONSTRAINT `cart_item_ibfk_2` FOREIGN KEY (`ProductID`) REFERENCES `product` (`ProductID`);
-
---
--- Các ràng buộc cho bảng `customer`
+-- Constraints for table `customer`
 --
 ALTER TABLE `customer`
   ADD CONSTRAINT `customer_ibfk_1` FOREIGN KEY (`Username`) REFERENCES `account` (`Username`);
 
 --
--- Các ràng buộc cho bảng `detail_import_invoice`
+-- Constraints for table `detail_import_invoice`
 --
 ALTER TABLE `detail_import_invoice`
   ADD CONSTRAINT `detail_import_invoice_ibfk_1` FOREIGN KEY (`ImportID`) REFERENCES `import_invoice` (`ImportID`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `detail_import_invoice_ibfk_2` FOREIGN KEY (`ProductID`) REFERENCES `product` (`ProductID`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
--- Các ràng buộc cho bảng `detail_sales_invoice`
+-- Constraints for table `detail_sales_invoice`
 --
 ALTER TABLE `detail_sales_invoice`
   ADD CONSTRAINT `detail_sales_invoice_ibfk_1` FOREIGN KEY (`SalesID`) REFERENCES `sales_invoice` (`SalesID`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `detail_sales_invoice_ibfk_2` FOREIGN KEY (`ProductID`) REFERENCES `product` (`ProductID`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
--- Các ràng buộc cho bảng `employee`
+-- Constraints for table `employee`
 --
 ALTER TABLE `employee`
   ADD CONSTRAINT `employee_ibfk_1` FOREIGN KEY (`Username`) REFERENCES `account` (`Username`);
 
 --
--- Các ràng buộc cho bảng `genre_detail`
+-- Constraints for table `genre_detail`
 --
 ALTER TABLE `genre_detail`
   ADD CONSTRAINT `genre_detail_ibfk_1` FOREIGN KEY (`ProductID`) REFERENCES `product` (`ProductID`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `genre_detail_ibfk_2` FOREIGN KEY (`GenreID`) REFERENCES `genre` (`GenreID`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
--- Các ràng buộc cho bảng `import_invoice`
+-- Constraints for table `import_invoice`
 --
 ALTER TABLE `import_invoice`
   ADD CONSTRAINT `import_invoice_ibfk_1` FOREIGN KEY (`EmployeeID`) REFERENCES `employee` (`EmployeeID`),
   ADD CONSTRAINT `import_invoice_ibfk_2` FOREIGN KEY (`SupplierID`) REFERENCES `supplier` (`SupplierID`);
 
 --
--- Các ràng buộc cho bảng `product`
+-- Constraints for table `product`
 --
 ALTER TABLE `product`
   ADD CONSTRAINT `product_ibfk_1` FOREIGN KEY (`SupplierID`) REFERENCES `supplier` (`SupplierID`);
 
 --
--- Các ràng buộc cho bảng `rolepermissions`
+-- Constraints for table `rolepermissions`
 --
 ALTER TABLE `rolepermissions`
   ADD CONSTRAINT `rolepermissions_ibfk_1` FOREIGN KEY (`RoleID`) REFERENCES `role` (`RoleID`),
   ADD CONSTRAINT `rolepermissions_ibfk_2` FOREIGN KEY (`Permission_id`) REFERENCES `permissions` (`Permission_id`);
 
 --
--- Các ràng buộc cho bảng `sales_invoice`
+-- Constraints for table `sales_invoice`
 --
 ALTER TABLE `sales_invoice`
   ADD CONSTRAINT `sales_invoice_ibfk_1` FOREIGN KEY (`EmployeeID`) REFERENCES `employee` (`EmployeeID`),
   ADD CONSTRAINT `sales_invoice_ibfk_2` FOREIGN KEY (`CustomerID`) REFERENCES `customer` (`CustomerID`);
 
 --
--- Các ràng buộc cho bảng `type_product`
+-- Constraints for table `type_product`
 --
 ALTER TABLE `type_product`
   ADD CONSTRAINT `type_product_ibfk_1` FOREIGN KEY (`ProductID`) REFERENCES `product` (`ProductID`);
