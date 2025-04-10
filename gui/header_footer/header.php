@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -16,6 +15,7 @@
     <link rel="stylesheet" href="/Assets/CSS/index.css" />
     <link rel="stylesheet" href="/Assets/CSS/Responsive.css" />
     <script type="module" src="/Javascript/end_user/search_filter.js"></script>
+    <script type="module" src="/Javascript/end_user/account.js"></script>
     <script src="/Javascript/end_user/pagination.js"></script>
     <title>Welcome to MT3H</title>
   </head>
@@ -148,14 +148,12 @@
                     <p class="padding-left-8">Tài khoản</p>
                   </div>
 
-                  <div
-                    class="header-user-info flex justify-center align-center disable"
-                  >
+                  <div class="header-user-info flex justify-center align-center disable">
                     <i
-                      class="fa-brands fa-napster"
+                      class="fa-brands fa-napster fa-xl"
                       style="color: var(--main-color)"
                     ></i>
-                    <div class="user-name font-bold font-size-14">
+                    <div class="user-name padding-left-8 uppercase">
                       user-profile
                     </div>
                   </div>

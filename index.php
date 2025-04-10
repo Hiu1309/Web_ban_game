@@ -8,7 +8,7 @@
                                      <div class="homepage grid-col col-l-12 col-m-12 col-s-12 no-gutter">
                                           <a data-panel="{&quot;focusable&quot;:false}" href="" class="promo_link" style="display: block;">
                                           <video loop muted autoplay playsinline preload="none'" id="home_video_desktop" alt="Feature red Promotion" class="fullscreen-bg__video">
-                                               <source src="/Assets/Web-Games-Store/Assets/Videos/BackGrounds/webm_page_bg_english.webm/BackGrounds/webm_page_bg_english.webm" type="video/webm">
+                                   
                                                <source src="/Assets/Videos/BackGrounds/webm_page_bg_english.webm" type="video/mp4">
 
                                           </video>

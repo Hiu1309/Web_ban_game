@@ -34,6 +34,13 @@ CREATE TABLE `account` (
   `RoleID` varchar(10) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Dumping data for table `account`
+--
+
+INSERT INTO `account` (`Username`, `Password`, `RoleID`) VALUES
+('ngo hieu', '$2y$10$o0VrYk5oop8/Ex7GZViY1.9I27r1aXWEgnVkdwVZE2Lrmg7kaOEdG', 'R4');
+
 -- --------------------------------------------------------
 
 --
