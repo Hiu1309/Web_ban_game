@@ -15,7 +15,7 @@
      $conn = connectDB::getConnection();
 
      // Kiểm tra email có tồn tại không
-     $sql = "SELECT a.Username, a.Password, a.RoleID, c.Fullname
+     $sql = "SELECT a.Username, a.Password, a.RoleID, c.Fullname, c.CustomerID
                FROM account a
                JOIN customer c ON a.Username = c.Username
                WHERE c.Email = ?";
@@ -31,7 +31,62 @@
                $_SESSION["username"] = $account["Username"];
                $_SESSION["fullname"] = $account["Fullname"];
                $_SESSION["role"] = $account["RoleID"];
+               $_SESSION['CustomerID'] = $account['CustomerID'];
+               
+            if (isset($_SESSION["cart"]) && !empty($_SESSION["cart"])) {
+               $customerID = $_SESSION["CustomerID"];
 
+               // Kiểm tra CartID đã tồn tại hay chưa
+               $sqlCart = "SELECT CartID FROM cart WHERE CustomerID = ?";
+               $stmtCart = $conn->prepare($sqlCart);
+               $stmtCart->bind_param("s", $customerID);
+               $stmtCart->execute();
+               $resultCart = $stmtCart->get_result();
+
+               if ($resultCart->num_rows > 0) {
+                   $cartRow = $resultCart->fetch_assoc();
+                   $cartID = $cartRow["CartID"];
+               } else {
+                   // Tạo mới cart
+                   $cartID = uniqid("CART");
+                   $sqlCreateCart = "INSERT INTO cart (CartID, CustomerID) VALUES (?, ?)";
+                   $stmtCreate = $conn->prepare($sqlCreateCart);
+                   $stmtCreate->bind_param("ss", $cartID, $customerID);
+                   $stmtCreate->execute();
+               }
+
+               // Thêm từng sản phẩm từ session cart vào CSDL
+               foreach ($_SESSION["cart"] as $item) {
+                   $productID = $item["productID"];
+                   $quantity = $item["quantity"];
+
+                   // Kiểm tra nếu sản phẩm đã tồn tại trong giỏ
+                   $sqlCheck = "SELECT * FROM cart_item WHERE CartID = ? AND ProductID = ?";
+                   $stmtCheck = $conn->prepare($sqlCheck);
+                   $stmtCheck->bind_param("ss", $cartID, $productID);
+                   $stmtCheck->execute();
+                   $resultItem = $stmtCheck->get_result();
+
+                   if ($resultItem->num_rows > 0) {
+                       // Nếu đã có thì cập nhật số lượng
+                       $sqlUpdate = "UPDATE cart_item SET Quantity = Quantity + ? WHERE CartID = ? AND ProductID = ?";
+                       $stmtUpdate = $conn->prepare($sqlUpdate);
+                       $stmtUpdate->bind_param("iss", $quantity, $cartID, $productID);
+                       $stmtUpdate->execute();
+                   } else {
+                       // Nếu chưa có thì thêm mới
+                       $cartItemID = uniqid("CI");
+                       $sqlInsert = "INSERT INTO cart_item (CartItemID, CartID, ProductID, Quantity) VALUES (?, ?, ?, ?)";
+                       $stmtInsert = $conn->prepare($sqlInsert);
+                       $stmtInsert->bind_param("sssi", $cartItemID, $cartID, $productID, $quantity);
+                       $stmtInsert->execute();
+                   }
+               }
+
+               // Xóa giỏ hàng session sau khi đồng bộ
+               unset($_SESSION["cart"]);
+           }
+          
                // Chuyển hướng theo Role
                switch ($account["RoleID"]) {
                     case "R4": // Người mua hàng

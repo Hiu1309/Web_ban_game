@@ -1,33 +1,4 @@
-<?php
-session_start();
-include('../database/connectDB.php'); // Kết nối CSDL
 
-$customerID = $_SESSION['CustomerID'] ?? null;
-
-if ($customerID) {
-    $sql = "SELECT * FROM cart WHERE CustomerID = '$customerID' AND Status = 'Pending'";
-    $result = $conn->query($sql);
-
-    if ($result->num_rows > 0) {
-        // Có giỏ hàng
-        $cart = $result->fetch_assoc();
-        $cartID = $cart['CartID'];
-
-        // Lấy sản phẩm trong giỏ hàng
-        $sqlItems = "SELECT * FROM cart_item WHERE CartID = $cartID";
-        $itemsResult = $conn->query($sqlItems);
-
-        $cartItems = [];
-        while ($row = $itemsResult->fetch_assoc()) {
-            $cartItems[] = $row;
-        }
-    } else {
-        $cartItems = [];
-    }
-} else {
-    $cartItems = [];
-}
-?>
 <?php include('header_footer/header.php') ?>
     
             

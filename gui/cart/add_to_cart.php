@@ -1,19 +1,32 @@
 <?php
 session_start();
-require_once "../database/connectDB.php";
+require_once "../../database/connectDB.php";
 $conn = connectDB::getConnection();
 
-// Kiểm tra người dùng đã đăng nhập hay chưa
+$productID = $_POST['productID'];
+
 if (!isset($_SESSION['CustomerID'])) {
-    http_response_code(401); // Unauthorized
-    echo "Bạn cần đăng nhập để thêm sản phẩm vào giỏ hàng.";
+    // Nếu chưa đăng nhập, lưu giỏ hàng tạm vào session
+    if (!isset($_SESSION['cart'])) {
+        $_SESSION['cart'] = [];
+    }
+
+    if (isset($_SESSION['cart'][$productID])) {
+        $_SESSION['cart'][$productID]['quantity'] += 1;
+    } else {
+        $_SESSION['cart'][$productID] = [
+            'productID' => $productID,
+            'quantity' => 1
+        ];
+    }
+
+    echo "Đã thêm vào giỏ hàng (tạm thời)";
     exit;
 }
 
 $customerID = $_SESSION['CustomerID'];
-$productID = $_POST['productID'];
 
-// Kiểm tra xem giỏ hàng của người dùng đã tồn tại chưa
+// Kiểm tra giỏ hàng đã có chưa
 $sqlCart = "SELECT CartID FROM cart WHERE CustomerID = ?";
 $stmtCart = $conn->prepare($sqlCart);
 $stmtCart->bind_param("s", $customerID);
@@ -31,7 +44,7 @@ if ($result->num_rows > 0) {
     $stmtCreate->execute();
 }
 
-// Kiểm tra nếu sản phẩm đã tồn tại trong giỏ thì cập nhật số lượng
+// Kiểm tra sản phẩm trong giỏ
 $sqlCheckItem = "SELECT * FROM cart_item WHERE CartID = ? AND ProductID = ?";
 $stmtCheck = $conn->prepare($sqlCheckItem);
 $stmtCheck->bind_param("ss", $cartID, $productID);
@@ -44,11 +57,11 @@ if ($resultItem->num_rows > 0) {
     $stmtUpdate->bind_param("ss", $cartID, $productID);
     $stmtUpdate->execute();
 } else {
-    $cartItemID = uniqid("CI");
-    $sqlInsert = "INSERT INTO cart_item (CartItemID, CartID, ProductID, Quantity) VALUES (?, ?, ?, 1)";
-    $stmtInsert = $conn->prepare($sqlInsert);
-    $stmtInsert->bind_param("sss", $cartItemID, $cartID, $productID);
-    $stmtInsert->execute();
+    $sqlInsert = "INSERT INTO cart_item (CartID, ProductID, Quantity) VALUES (?, ?, 1)";
+$stmtInsert = $conn->prepare($sqlInsert);
+$stmtInsert->bind_param("ss", $cartID, $productID);
+$stmtInsert->execute();
+
 }
 
 echo "Đã thêm vào giỏ hàng.";
