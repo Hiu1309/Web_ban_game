@@ -67,8 +67,8 @@ document.addEventListener("DOMContentLoaded", function () {
           </div>
           <div class="action ${product.Quantity > 0 ? "" : "disable"}">
             <div class="add-to-cart">
-              <div title="Thêm vào giỏ hàng" class="button">
-                <i class="fa-solid fa-plus" style="color: var(--primary-white);"></i>
+              <div title="Thêm vào giỏ hàng" class="button add-to-cart-btn" data-id="${product.ProductID}">
+              <i class="fa-solid fa-plus" style="color: var(--primary-white);"></i>
               </div>
             </div>
           </div>

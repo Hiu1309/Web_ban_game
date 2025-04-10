@@ -99,7 +99,8 @@
                                                        echo '  </div>';
                                                        echo '  <div class="action ' . ($product['Quantity'] > 0 ? '' : 'disable') . '">';
                                                        echo '    <div class="add-to-cart">';
-                                                       echo '      <div title="Thêm vào giỏ hàng" class="button">';
+                                                       echo '      <div title="Thêm vào giỏ hàng" class="button add-to-cart-btn" data-id="' . $product['ProductID'] . '">';
+
                                                        echo '        <i class="fa-solid fa-plus" style="color: var(--primary-white);"></i>';
                                                        echo '      </div>';
                                                        echo '    </div>';
@@ -161,7 +162,7 @@
                                                   echo '  <div class="action ' . ($product['Quantity'] > 0 ? '' : 'disable') . '">';
                                                  
                                                   echo '    <div class="add-to-cart">';
-                                                  echo '      <div title="Thêm vào giỏ hàng" class="button">';
+                                                  echo '      <div title="Thêm vào giỏ hàng" class="button add-to-cart-btn" data-id="' . $product['ProductID'] . '">';
                                                   echo '        <i class="fa-solid fa-plus" style="color: var(--primary-white);"></i>';
                                                   echo '      </div>';
                                                   echo '    </div>';
@@ -223,7 +224,7 @@
                                                   echo '  <div class="action ' . ($product['Quantity'] > 0 ? '' : 'disable') . '">';
                                              
                                                   echo '    <div class="add-to-cart">';
-                                                  echo '      <div title="Thêm vào giỏ hàng" class="button">';
+                                                  echo '      <div title="Thêm vào giỏ hàng" class="button add-to-cart-btn" data-id="' . $product['ProductID'] . '">';
                                                   echo '        <i class="fa-solid fa-plus" style="color: var(--primary-white);"></i>';
                                                   echo '      </div>';
                                                   echo '    </div>';
@@ -283,7 +284,7 @@
                                                   echo '  <div class="action ' . ($product['Quantity'] > 0 ? '' : 'disable') . '">';
                                              
                                                   echo '    <div class="add-to-cart">';
-                                                  echo '      <div title="thêm vào giỏ hàng" class="button">';
+                                                  echo '      <div title="Thêm vào giỏ hàng" class="button add-to-cart-btn" data-id="' . $product['ProductID'] . '">';
                                                   echo '        <i class="fa-solid fa-plus" style="color: var(--primary-white);"></i>';
                                                   echo '      </div>';
                                                   echo '    </div>';
@@ -343,7 +344,7 @@
                                                   echo '  <div class="action ' . ($product['Quantity'] > 0 ? '' : 'disable') . '">';
                                                  
                                                   echo '    <div class="add-to-cart">';
-                                                  echo '      <div title="Thêm vào giỏ hàng" class="button">';
+                                                  echo '      <div title="Thêm vào giỏ hàng" class="button add-to-cart-btn" data-id="' . $product['ProductID'] . '">';
                                                   echo '        <i class="fa-solid fa-plus" style="color: var(--primary-white);"></i>';
                                                   echo '      </div>';
                                                   echo '    </div>';

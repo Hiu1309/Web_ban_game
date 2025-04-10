@@ -73,6 +73,9 @@ if ($customerID) {
                                                   </div>
 
                                                   <div class="list-carts cart-ui margin-top-16">
+                                                  <?php
+$totalPrice = 0; 
+?>
                                                   <?php if (count($cartItems) > 0): ?>
     <?php foreach ($cartItems as $item): ?>
         <?php
@@ -80,8 +83,9 @@ if ($customerID) {
             $productQuery = "SELECT * FROM product WHERE ProductID = '$productID'";
             $productResult = $conn->query($productQuery);
             $product = $productResult->fetch_assoc();
+            $totalPrice += $product['Price'] * $item['Quantity'];
         ?>
-        <div class="block-product">
+        <div class="block-product" data-id="<?= $item['CartItemID'] ?>">
             <input type="checkbox" name="select-block-product" />
             <div class="product-cart">
                 <img src="<?= $product['Image'] ?>" alt="<?= $product['ProductName'] ?>" />
@@ -93,9 +97,12 @@ if ($customerID) {
                 </div>
             </div>
             <div class="number-product-cart">
-                <input type="number" name="quantity-cart" value="<?= $item['Quantity'] ?>" min="1" max="10" />
+            <input type="number" name="quantity-cart" class="update-qty" value="<?= $item['Quantity'] ?>" min="1" max="100" />
             </div>
             <div class="price-per-item"><?= number_format($product['Price'] * $item['Quantity'], 0, ',', '.') ?>đ</div>
+            <div class="remove-product">
+    <button class="delete-btn">X</button>
+</div>
         </div>
     <?php endforeach; ?>
 <?php else: ?>
@@ -186,38 +193,33 @@ if ($customerID) {
 
 
                                                        <div class="order-summary">
-                                                            <h4 class="capitalize margin-bottom-8">
-                                                                 chi tiết thanh toán
-                                                            </h4>
-                                                            <div>
-                                                                 <p class="font-size-14">thành tiền</p>
-                                                                 <span class="price prices font-size-14"></span>
-                                                            </div>
-                                                            <div>
-                                                                 <p class="font-size-14">tổng tiền phí vận chuyển</p>
-                                                                 <span class="price shipping-fee font-size-14"></span>
-                                                            </div>
-                                                            <div>
-                                                                 <p class="font-size-14">giảm giá phí vận chuyển</p>
-                                                                 <span
-                                                                      class="price shipping-discount font-size-14"></span>
-                                                            </div>
-                                                            <div>
-                                                                 <p class="font-size-14">voucher giảm giá</p>
-                                                                 <span
-                                                                      class="price voucher-discount font-size-14"></span>
-                                                            </div>
-                                                            <div>
-                                                                 <p class="font-bold">Tổng Số Tiền</p>
-                                                                 <span class="price total-price font-bold"></span>
-                                                            </div>
+                                                       <h4 class="capitalize margin-bottom-8">chi tiết thanh toán</h4>
+    <div>
+        <p class="font-size-14">thành tiền</p>
+        <span class="price prices font-size-14"><?= number_format($totalPrice, 0, ',', '.') ?>đ</span>
+    </div>
+    <div>
+        <p class="font-size-14">tổng tiền phí vận chuyển</p>
+        <span class="price shipping-fee font-size-14">0đ</span>
+    </div>
+    <div>
+        <p class="font-size-14">giảm giá phí vận chuyển</p>
+        <span class="price shipping-discount font-size-14">0đ</span>
+    </div>
+    <div>
+        <p class="font-size-14">voucher giảm giá</p>
+        <span class="price voucher-discount font-size-14">0đ</span>
+    </div>
+    <div>
+    <p class="font-bold">Tổng Số Tiền</p>
+    <span class="price total-price font-bold" data-basetotal="<?= $totalPrice ?>">
+        <?= number_format($totalPrice, 0, ',', '.') ?>đ
+    </span>
+</div>
 
-                                                            <button type="submit"
-                                                                 class="checkout-btn button margin-top-12">
-                                                                 <p class="uppercase font-size-16 font-bold">
-                                                                      Đặt hàng
-                                                                 </p>
-                                                            </button>
+    <button type="submit" class="checkout-btn button margin-top-12">
+        <p class="uppercase font-size-16 font-bold">Đặt hàng</p>
+    </button>
                                                        </div>
                                                   </div>
 
