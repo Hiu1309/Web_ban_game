@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <<<<<<< Updated upstream
 =======
 <?php
@@ -30,6 +31,8 @@ if ($customerID) {
     $cartItems = [];
 }
 ?>
+=======
+>>>>>>> main
 <?php include('header_footer/header.php') ?>
     
             
@@ -75,6 +78,7 @@ if ($customerID) {
                                                   </div>
 
                                                   <div class="list-carts cart-ui margin-top-16">
+<<<<<<< HEAD
                                                   <?php if (count($cartItems) > 0): ?>
     <?php foreach ($cartItems as $item): ?>
         <?php
@@ -107,6 +111,47 @@ if ($customerID) {
     </section>
 <?php endif; ?>
                                                        
+=======
+                                                       <div class="block-product">
+                                                            <input type="checkbox" name="select-block-product"
+                                                                 id="block-product-1"
+                                                                 class="grid-col col-l-1 col-m-1 col-s-1" />
+                                                            <div
+                                                                 class="product-cart grid-col col-l-1 col-m-1 col-s-1 no-gutter full-width">
+                                                                 <img src="../Assets/Images/Books/Manga/khe_hat_loi_yeu_1.webp"
+                                                                      alt="khe hat loi yeu 1" />
+                                                            </div>
+                                                            <div
+                                                                 class="grid-col col-l-10 col-m-10 col-s-10 no-gutter flex align-center">
+                                                                 <div
+                                                                      class="info-product-cart padding-left-8 grid-col col-l-6 col-m-12 col-s-12">
+                                                                      <p class="font-bold capitalize margin-bottom-16">
+                                                                      </p>
+                                                                      <div class="block-product-price">
+                                                                           <span
+                                                                                class="new-price font-bold padding-right-8 price"></span>
+                                                                           <del class="price old-price"></del>
+                                                                      </div>
+                                                                 </div>
+                                                                 <div
+                                                                      class="number-product-cart grid-col col-l-2 col-m-10 col-s-10 no-gutter">
+                                                                      <input type="number" name="quantity-cart"
+                                                                           id="update_12320" value="1" min="1" max="2"
+                                                                           class="quantity-cart" />
+                                                                 </div>
+                                                                 <div
+                                                                      class="price-per-item price font-bold grid-col col-l-3 s-m-hidden no-gutter text-center">
+                                                                 </div>
+                                                                 <div
+                                                                      class="rm-cart-btn col-l col-l-1 col-m-2 col-s-2 flex justify-center">
+                                                                      <div>
+                                                                           <i class="fa-solid fa-trash fa-lg"
+                                                                                style="color: var(--primary-dark)"></i>
+                                                                      </div>
+                                                                 </div>
+                                                            </div>
+                                                       </div>
+>>>>>>> main
                                                   </div>
                                              </div>
 
@@ -236,4 +281,7 @@ if ($customerID) {
                               </section>
                     
      <?php include('header_footer/footer.php') ?>
+<<<<<<< HEAD
 >>>>>>> Stashed changes
+=======
+>>>>>>> main
