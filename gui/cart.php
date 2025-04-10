@@ -1,6 +1,63 @@
+<?php
+session_start();
+require_once "../database/connectDB.php";
+$conn = connectDB::getConnection();
+include('header_footer/header.php');
 
-<?php include('header_footer/header.php') ?>
-    
+// Kiểm tra đăng nhập
+$isLoggedIn = isset($_SESSION['CustomerID']);
+$cartItems = [];
+
+// Nếu đã đăng nhập, lấy cart từ DB
+if ($isLoggedIn) {
+    $customerID = $_SESSION['CustomerID'];
+
+    // Lấy CartID
+    $sqlCart = "SELECT CartID FROM cart WHERE CustomerID = ?";
+    $stmtCart = $conn->prepare($sqlCart);
+    $stmtCart->bind_param("s", $customerID);
+    $stmtCart->execute();
+    $resultCart = $stmtCart->get_result();
+
+    if ($resultCart->num_rows > 0) {
+        $cartID = $resultCart->fetch_assoc()['CartID'];
+
+        // Lấy sản phẩm trong giỏ
+        $sqlItems = "
+            SELECT ci.ProductID, ci.Quantity, p.ProductName, p.ProductImg, p.Price
+            FROM cart_item ci
+            JOIN product p ON ci.ProductID = p.ProductID
+            WHERE ci.CartID = ?
+        ";
+        $stmtItems = $conn->prepare($sqlItems);
+        $stmtItems->bind_param("s", $cartID);
+        $stmtItems->execute();
+        $cartItems = $stmtItems->get_result()->fetch_all(MYSQLI_ASSOC);
+    }
+} else {
+    // Nếu chưa login, dùng session
+    if (isset($_SESSION['cart']) && !empty($_SESSION['cart'])) {
+        foreach ($_SESSION['cart'] as $productID => $item) {
+            // Lấy thông tin sản phẩm
+            $stmt = $conn->prepare("SELECT ProductName, ProductImg, Price FROM product WHERE ProductID = ?");
+            $stmt->bind_param("s", $productID);
+            $stmt->execute();
+            $product = $stmt->get_result()->fetch_assoc();
+
+            if ($product) {
+                $cartItems[] = [
+                    'ProductID' => $productID,
+                    'Quantity' => $item['quantity'],
+                    'ProductName' => $product['ProductName'],
+                    'ProductImg' => $product['ProductImg'],
+                    'Price' => $product['Price'],
+                    
+                ];
+            }
+        }
+    }
+}
+?>
             
                               <section id="cart-content" class="cart grid-col col-l-12 col-m-12 col-s-12 margin-y-12">
                                    <div class="cart-title padding-bottom-8">
@@ -9,18 +66,7 @@
                                    </div>
 
                                    <div class="cart-ui-content">
-                                        <section id="blank-cart" class="margin-y-12 cart-ui">
-                                             <img
-                                                  src="../Assets/Images/BackGrounds/kettle-desaturated._CB445243794_.svg" />
-                                             <span class="font-size-16 padding-left-16 margin-y-12">Không có sản phẩm
-                                                  nào trong giỏ hàng. Quay lại
-                                                  cửa hàng
-                                                  để tiếp tục mua sắm.</span>
-                                             <section
-                                                  class="flex justify-center align-center font-bold capitalize margin-y-12">
-                                                  <a href=" " target="_blank" class="category-btn button">trang chủ</a>
-                                             </section>
-                                        </section>
+                                        
 
                                         <section id="cart" class="active">
                                              <div class="grid-cols col-l-8 col-m-12 col-s-12 no-gutter">
@@ -30,6 +76,7 @@
                                                        <div class="grid-col col-l-6 col-m-11 col-s-11">
                                                             chọn sản phẩm
                                                             <span class="item-count">(1 sản phẩm)</span>
+                                                            
                                                        </div>
 
                                                        <div class="grid-col col-l-2 s-m-hidden text-center">
@@ -42,47 +89,61 @@
                                                             xóa
                                                        </div>
                                                   </div>
+                                                  
 
                                                   <div class="list-carts cart-ui margin-top-16">
-                                                  <?php
-$totalPrice = 0; 
-?>
-                                                  <?php if (count($cartItems) > 0): ?>
-    <?php foreach ($cartItems as $item): ?>
-        <?php
-            $productID = $item['ProductID'];
-            $productQuery = "SELECT * FROM product WHERE ProductID = '$productID'";
-            $productResult = $conn->query($productQuery);
-            $product = $productResult->fetch_assoc();
-            $totalPrice += $product['Price'] * $item['Quantity'];
-        ?>
-        <div class="block-product" data-id="<?= $item['CartItemID'] ?>">
-            <input type="checkbox" name="select-block-product" />
-            <div class="product-cart">
-                <img src="<?= $product['Image'] ?>" alt="<?= $product['ProductName'] ?>" />
+                                                  <section id="blank-cart" class="margin-y-12 cart-ui">
+                                        
+                                             <span class="font-size-16 padding-left-16 margin-y-12">Không có sản phẩm
+                                                  nào trong giỏ hàng. Quay lại
+                                                  cửa hàng
+                                                  để tiếp tục mua sắm.</span>
+                                             <section
+                                                  class="flex justify-center align-center font-bold capitalize margin-y-12">
+                                                  <a href="../index.php" class="category-btn button">trang chủ</a>
+                                             </section>
+                                        </section>
+                                                  <?php if (count($cartItems) === 0): ?>
+    <script>
+        document.getElementById("blank-cart").style.display = "block";
+        document.getElementById("cart").style.display = "none";
+    </script>
+<?php else: ?>
+    <?php foreach ($cartItems as $index => $item): ?>
+        <div class="block-product">
+            <input type="checkbox" name="select-block-product"
+                   class="grid-col col-l-1 col-m-1 col-s-1" />
+            <div class="product-cart grid-col col-l-1 col-m-1 col-s-1 no-gutter full-width">
+                <img src="<?= $item['ProductImg'] ?>" alt="<?= $item['ProductName'] ?>" />
             </div>
-            <div class="info-product-cart">
-                <p class="font-bold"><?= $product['ProductName'] ?></p>
-                <div class="block-product-price">
-                    <span class="new-price"><?= number_format($product['Price'], 0, ',', '.') ?>đ</span>
+            <div class="grid-col col-l-10 col-m-10 col-s-10 no-gutter flex align-center">
+                <div class="info-product-cart padding-left-8 grid-col col-l-6 col-m-12 col-s-12">
+                    <p class="font-bold capitalize margin-bottom-16"><?= $item['ProductName'] ?></p>
+                    <div class="block-product-price">
+                        <span class="new-price font-bold padding-right-8 price"><?= number_format($item['Price'], 0, ',', '.') ?>₫</span>
+
+                    </div>
+                </div>
+                <div class="number-product-cart grid-col col-l-2 col-m-10 col-s-10 no-gutter">
+                    <input type="number" name="quantity-cart"
+                           value="<?= $item['Quantity'] ?>" min="1"
+                           class="quantity-cart" />
+                </div>
+                <div class="price-per-item price font-bold grid-col col-l-3 s-m-hidden no-gutter text-center">
+                    <?= number_format($item['Price'] * $item['Quantity'], 0, ',', '.') ?>₫
+                </div>
+                <div class="rm-cart-btn col-l col-l-1 col-m-2 col-s-2 flex justify-center">
+                    <form method="post" action="cart/remove_from_cart.php">
+                        <input type="hidden" name="ProductID" value="<?= $item['ProductID'] ?>">
+                        <button type="submit" style="background:none;border:none;">
+                            <i class="fa-solid fa-trash fa-lg" style="color: var(--primary-dark)"></i>
+                        </button>
+                    </form>
                 </div>
             </div>
-            <div class="number-product-cart">
-            <input type="number" name="quantity-cart" class="update-qty" value="<?= $item['Quantity'] ?>" min="1" max="100" />
-            </div>
-            <div class="price-per-item"><?= number_format($product['Price'] * $item['Quantity'], 0, ',', '.') ?>đ</div>
-            <div class="remove-product">
-    <button class="delete-btn">X</button>
-</div>
         </div>
     <?php endforeach; ?>
-<?php else: ?>
-    <section id="blank-cart">
-        <img src="../Assets/Images/BackGrounds/kettle-desaturated._CB445243794_.svg" />
-        <span>Không có sản phẩm nào trong giỏ hàng.</span>
-    </section>
 <?php endif; ?>
-                                                       
                                                   </div>
                                              </div>
 
@@ -164,33 +225,38 @@ $totalPrice = 0;
 
 
                                                        <div class="order-summary">
-                                                       <h4 class="capitalize margin-bottom-8">chi tiết thanh toán</h4>
-    <div>
-        <p class="font-size-14">thành tiền</p>
-        <span class="price prices font-size-14"><?= number_format($totalPrice, 0, ',', '.') ?>đ</span>
-    </div>
-    <div>
-        <p class="font-size-14">tổng tiền phí vận chuyển</p>
-        <span class="price shipping-fee font-size-14">0đ</span>
-    </div>
-    <div>
-        <p class="font-size-14">giảm giá phí vận chuyển</p>
-        <span class="price shipping-discount font-size-14">0đ</span>
-    </div>
-    <div>
-        <p class="font-size-14">voucher giảm giá</p>
-        <span class="price voucher-discount font-size-14">0đ</span>
-    </div>
-    <div>
-    <p class="font-bold">Tổng Số Tiền</p>
-    <span class="price total-price font-bold" data-basetotal="<?= $totalPrice ?>">
-        <?= number_format($totalPrice, 0, ',', '.') ?>đ
-    </span>
-</div>
+                                                            <h4 class="capitalize margin-bottom-8">
+                                                                 chi tiết thanh toán
+                                                            </h4>
+                                                            <div>
+                                                                 <p class="font-size-14">thành tiền</p>
+                                                                 <span class="price prices font-size-14"></span>
+                                                            </div>
+                                                            <div>
+                                                                 <p class="font-size-14">tổng tiền phí vận chuyển</p>
+                                                                 <span class="price shipping-fee font-size-14"></span>
+                                                            </div>
+                                                            <div>
+                                                                 <p class="font-size-14">giảm giá phí vận chuyển</p>
+                                                                 <span
+                                                                      class="price shipping-discount font-size-14"></span>
+                                                            </div>
+                                                            <div>
+                                                                 <p class="font-size-14">voucher giảm giá</p>
+                                                                 <span
+                                                                      class="price voucher-discount font-size-14"></span>
+                                                            </div>
+                                                            <div>
+                                                                 <p class="font-bold">Tổng Số Tiền</p>
+                                                                 <span class="price total-price font-bold"></span>
+                                                            </div>
 
-    <button type="submit" class="checkout-btn button margin-top-12">
-        <p class="uppercase font-size-16 font-bold">Đặt hàng</p>
-    </button>
+                                                            <button type="submit"
+                                                                 class="checkout-btn button margin-top-12">
+                                                                 <p class="uppercase font-size-16 font-bold">
+                                                                      Đặt hàng
+                                                                 </p>
+                                                            </button>
                                                        </div>
                                                   </div>
 
