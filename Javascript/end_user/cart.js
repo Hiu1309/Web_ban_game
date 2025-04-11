@@ -162,11 +162,6 @@ function setupSelectAllCheckbox() {
     }
 }
 
-
-
-
-
-// Khi trang load lần đầu
 document.addEventListener("DOMContentLoaded", function () {
     attachAddToCartEvents();
     updateCartCount();
