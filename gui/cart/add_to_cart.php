@@ -3,16 +3,25 @@ session_start();
 require_once "../../database/connectDB.php";
 $conn = connectDB::getConnection();
 
+header('Content-Type: application/json');
+
 $productID = $_POST['productID'];
+$response = [
+    'status' => 'success',
+    'message' => '',
+    'loggedIn' => isset($_SESSION['CustomerID']),
+    'alreadyExists' => false
+];
 
 if (!isset($_SESSION['CustomerID'])) {
-    // Nếu chưa đăng nhập, lưu giỏ hàng tạm vào session
+    // Nếu chưa đăng nhập, xử lý giỏ hàng bằng session
     if (!isset($_SESSION['cart'])) {
         $_SESSION['cart'] = [];
     }
 
     if (isset($_SESSION['cart'][$productID])) {
         $_SESSION['cart'][$productID]['quantity'] += 1;
+        $response['alreadyExists'] = true;
     } else {
         $_SESSION['cart'][$productID] = [
             'productID' => $productID,
@@ -20,13 +29,15 @@ if (!isset($_SESSION['CustomerID'])) {
         ];
     }
 
-    echo "Đã thêm vào giỏ hàng (tạm thời)";
+    $response['message'] = 'Đã thêm vào giỏ hàng (tạm thời)';
+    echo json_encode($response);
     exit;
 }
 
+// Đã đăng nhập => thao tác với database
 $customerID = $_SESSION['CustomerID'];
 
-// Kiểm tra giỏ hàng đã có chưa
+// Lấy CartID
 $sqlCart = "SELECT CartID FROM cart WHERE CustomerID = ?";
 $stmtCart = $conn->prepare($sqlCart);
 $stmtCart->bind_param("s", $customerID);
@@ -34,8 +45,7 @@ $stmtCart->execute();
 $result = $stmtCart->get_result();
 
 if ($result->num_rows > 0) {
-    $row = $result->fetch_assoc();
-    $cartID = $row['CartID'];
+    $cartID = $result->fetch_assoc()['CartID'];
 } else {
     $cartID = uniqid("CART");
     $sqlCreateCart = "INSERT INTO cart (CartID, CustomerID) VALUES (?, ?)";
@@ -44,7 +54,7 @@ if ($result->num_rows > 0) {
     $stmtCreate->execute();
 }
 
-// Kiểm tra sản phẩm trong giỏ
+// Kiểm tra sản phẩm đã có chưa
 $sqlCheckItem = "SELECT * FROM cart_item WHERE CartID = ? AND ProductID = ?";
 $stmtCheck = $conn->prepare($sqlCheckItem);
 $stmtCheck->bind_param("ss", $cartID, $productID);
@@ -56,13 +66,15 @@ if ($resultItem->num_rows > 0) {
     $stmtUpdate = $conn->prepare($sqlUpdate);
     $stmtUpdate->bind_param("ss", $cartID, $productID);
     $stmtUpdate->execute();
+    $response['alreadyExists'] = true;
 } else {
     $sqlInsert = "INSERT INTO cart_item (CartID, ProductID, Quantity) VALUES (?, ?, 1)";
-$stmtInsert = $conn->prepare($sqlInsert);
-$stmtInsert->bind_param("ss", $cartID, $productID);
-$stmtInsert->execute();
-
+    $stmtInsert = $conn->prepare($sqlInsert);
+    $stmtInsert->bind_param("ss", $cartID, $productID);
+    $stmtInsert->execute();
 }
 
-echo "Đã thêm vào giỏ hàng.";
+$response['message'] = 'Đã thêm vào giỏ hàng.';
+echo json_encode($response);
+exit;
 ?>

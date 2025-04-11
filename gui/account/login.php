@@ -57,8 +57,13 @@
 
                // Thêm từng sản phẩm từ session cart vào CSDL
                foreach ($_SESSION["cart"] as $item) {
-                   $productID = $item["productID"];
-                   $quantity = $item["quantity"];
+                    if (!isset($item["productID"]) || $item["productID"] === null) {
+                        continue; // Bỏ qua nếu thiếu productID
+                    }
+                
+                    $productID = $item["productID"];
+                    $quantity = isset($item["quantity"]) ? $item["quantity"] : 1;
+                
 
                    // Kiểm tra nếu sản phẩm đã tồn tại trong giỏ
                    $sqlCheck = "SELECT * FROM cart_item WHERE CartID = ? AND ProductID = ?";

@@ -1,10 +1,8 @@
 // addtoCart.js
  export function attachAddToCartEvents() {
     const buttons = document.querySelectorAll(".add-to-cart-btn");
-
-    buttons.forEach(function (button) {
-        button.removeEventListener("click", handleAddToCart); // Xoá sự kiện cũ để tránh trùng
-        button.addEventListener("click", handleAddToCart);
+    buttons.forEach(btn => {
+        btn.addEventListener("click", handleAddToCart);
     });
 }
 
@@ -45,17 +43,40 @@ function handleAddToCart(event) {
         },
         body: "productID=" + encodeURIComponent(productID),
     })
-    .then((response) => response.text())
+    .then((response) => response.json())
     .then((data) => {
-        alert(data); // Hoặc dùng toast
+        alert(data.message); // Hoặc toast
+
+        // Nếu sản phẩm CHƯA có trong giỏ thì mới tăng cart-count
+        if (!data.alreadyExists) {
+            const cartCountElems = document.querySelectorAll(".cart-count");
+            cartCountElems.forEach(elem => {
+                const currentCount = parseInt(elem.textContent) || 0;
+                elem.textContent = currentCount + 1;
+            });
+        }
     })
     .catch((error) => {
         console.error("Lỗi:", error);
     });
 }
+export function updateCartCount() {
+    fetch("../gui/cart/cart_count.php")
+        .then(res => res.json())
+        .then(data => {
+            const count = data.count || 0;
+            const countElems = document.querySelectorAll(".cart-count");
+            countElems.forEach(elem => {
+                elem.textContent = count;
+            });
+        });
+}
+
+
 
 // Khi trang load lần đầu
 document.addEventListener("DOMContentLoaded", function () {
     attachAddToCartEvents();
+    updateCartCount();
     setupPaymentOptionQR();
 });

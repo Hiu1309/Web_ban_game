@@ -139,7 +139,6 @@
                 </div>
               </a>
 
-
               <div id="user-account" class="account full-height">
                 <div class="flex align-center full-height">
                   <div id="no-sign-in" class="flex justify-center align-center">

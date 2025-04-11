@@ -111,7 +111,7 @@ if ($isLoggedIn) {
 <?php else: ?>
     <?php foreach ($cartItems as $index => $item): ?>
         <div class="block-product">
-            <input type="checkbox" name="select-block-product" data-price="<?= $item['Price'] * $item['Quantity'] ?>" 
+            <input type="checkbox" name="select-block-product"
                    class="grid-col col-l-1 col-m-1 col-s-1" />
             <div class="product-cart grid-col col-l-1 col-m-1 col-s-1 no-gutter full-width">
                 <img src="<?= $item['ProductImg'] ?>" alt="<?= $item['ProductName'] ?>" />

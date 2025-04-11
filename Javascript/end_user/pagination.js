@@ -1,4 +1,4 @@
-import { attachAddToCartEvents } from './cart.js';
+import { attachAddToCartEvents, updateCartCount } from './cart.js';
 document.addEventListener("DOMContentLoaded", function () {
   let currentPage = 1;
   const resultsContainer = document.querySelector(".product-container");
@@ -78,6 +78,8 @@ document.addEventListener("DOMContentLoaded", function () {
       resultsContainer.innerHTML += productHtml;
     });
     attachAddToCartEvents();
+    updateCartCount();
+    
   }
 
   function renderPagination(totalPages, currentPage) {
