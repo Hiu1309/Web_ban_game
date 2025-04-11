@@ -111,7 +111,7 @@ if ($isLoggedIn) {
 <?php else: ?>
     <?php foreach ($cartItems as $index => $item): ?>
         <div class="block-product">
-            <input type="checkbox" name="select-block-product"
+            <input type="checkbox" name="select-block-product" data-price="<?= $item['Price'] * $item['Quantity'] ?>" 
                    class="grid-col col-l-1 col-m-1 col-s-1" />
             <div class="product-cart grid-col col-l-1 col-m-1 col-s-1 no-gutter full-width">
                 <img src="<?= $item['ProductImg'] ?>" alt="<?= $item['ProductName'] ?>" />
@@ -224,31 +224,31 @@ if ($isLoggedIn) {
                                                        </div>
 
 
-                                                       <div class="order-summary">
+                                                       <div class="order-summary" id="order-summary" >
                                                             <h4 class="capitalize margin-bottom-8">
                                                                  chi tiết thanh toán
                                                             </h4>
                                                             <div>
                                                                  <p class="font-size-14">thành tiền</p>
-                                                                 <span class="price prices font-size-14"></span>
+                                                                 <span class="price prices font-size-14">0đ</span>
                                                             </div>
                                                             <div>
                                                                  <p class="font-size-14">tổng tiền phí vận chuyển</p>
-                                                                 <span class="price shipping-fee font-size-14"></span>
+                                                                 <span class="price shipping-fee font-size-14">0đ</span>
                                                             </div>
                                                             <div>
                                                                  <p class="font-size-14">giảm giá phí vận chuyển</p>
                                                                  <span
-                                                                      class="price shipping-discount font-size-14"></span>
+                                                                      class="price shipping-discount font-size-14">0đ</span>
                                                             </div>
                                                             <div>
                                                                  <p class="font-size-14">voucher giảm giá</p>
                                                                  <span
-                                                                      class="price voucher-discount font-size-14"></span>
+                                                                      class="price voucher-discount font-size-14">0đ</span>
                                                             </div>
                                                             <div>
                                                                  <p class="font-bold">Tổng Số Tiền</p>
-                                                                 <span class="price total-price font-bold"></span>
+                                                                 <span class="price total-price font-bold">0đ</span>
                                                             </div>
 
                                                             <button type="submit"
