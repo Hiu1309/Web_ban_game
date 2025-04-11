@@ -628,7 +628,11 @@
   border-top: unset;
   justify-content: center;
 }
-
+.haha{
+  font-size: 16px;
+  padding-left: 60px;
+  
+}
 .block-product .info-inner h4 {
   width: 100%;
   padding-inline: 1em;

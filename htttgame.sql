@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Apr 10, 2025 at 07:17 PM
+-- Generation Time: Apr 11, 2025 at 10:08 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.1.25
 
@@ -38,8 +38,7 @@ CREATE TABLE `account` (
 --
 
 INSERT INTO `account` (`Username`, `Password`, `RoleID`) VALUES
-('Hiếu Lê', '$2y$10$ny3QtGpLOkv5bNNbTnqVHOtyhEpYKkYOZw85.N9ECjQOneGmMQe.6', 'R4'),
-('ngo hieu', '$2y$10$o0VrYk5oop8/Ex7GZViY1.9I27r1aXWEgnVkdwVZE2Lrmg7kaOEdG', 'R4');
+('Hiếu Lê', '$2y$10$HHRV2oUzA5hnkhGcMQAMUOdxPoV9/.PYBgOoBNm1xCGceSVH7hkOm', 'R4');
 
 -- --------------------------------------------------------
 
@@ -53,6 +52,13 @@ CREATE TABLE `cart` (
   `CreatedDate` datetime DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Dumping data for table `cart`
+--
+
+INSERT INTO `cart` (`CartID`, `CustomerID`, `CreatedDate`) VALUES
+('CART67f8cc', 'MT3H00001', '2025-04-11 15:01:34');
+
 -- --------------------------------------------------------
 
 --
@@ -60,11 +66,23 @@ CREATE TABLE `cart` (
 --
 
 CREATE TABLE `cart_item` (
-  `CartItemID` varchar(10) NOT NULL,
+  `CartItemID` int(11) NOT NULL,
   `CartID` varchar(10) NOT NULL,
   `ProductID` varchar(10) NOT NULL,
   `Quantity` int(11) DEFAULT 1
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `cart_item`
+--
+
+INSERT INTO `cart_item` (`CartItemID`, `CartID`, `ProductID`, `Quantity`) VALUES
+(1, 'CART67f8cc', 'GAME038', 2),
+(2, 'CART67f8cc', 'GAME034', 2),
+(3, 'CART67f8cc', 'GAME040', 1),
+(4, 'CART67f8cc', 'GAME035', 1),
+(5, 'CART67f8cc', 'GAME007', 1),
+(6, 'CART67f8cc', 'GAME028', 1);
 
 -- --------------------------------------------------------
 
@@ -87,8 +105,7 @@ CREATE TABLE `customer` (
 --
 
 INSERT INTO `customer` (`CustomerID`, `Fullname`, `Username`, `Email`, `Address`, `Phone`, `TotalSpending`) VALUES
-('MT3H00001', 'ngo hieu', 'ngo hieu', 'hiungo13@gmail.com', NULL, NULL, NULL),
-('MT3H00002', 'Hiếu Lê', 'Hiếu Lê', 'hjuiihy67@gmail.com', NULL, NULL, NULL);
+('MT3H00001', 'Hiếu Lê', 'Hiếu Lê', 'hjuiihy67@gmail.com', NULL, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -493,6 +510,16 @@ ALTER TABLE `supplier`
 ALTER TABLE `type_product`
   ADD PRIMARY KEY (`TypeID`,`ProductID`),
   ADD KEY `ProductID` (`ProductID`);
+
+--
+-- AUTO_INCREMENT for dumped tables
+--
+
+--
+-- AUTO_INCREMENT for table `cart_item`
+--
+ALTER TABLE `cart_item`
+  MODIFY `CartItemID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- Constraints for dumped tables

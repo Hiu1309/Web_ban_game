@@ -94,7 +94,7 @@ if ($isLoggedIn) {
                                                   <div class="list-carts cart-ui margin-top-16">
                                                   <section id="blank-cart" class="margin-y-12 cart-ui">
                                         
-                                             <span class="font-size-16 padding-left-16 margin-y-12">Không có sản phẩm
+                                             <span class="haha">Không có sản phẩm
                                                   nào trong giỏ hàng. Quay lại
                                                   cửa hàng
                                                   để tiếp tục mua sắm.</span>
