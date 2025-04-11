@@ -71,6 +71,98 @@ export function updateCartCount() {
             });
         });
 }
+export function setupCartSummaryUpdate() {
+    const checkboxes = document.querySelectorAll(".cart-item-checkbox");
+
+    // Gọi khi checkbox thay đổi
+    checkboxes.forEach(cb => {
+        cb.addEventListener("change", updateOrderSummary);
+    });
+
+    // Gọi khi số lượng thay đổi
+    const quantities = document.querySelectorAll(".quantity-cart");
+    quantities.forEach(input => {
+        input.addEventListener("input", updateOrderSummary);
+    });
+
+    // Gọi lần đầu để setup
+    updateOrderSummary();
+}
+
+function updateOrderSummary() {
+    let total = 0;
+    let shippingFee = 30000; // bạn có thể thay đổi theo nhu cầu
+    let shippingDiscount = 10000;
+    let voucherDiscount = 0;
+
+    document.querySelectorAll(".cart-item-checkbox").forEach(checkbox => {
+        if (checkbox.checked) {
+            const block = checkbox.closest(".block-product");
+            const price = parseInt(block.getAttribute("data-price")) || 0;
+            const quantityInput = block.querySelector(".quantity-cart");
+            const quantity = parseInt(quantityInput?.value) || 1;
+            total += price * quantity;
+        }
+    });
+
+    document.querySelector(".prices").textContent = formatPrice(total) + "đ";
+    document.querySelector(".shipping-fee").textContent = formatPrice(total > 0 ? shippingFee : 0) + "đ";
+    document.querySelector(".shipping-discount").textContent = formatPrice(total > 0 ? shippingDiscount : 0) + "đ";
+    document.querySelector(".voucher-discount").textContent = formatPrice(voucherDiscount) + "đ";
+
+    const totalPrice = total + (total > 0 ? shippingFee - shippingDiscount : 0) - voucherDiscount;
+    document.querySelector(".total-price").textContent = formatPrice(totalPrice) + "đ";
+}
+
+function formatPrice(price) {
+    return price.toLocaleString("vi-VN");
+}
+function setupQuantityChangeHandler() {
+    const quantityInputs = document.querySelectorAll(".quantity-cart");
+
+    quantityInputs.forEach(input => {
+        input.addEventListener("input", function () {
+            const quantity = parseInt(this.value) || 1;
+
+            // Tìm phần tử cha chứa toàn bộ sản phẩm
+            const productBlock = this.closest(".block-product");
+            if (!productBlock) return;
+
+            // Tìm phần hiển thị giá từng sản phẩm
+            const pricePerItemElem = productBlock.querySelector(".price-per-item");
+            const basePrice = parseInt(pricePerItemElem.dataset.price); // lấy từ data-price
+
+            const newTotal = quantity * basePrice;
+
+            // Cập nhật giá hiển thị
+            pricePerItemElem.textContent = formatCurrency(newTotal);
+
+            // Gọi lại hàm tính tổng thanh toán
+            updateOrderSummary();
+        });
+    });
+}
+function formatCurrency(value) {
+    return value.toLocaleString("vi-VN") + "₫";
+}
+function setupSelectAllCheckbox() {
+    const selectAllCheckbox = document.getElementById('selection-item');
+    const itemCheckboxes = document.querySelectorAll('.cart-item-checkbox');
+
+    if (selectAllCheckbox) {
+        selectAllCheckbox.addEventListener('change', function () {
+            itemCheckboxes.forEach(checkbox => {
+                checkbox.checked = selectAllCheckbox.checked;
+                checkbox.dispatchEvent(new Event('change')); 
+            });
+
+            // 👉 Gọi lại updateOrderSummary sau khi tất cả checkbox cập nhật
+            updateOrderSummary();
+        });
+    }
+}
+
+
 
 
 
@@ -79,4 +171,8 @@ document.addEventListener("DOMContentLoaded", function () {
     attachAddToCartEvents();
     updateCartCount();
     setupPaymentOptionQR();
+    setupCartSummaryUpdate();
+    setupQuantityChangeHandler();
+    setupSelectAllCheckbox();
+
 });

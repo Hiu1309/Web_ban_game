@@ -72,7 +72,7 @@ if ($isLoggedIn) {
                                              <div class="grid-cols col-l-8 col-m-12 col-s-12 no-gutter">
                                                   <div class="header-cart-content cart-ui">
                                                        <input type="checkbox" name="selection-item" id="selection-item"
-                                                            class="grid-col col-l-1 col-m-1 col-s-1" />
+                                                            class="cart-item-checkbox grid-col col-l-1 col-m-1 col-s-1" />
                                                        <div class="grid-col col-l-6 col-m-11 col-s-11">
                                                             chọn sản phẩm
                                                             <span class="item-count">(<?= count($cartItems) ?> sản phẩm)</span>
@@ -110,9 +110,10 @@ if ($isLoggedIn) {
     </script>
 <?php else: ?>
     <?php foreach ($cartItems as $index => $item): ?>
-        <div class="block-product">
-            <input type="checkbox" name="select-block-product"
-                   class="grid-col col-l-1 col-m-1 col-s-1" />
+        <div class="block-product" data-price="<?= $item['Price'] ?>" 
+        data-quantity="<?= $item['Quantity'] ?>">
+            <input type="checkbox" name="select-block-product" 
+                   class="cart-item-checkbox grid-col col-l-1 col-m-1 col-s-1" />
             <div class="product-cart grid-col col-l-1 col-m-1 col-s-1 no-gutter full-width">
                 <img src="<?= $item['ProductImg'] ?>" alt="<?= $item['ProductName'] ?>" />
             </div>
@@ -127,11 +128,13 @@ if ($isLoggedIn) {
                 <div class="number-product-cart grid-col col-l-2 col-m-10 col-s-10 no-gutter">
                     <input type="number" name="quantity-cart"
                            value="<?= $item['Quantity'] ?>" min="1"
-                           class="quantity-cart" />
+                           class="quantity-cart" />              
+
                 </div>
-                <div class="price-per-item price font-bold grid-col col-l-3 s-m-hidden no-gutter text-center">
-                    <?= number_format($item['Price'] * $item['Quantity'], 0, ',', '.') ?>₫
-                </div>
+                <div class="price-per-item price font-bold grid-col col-l-3 s-m-hidden no-gutter text-center"
+     data-price="<?= $item['Price'] ?>">
+    <?= number_format($item['Price'] * $item['Quantity'], 0, ',', '.') ?>₫
+</div>
                 <div class="rm-cart-btn col-l col-l-1 col-m-2 col-s-2 flex justify-center">
                     <form method="post" action="cart/remove_from_cart.php">
                         <input type="hidden" name="ProductID" value="<?= $item['ProductID'] ?>">
