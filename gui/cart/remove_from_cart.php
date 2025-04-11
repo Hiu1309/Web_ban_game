@@ -1,28 +1,41 @@
 <?php
 session_start();
-include '../../database/connectDB.php'; // đường dẫn đến file kết nối CSDL của bạn
+require_once "../../database/connectDB.php";
+$conn = connectDB::getConnection();
 
-header('Content-Type: application/json');
+if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["ProductID"])) {
+    $productID = $_POST["ProductID"];
+    $isLoggedIn = isset($_SESSION["CustomerID"]);
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    if (isset($_SESSION['CustomerID']) && isset($_POST['CartItemID'])) {
-        $customerID = $_SESSION['CustomerID'];
-        $cartItemID = $_POST['CartItemID'];
+    if ($isLoggedIn) {
+        $customerID = $_SESSION["CustomerID"];
 
-        $stmt = $conn->prepare("DELETE FROM cart_item WHERE CustomerID = ? AND CartItemID = ?");
-        $stmt->bind_param("ii", $customerID, $cartItemID);
+        // Lấy CartID từ DB
+        $sqlCart = "SELECT CartID FROM cart WHERE CustomerID = ?";
+        $stmtCart = $conn->prepare($sqlCart);
+        $stmtCart->bind_param("s", $customerID);
+        $stmtCart->execute();
+        $resultCart = $stmtCart->get_result();
 
-        if ($stmt->execute()) {
-            echo json_encode(['success' => true, 'message' => 'Xóa sản phẩm khỏi giỏ hàng thành công']);
-        } else {
-            echo json_encode(['success' => false, 'message' => 'Không thể xóa sản phẩm']);
+        if ($resultCart->num_rows > 0) {
+            $cartID = $resultCart->fetch_assoc()["CartID"];
+
+            // Xóa sản phẩm khỏi cart_item
+            $sqlDelete = "DELETE FROM cart_item WHERE CartID = ? AND ProductID = ?";
+            $stmtDelete = $conn->prepare($sqlDelete);
+            $stmtDelete->bind_param("ss", $cartID, $productID);
+            $stmtDelete->execute();
         }
 
-        $stmt->close();
     } else {
-        echo json_encode(['success' => false, 'message' => 'Dữ liệu không hợp lệ hoặc chưa đăng nhập']);
+        // Chưa đăng nhập -> dùng session
+        if (isset($_SESSION["cart"][$productID])) {
+            unset($_SESSION["cart"][$productID]);
+        }
     }
-} else {
-    echo json_encode(['success' => false, 'message' => 'Phương thức không hợp lệ']);
 }
+
+// Sau khi xóa xong, chuyển hướng về lại giỏ hàng
+header("Location: ../cart.php");
+exit;
 ?>

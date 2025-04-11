@@ -62,7 +62,7 @@ if ($isLoggedIn) {
                               <section id="cart-content" class="cart grid-col col-l-12 col-m-12 col-s-12 margin-y-12">
                                    <div class="cart-title padding-bottom-8">
                                         <span class="uppercase font-size-20">giỏ hàng</span>
-                                        <span class="cart-count font-size-16 padding-left-8">(0 sản phẩm)</span>
+                                        <span class="cart-count font-size-16 padding-left-8">(<?= count($cartItems) ?> sản phẩm)</span>
                                    </div>
 
                                    <div class="cart-ui-content">
@@ -75,7 +75,7 @@ if ($isLoggedIn) {
                                                             class="grid-col col-l-1 col-m-1 col-s-1" />
                                                        <div class="grid-col col-l-6 col-m-11 col-s-11">
                                                             chọn sản phẩm
-                                                            <span class="item-count">(1 sản phẩm)</span>
+                                                            <span class="item-count">(<?= count($cartItems) ?> sản phẩm)</span>
                                                             
                                                        </div>
 
