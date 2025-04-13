@@ -752,7 +752,8 @@ input[type="text"] {
 
 .error-color,
 .exit-color {
-  color: var(--bg-red);
+  font-weight: bold;
+  color: rgb(255, 255, 255);
 }
 
 /* dots */

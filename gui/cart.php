@@ -72,7 +72,7 @@ if ($isLoggedIn) {
                                              <div class="grid-cols col-l-8 col-m-12 col-s-12 no-gutter">
                                                   <div class="header-cart-content cart-ui">
                                                        <input type="checkbox" name="selection-item" id="selection-item"
-                                                            class="cart-item-checkbox grid-col col-l-1 col-m-1 col-s-1" />
+                                                            class="cart-all-checkbox grid-col col-l-1 col-m-1 col-s-1" />
                                                        <div class="grid-col col-l-6 col-m-11 col-s-11">
                                                             chọn sản phẩm
                                                             <span class="item-count">(<?= count($cartItems) ?> sản phẩm)</span>

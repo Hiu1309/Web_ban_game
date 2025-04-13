@@ -148,8 +148,10 @@
                     ></i>
                     <p class="padding-left-8">Tài khoản</p>
                   </div>
+                  <a href="/gui/account/user_detail.php?featured=true">
 
                   <div class="header-user-info flex justify-center align-center disable">
+                    
                     <i
                       class="fa-brands fa-napster fa-xl"
                       style="color: var(--main-color)"
@@ -157,7 +159,7 @@
                     <div class="user-name padding-left-8 uppercase">
                       user-profile
                     </div>
-                  </div>
+                  </div></a>
 
                   <!-- account -->
                   <nav class="nav-account flex justify-center align-center flex-direction-y">
