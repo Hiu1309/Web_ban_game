@@ -61,7 +61,7 @@ function handleAddToCart(event) {
     });
 }
 export function updateCartCount() {
-    fetch("../gui/cart/cart_count.php")
+    fetch("/gui/cart/cart_count.php")
         .then(res => res.json())
         .then(data => {
             const count = data.count || 0;
