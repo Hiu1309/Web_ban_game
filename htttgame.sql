@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Apr 11, 2025 at 10:08 AM
+-- Generation Time: Apr 14, 2025 at 09:25 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.1.25
 
@@ -77,12 +77,14 @@ CREATE TABLE `cart_item` (
 --
 
 INSERT INTO `cart_item` (`CartItemID`, `CartID`, `ProductID`, `Quantity`) VALUES
-(1, 'CART67f8cc', 'GAME038', 2),
-(2, 'CART67f8cc', 'GAME034', 2),
-(3, 'CART67f8cc', 'GAME040', 1),
-(4, 'CART67f8cc', 'GAME035', 1),
-(5, 'CART67f8cc', 'GAME007', 1),
-(6, 'CART67f8cc', 'GAME028', 1);
+(87, 'CART67f8cc', 'GAME029', 1),
+(88, 'CART67f8cc', 'GAME010', 1),
+(89, 'CART67f8cc', 'GAME016', 1),
+(90, 'CART67f8cc', 'GAME003', 1),
+(91, 'CART67f8cc', 'GAME004', 1),
+(92, 'CART67f8cc', 'GAME005', 1),
+(93, 'CART67f8cc', 'GAME008', 1),
+(94, 'CART67f8cc', 'GAME031', 1);
 
 -- --------------------------------------------------------
 
@@ -105,7 +107,7 @@ CREATE TABLE `customer` (
 --
 
 INSERT INTO `customer` (`CustomerID`, `Fullname`, `Username`, `Email`, `Address`, `Phone`, `TotalSpending`) VALUES
-('MT3H00001', 'Hiếu Lê', 'Hiếu Lê', 'hjuiihy67@gmail.com', NULL, NULL, NULL);
+('MT3H00001', 'Hiếu Lê', 'Hiếu Lê', 'hjuiihy67@gmail.com', 'saddddddddddd', '0842498241', NULL);
 
 -- --------------------------------------------------------
 
@@ -300,10 +302,13 @@ CREATE TABLE `rolepermissions` (
 
 CREATE TABLE `sales_invoice` (
   `SalesID` varchar(10) NOT NULL,
+  `CustomerID` varchar(10) NOT NULL,
   `EmployeeID` varchar(10) DEFAULT NULL,
-  `CustomerID` varchar(10) DEFAULT NULL,
-  `Date` date DEFAULT NULL,
-  `TotalPrice` double DEFAULT NULL
+  `PaymentMethod` varchar(50) DEFAULT NULL,
+  `ShippingAddress` text DEFAULT NULL,
+  `TotalPrice` double DEFAULT NULL,
+  `Note` text DEFAULT NULL,
+  `SalesDate` datetime DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -495,8 +500,8 @@ ALTER TABLE `rolepermissions`
 --
 ALTER TABLE `sales_invoice`
   ADD PRIMARY KEY (`SalesID`),
-  ADD KEY `EmployeeID` (`EmployeeID`),
-  ADD KEY `CustomerID` (`CustomerID`);
+  ADD KEY `CustomerID` (`CustomerID`),
+  ADD KEY `EmployeeID` (`EmployeeID`);
 
 --
 -- Indexes for table `supplier`
@@ -519,7 +524,7 @@ ALTER TABLE `type_product`
 -- AUTO_INCREMENT for table `cart_item`
 --
 ALTER TABLE `cart_item`
-  MODIFY `CartItemID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `CartItemID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=95;
 
 --
 -- Constraints for dumped tables
@@ -595,8 +600,8 @@ ALTER TABLE `rolepermissions`
 -- Constraints for table `sales_invoice`
 --
 ALTER TABLE `sales_invoice`
-  ADD CONSTRAINT `sales_invoice_ibfk_1` FOREIGN KEY (`EmployeeID`) REFERENCES `employee` (`EmployeeID`),
-  ADD CONSTRAINT `sales_invoice_ibfk_2` FOREIGN KEY (`CustomerID`) REFERENCES `customer` (`CustomerID`);
+  ADD CONSTRAINT `sales_invoice_ibfk_1` FOREIGN KEY (`CustomerID`) REFERENCES `customer` (`CustomerID`),
+  ADD CONSTRAINT `sales_invoice_ibfk_2` FOREIGN KEY (`EmployeeID`) REFERENCES `employee` (`EmployeeID`);
 
 --
 -- Constraints for table `type_product`

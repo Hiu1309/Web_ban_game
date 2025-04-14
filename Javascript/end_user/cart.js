@@ -161,6 +161,23 @@ function setupSelectAllCheckbox() {
         });
     }
 }
+function setupDefaultAddressCheckbox() {
+    const checkbox = document.getElementById("selection-address");
+    const addressInput = document.getElementById("user-address");
+
+    if (!checkbox || !addressInput) return;
+
+    const defaultAddress = checkbox.dataset.defaultAddress || "";
+
+    checkbox.addEventListener("change", function () {
+        if (this.checked) {
+            addressInput.value = defaultAddress;
+        } else {
+            addressInput.value = "";
+        }
+    });
+}
+
 
 document.addEventListener("DOMContentLoaded", function () {
     attachAddToCartEvents();
@@ -169,5 +186,6 @@ document.addEventListener("DOMContentLoaded", function () {
     setupCartSummaryUpdate();
     setupQuantityChangeHandler();
     setupSelectAllCheckbox();
-
+    setupDefaultAddressCheckbox()
+   
 });

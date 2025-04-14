@@ -17,7 +17,9 @@
     <script type="module" src="/Javascript/end_user/search_filter.js"></script>
     <script type="module" src="/Javascript/end_user/account.js"></script>
     <script type="module" src="/Javascript/end_user/pagination.js"></script>
-    <script type="module" src="../Javascript/end_user/cart.js"></script>
+    <script type="module" src="/Javascript/end_user/cart.js"></script>
+    <script type="module" src="/Javascript/end_user/user_detail.js"></script>
+
 
     <title>Welcome to MT3H</title>
   </head>
@@ -180,7 +182,6 @@
                     >
                       <div class="font-bold uppercase">Đăng ký</div>
                     </button>
-
                     <button
                       type="button"
                       title="Đăng xuất"

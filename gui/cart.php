@@ -7,10 +7,19 @@ include('header_footer/header.php');
 // Kiểm tra đăng nhập
 $isLoggedIn = isset($_SESSION['CustomerID']);
 $cartItems = [];
+$defaultAddress = '';
 
-// Nếu đã đăng nhập, lấy cart từ DB
 if ($isLoggedIn) {
     $customerID = $_SESSION['CustomerID'];
+
+    // Lấy địa chỉ mặc định
+    $stmtAddress = $conn->prepare("SELECT Address FROM customer WHERE CustomerID = ?");
+    $stmtAddress->bind_param("s", $customerID);
+    $stmtAddress->execute();
+    $resultAddress = $stmtAddress->get_result();
+    if ($resultAddress->num_rows > 0) {
+        $defaultAddress = $resultAddress->fetch_assoc()['Address'];
+    }
 
     // Lấy CartID
     $sqlCart = "SELECT CartID FROM cart WHERE CustomerID = ?";
@@ -51,13 +60,13 @@ if ($isLoggedIn) {
                     'ProductName' => $product['ProductName'],
                     'ProductImg' => $product['ProductImg'],
                     'Price' => $product['Price'],
-                    
                 ];
             }
         }
     }
 }
 ?>
+
             
                               <section id="cart-content" class="cart grid-col col-l-12 col-m-12 col-s-12 margin-y-12">
                                    <div class="cart-title padding-bottom-8">
@@ -151,6 +160,7 @@ if ($isLoggedIn) {
                                              </div>
 
                                              <div class="grid-col col-l-4 col-m-12 col-s-12">
+                                             <form action="place_order.php" method="POST" id="place-order-form">
                                                   <div class="promotion-block-content cart-ui">
                                                        <div class="shop-voucher margin-bottom-12">
                                                             <p class="font-bold margin-bottom-8 capitalize">
@@ -212,7 +222,7 @@ if ($isLoggedIn) {
                                                             <h4 class="capitalize margin-bottom-8">địa chỉ nhận hàng
                                                             </h4>
                                                             <div class="margin-bottom-8">
-                                                                 <input type="checkbox" name="selection-address"
+                                                                 <input type="checkbox" name="selection-address" data-default-address="<?= htmlspecialchars($defaultAddress) ?>"
                                                                  id="selection-address" class="selection-address capitalize margin-bottom-8" />
                                                                  <label class="font-size-14"> địa chỉ mặc định</label>
                                                             </div>
@@ -270,9 +280,9 @@ if ($isLoggedIn) {
                                                             <textarea name="user-note" id="user-note"></textarea>
                                                        </form>
                                                   </div>
+                                                  </form>
                                              </div>
                                         </section>
                                    </div>
-                              </section>
-                    
+                              </section>                  
      <?php include('header_footer/footer.php') ?>
