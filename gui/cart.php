@@ -72,7 +72,7 @@ if ($isLoggedIn) {
                                              <div class="grid-cols col-l-8 col-m-12 col-s-12 no-gutter">
                                                   <div class="header-cart-content cart-ui">
                                                        <input type="checkbox" name="selection-item" id="selection-item"
-                                                            class="cart-all-checkbox grid-col col-l-1 col-m-1 col-s-1" />
+                                                            class="cart-all-checkbox grid-col col-l-1 col-m-1 col-s-1 " />
                                                        <div class="grid-col col-l-6 col-m-11 col-s-11">
                                                             chọn sản phẩm
                                                             <span class="item-count">(<?= count($cartItems) ?> sản phẩm)</span>
@@ -138,7 +138,7 @@ if ($isLoggedIn) {
                 <div class="rm-cart-btn col-l col-l-1 col-m-2 col-s-2 flex justify-center">
                     <form method="post" action="cart/remove_from_cart.php">
                         <input type="hidden" name="ProductID" value="<?= $item['ProductID'] ?>">
-                        <button type="submit" style="background:none;border:none;">
+                        <button type="submit" style="background:none;border:none;cursor: pointer;">
                             <i class="fa-solid fa-trash fa-lg" style="color: var(--primary-dark)"></i>
                         </button>
                     </form>
@@ -213,7 +213,7 @@ if ($isLoggedIn) {
                                                             </h4>
                                                             <div class="margin-bottom-8">
                                                                  <input type="checkbox" name="selection-address"
-                                                                 id="selection-address" class="capitalize margin-bottom-8" />
+                                                                 id="selection-address" class="selection-address capitalize margin-bottom-8" />
                                                                  <label class="font-size-14"> địa chỉ mặc định</label>
                                                             </div>
                                                             <ul>

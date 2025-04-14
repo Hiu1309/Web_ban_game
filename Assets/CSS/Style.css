@@ -565,7 +565,9 @@
 .page-button:hover {
   background-color: var(--btn-hover);
 }
-
+.cart-item-checkbox{
+  cursor: pointer;
+}
 .product-container .product-item {
   position: relative;
 }
@@ -573,10 +575,12 @@
 #main-content .product-container::-webkit-scrollbar {
   display: none;
 }
-
+.cart-all-checkbox{
+  cursor: pointer;
+}
 /* item inside */
 .block-product {
-  cursor: pointer;
+  
   position: relative;
 }
 
@@ -679,7 +683,9 @@
 
 /* end css for action */
 /* end container css using on other html */
-
+.selection-address{
+  cursor: pointer;
+}
 .category-tab .heading #best-selling-label {
   background: url("/Assets/Images/Icons/Other_icons/best-selling.jpg") top left /
     cover no-repeat;
