@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Apr 16, 2025 at 04:31 AM
+-- Generation Time: Apr 16, 2025 at 06:57 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -39,7 +39,8 @@ CREATE TABLE `account` (
 
 INSERT INTO `account` (`Username`, `Password`, `RoleID`) VALUES
 ('Hiếu Lê', '$2y$10$HHRV2oUzA5hnkhGcMQAMUOdxPoV9/.PYBgOoBNm1xCGceSVH7hkOm', 'R4'),
-('Híu Hiếu', '$2y$10$uHFIcqN.t6vSqLnFQ5iDAevJuHiLH7pRi5f7vayYnWMPqjw7XbLmm', 'R2');
+('Híu Hiếu', '$2y$10$uHFIcqN.t6vSqLnFQ5iDAevJuHiLH7pRi5f7vayYnWMPqjw7XbLmm', 'R2'),
+('van a', '$2y$10$.92Q/RhInlotD9rlxFnHaOlfHv2tUbhau7e6Csn9ijS1HLDquapDW', 'R4');
 
 -- --------------------------------------------------------
 
@@ -58,7 +59,8 @@ CREATE TABLE `cart` (
 --
 
 INSERT INTO `cart` (`CartID`, `CustomerID`, `CreatedDate`) VALUES
-('CART67f8cc', 'MT3H00001', '2025-04-11 15:01:34');
+('CART67f8cc', 'MT3H00001', '2025-04-11 15:01:34'),
+('CART67ff1e', 'MT3H00003', '2025-04-16 10:07:21');
 
 -- --------------------------------------------------------
 
@@ -83,7 +85,9 @@ INSERT INTO `cart_item` (`CartItemID`, `CartID`, `ProductID`, `Quantity`) VALUES
 (91, 'CART67f8cc', 'GAME004', 1),
 (92, 'CART67f8cc', 'GAME005', 1),
 (93, 'CART67f8cc', 'GAME008', 1),
-(94, 'CART67f8cc', 'GAME031', 1);
+(94, 'CART67f8cc', 'GAME031', 1),
+(95, 'CART67ff1e', 'GAME028', 1),
+(96, 'CART67ff1e', 'GAME029', 1);
 
 -- --------------------------------------------------------
 
@@ -107,7 +111,8 @@ CREATE TABLE `customer` (
 
 INSERT INTO `customer` (`CustomerID`, `Fullname`, `Username`, `Email`, `Address`, `Phone`, `TotalSpending`) VALUES
 ('MT3H00001', 'Hiếu Lê', 'Hiếu Lê', 'hjuiihy67@gmail.com', 'saddddddddddd', '0842498241', NULL),
-('MT3H00002', 'Híu Hiếu', 'Híu Hiếu', 'tienhieu2309@gmail.com', NULL, NULL, NULL);
+('MT3H00002', 'Híu Hiếu', 'Híu Hiếu', 'tienhieu2309@gmail.com', NULL, NULL, NULL),
+('MT3H00003', 'van a', 'van a', 'vana@gmail.com', NULL, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -157,28 +162,6 @@ CREATE TABLE `employee` (
   `Gender` enum('Nam','Nữ') DEFAULT NULL,
   `Salary` double DEFAULT NULL,
   `StartDate` date DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
--- --------------------------------------------------------
-
---
--- Table structure for table `genre`
---
-
-CREATE TABLE `genre` (
-  `GenreID` varchar(10) NOT NULL,
-  `GenreName` varchar(50) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
--- --------------------------------------------------------
-
---
--- Table structure for table `genre_detail`
---
-
-CREATE TABLE `genre_detail` (
-  `ProductID` varchar(10) NOT NULL,
-  `GenreID` varchar(10) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -282,6 +265,14 @@ CREATE TABLE `role` (
   `RoleName` varchar(50) NOT NULL,
   `Description` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `role`
+--
+
+INSERT INTO `role` (`RoleID`, `RoleName`, `Description`) VALUES
+('R2', 'SalesStaff', NULL),
+('R4', 'Customer', NULL);
 
 -- --------------------------------------------------------
 
@@ -402,7 +393,8 @@ INSERT INTO `type_product` (`TypeID`, `ProductID`) VALUES
 -- Indexes for table `account`
 --
 ALTER TABLE `account`
-  ADD PRIMARY KEY (`Username`);
+  ADD PRIMARY KEY (`Username`),
+  ADD KEY `fk_account_role` (`RoleID`);
 
 --
 -- Indexes for table `cart`
@@ -448,19 +440,6 @@ ALTER TABLE `detail_sales_invoice`
 ALTER TABLE `employee`
   ADD PRIMARY KEY (`EmployeeID`),
   ADD UNIQUE KEY `Username` (`Username`);
-
---
--- Indexes for table `genre`
---
-ALTER TABLE `genre`
-  ADD PRIMARY KEY (`GenreID`);
-
---
--- Indexes for table `genre_detail`
---
-ALTER TABLE `genre_detail`
-  ADD PRIMARY KEY (`ProductID`,`GenreID`),
-  ADD KEY `GenreID` (`GenreID`);
 
 --
 -- Indexes for table `import_invoice`
@@ -525,11 +504,17 @@ ALTER TABLE `type_product`
 -- AUTO_INCREMENT for table `cart_item`
 --
 ALTER TABLE `cart_item`
-  MODIFY `CartItemID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=95;
+  MODIFY `CartItemID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=97;
 
 --
 -- Constraints for dumped tables
 --
+
+--
+-- Constraints for table `account`
+--
+ALTER TABLE `account`
+  ADD CONSTRAINT `fk_account_role` FOREIGN KEY (`RoleID`) REFERENCES `role` (`RoleID`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `cart`
@@ -569,13 +554,6 @@ ALTER TABLE `detail_sales_invoice`
 --
 ALTER TABLE `employee`
   ADD CONSTRAINT `employee_ibfk_1` FOREIGN KEY (`Username`) REFERENCES `account` (`Username`);
-
---
--- Constraints for table `genre_detail`
---
-ALTER TABLE `genre_detail`
-  ADD CONSTRAINT `genre_detail_ibfk_1` FOREIGN KEY (`ProductID`) REFERENCES `product` (`ProductID`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `genre_detail_ibfk_2` FOREIGN KEY (`GenreID`) REFERENCES `genre` (`GenreID`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `import_invoice`
