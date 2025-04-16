@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Apr 15, 2025 at 09:26 AM
+-- Generation Time: Apr 16, 2025 at 04:31 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -38,7 +38,8 @@ CREATE TABLE `account` (
 --
 
 INSERT INTO `account` (`Username`, `Password`, `RoleID`) VALUES
-('Hiếu Lê', '$2y$10$HHRV2oUzA5hnkhGcMQAMUOdxPoV9/.PYBgOoBNm1xCGceSVH7hkOm', 'R4');
+('Hiếu Lê', '$2y$10$HHRV2oUzA5hnkhGcMQAMUOdxPoV9/.PYBgOoBNm1xCGceSVH7hkOm', 'R4'),
+('Híu Hiếu', '$2y$10$uHFIcqN.t6vSqLnFQ5iDAevJuHiLH7pRi5f7vayYnWMPqjw7XbLmm', 'R2');
 
 -- --------------------------------------------------------
 
@@ -105,7 +106,8 @@ CREATE TABLE `customer` (
 --
 
 INSERT INTO `customer` (`CustomerID`, `Fullname`, `Username`, `Email`, `Address`, `Phone`, `TotalSpending`) VALUES
-('MT3H00001', 'Hiếu Lê', 'Hiếu Lê', 'hjuiihy67@gmail.com', 'saddddddddddd', '0842498241', NULL);
+('MT3H00001', 'Hiếu Lê', 'Hiếu Lê', 'hjuiihy67@gmail.com', 'saddddddddddd', '0842498241', NULL),
+('MT3H00002', 'Híu Hiếu', 'Híu Hiếu', 'tienhieu2309@gmail.com', NULL, NULL, NULL);
 
 -- --------------------------------------------------------
 

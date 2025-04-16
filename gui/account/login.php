@@ -101,7 +101,7 @@
                          header("Location: /staff/sales.php");
                          exit;
                     case "R2":
-                         header("Location: /staff/inventory.php");
+                         header("Location: /admin/salesStaff/index.php?page=order_management");
                          exit;
                     case "R1":
                          header("Location: /admin/dashboard.php");
