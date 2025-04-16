@@ -45,9 +45,9 @@ document.addEventListener("DOMContentLoaded", function () {
       const productHtml = `
         <div class="product-item grid-col col-l-2-4 col-m-3 col-s-6">
           <div class="block-product product-resize">
-            <span class="product-image js-item">
-              <img src="${product.ProductImg}" alt="${product.ProductName}">
-            </span>
+            <a href="/gui/game_detail.php?id=${product.ProductID}" class="product-image js-item">
+  <img src="${product.ProductImg}" alt="${product.ProductName}">
+</a>
             <div class="sale-off font-bold capitalize ${
               product.Quantity > 0 ? "" : "active"
             }">Hết hàng</div>

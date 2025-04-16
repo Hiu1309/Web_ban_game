@@ -161,6 +161,9 @@ function setupSelectAllCheckbox() {
         });
     }
 }
+
+
+
 function setupDefaultAddressCheckbox() {
     const checkbox = document.getElementById("selection-address");
     const addressInput = document.getElementById("user-address");
@@ -186,6 +189,7 @@ document.addEventListener("DOMContentLoaded", function () {
     setupCartSummaryUpdate();
     setupQuantityChangeHandler();
     setupSelectAllCheckbox();
-    setupDefaultAddressCheckbox()
+    setupDefaultAddressCheckbox();
    
+    
 });

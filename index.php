@@ -6,7 +6,7 @@
                            <!-- banner -->
                                 <section class="banner-container flex justify-center align-center">
                                      <div class="homepage grid-col col-l-12 col-m-12 col-s-12 no-gutter">
-                                          <a data-panel="{&quot;focusable&quot;:false}" href="" class="promo_link" style="display: block;">
+                                          <a data-panel="{&quot;focusable&quot;:false}" href="/gui/game_detail.php?id=<?= urlencode('GAME019') ?>" class="promo_link" style="display: block;">
                                           <video loop muted autoplay playsinline preload="none'" id="home_video_desktop" alt="Feature red Promotion" class="fullscreen-bg__video">
                                    
                                                <source src="/Assets/Videos/BackGrounds/webm_page_bg_english.webm" type="video/mp4">
@@ -86,9 +86,9 @@
 
                                                        echo '<div class="product-item grid-col col-l-2-4 col-m-3 col-s-6">';
                                                        echo '  <div class="block-product product-resize">';
-                                                       echo '    <span class="product-image js-item">';
-                                                       echo '      <img src="' . $product['ProductImg'] . '" alt="' . $product['ProductName'] . '">';
-                                                       echo '    </span>';
+                                                       echo '    <a href="/gui/game_detail.php?id=' . $product['ProductID'] . '" class="product-image js-item">';
+                                                  echo '      <img src="' . $product['ProductImg'] . '" alt="' . $product['ProductName'] . '">';
+                                                  echo '    </a>';
                                                        echo '    <div class="sale-off font-bold capitalize ' . $availabilityClass . '">hết hàng</div>';
                                                        echo '    <div class="info-inner flex justify-center align-center line-height-1-6">';
                                                        echo '      <h4 class="font-light capitalize" title="' . $product['ProductName'] . '">' . $product['ProductName'] . '</h4>';
@@ -148,9 +148,9 @@
 
                                                   echo '<div class="product-item grid-col col-l-2-4 col-m-3 col-s-6">';
                                                   echo '  <div class="block-product product-resize">';
-                                                  echo '    <span class="product-image js-item">';
+                                                  echo '    <a href="/gui/game_detail.php?id=' . $product['ProductID'] . '" class="product-image js-item">';
                                                   echo '      <img src="' . $product['ProductImg'] . '" alt="' . $product['ProductName'] . '">';
-                                                  echo '    </span>';
+                                                  echo '    </a>';
                                                   echo '    <div class="sale-off font-bold capitalize ' . $availabilityClass . '">Hết hàng</div>';
                                                   echo '    <div class="info-inner flex justify-center align-center line-height-1-6">';
                                                   echo '      <h4 class="font-light capitalize" title="' . $product['ProductName'] . '">' . $product['ProductName'] . '</h4>';
@@ -210,9 +210,9 @@
 
                                                   echo '<div class="product-item grid-col col-l-2-4 col-m-3 col-s-6">';
                                                   echo '  <div class="block-product product-resize">';
-                                                  echo '    <span class="product-image js-item">';
+                                                  echo '    <a href="/gui/game_detail.php?id=' . $product['ProductID'] . '" class="product-image js-item">';
                                                   echo '      <img src="' . $product['ProductImg'] . '" alt="' . $product['ProductName'] . '">';
-                                                  echo '    </span>';
+                                                  echo '    </a>';
                                                   echo '    <div class="sale-off font-bold capitalize ' . $availabilityClass . '">Hết hàng</div>';
                                                   echo '    <div class="info-inner flex justify-center align-center line-height-1-6">';
                                                   echo '      <h4 class="font-light capitalize" title="' . $product['ProductName'] . '">' . $product['ProductName'] . '</h4>';
@@ -270,9 +270,9 @@
 
                                                   echo '<div class="product-item grid-col col-l-2-4 col-m-3 col-s-6">';
                                                   echo '  <div class="block-product product-resize">';
-                                                  echo '    <span class="product-image js-item">';
+                                                  echo '    <a href="/gui/game_detail.php?id=' . $product['ProductID'] . '" class="product-image js-item">';
                                                   echo '      <img src="' . $product['ProductImg'] . '" alt="' . $product['ProductName'] . '">';
-                                                  echo '    </span>';
+                                                  echo '    </a>';
                                                   echo '    <div class="sale-off font-bold capitalize ' . $availabilityClass . '">hết hàng</div>';
                                                   echo '    <div class="info-inner flex justify-center align-center line-height-1-6">';
                                                   echo '      <h4 class="font-light capitalize" title="' . $product['ProductName'] . '">' . $product['ProductName'] . '</h4>';
@@ -330,9 +330,9 @@
 
                                                   echo '<div class="product-item grid-col col-l-2-4 col-m-3 col-s-6">';
                                                   echo '  <div class="block-product product-resize">';
-                                                  echo '    <span class="product-image js-item">';
+                                                  echo '    <a href="/gui/game_detail.php?id=' . $product['ProductID'] . '" class="product-image js-item">';
                                                   echo '      <img src="' . $product['ProductImg'] . '" alt="' . $product['ProductName'] . '">';
-                                                  echo '    </span>';
+                                                  echo '    </a>';
                                                   echo '    <div class="sale-off font-bold capitalize ' . $availabilityClass . '">hết hàng</div>';
                                                   echo '    <div class="info-inner flex justify-center align-center line-height-1-6">';
                                                   echo '      <h4 class="font-light capitalize" title="' . $product['ProductName'] . '">' . $product['ProductName'] . '</h4>';

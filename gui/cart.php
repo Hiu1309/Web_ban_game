@@ -160,7 +160,7 @@ if ($isLoggedIn) {
                                              </div>
 
                                              <div class="grid-col col-l-4 col-m-12 col-s-12">
-                                             <form action="place_order.php" method="POST" id="place-order-form">
+                                            
                                                   <div class="promotion-block-content cart-ui">
                                                        <div class="shop-voucher margin-bottom-12">
                                                             <p class="font-bold margin-bottom-8 capitalize">
@@ -280,7 +280,7 @@ if ($isLoggedIn) {
                                                             <textarea name="user-note" id="user-note"></textarea>
                                                        </form>
                                                   </div>
-                                                  </form>
+                                                 
                                              </div>
                                         </section>
                                    </div>

@@ -537,6 +537,16 @@
   display: flex;
   flex-wrap: wrap;
 }
+#main-content .product-containerr {
+  margin-bottom: 0.5em;
+  display: flex;
+  flex-wrap: wrap;
+}
+#main-content .product-containerrr {
+  margin-bottom: 0.5em;
+  display: flex;
+  flex-wrap: wrap;
+}
 
 .pagination-controls {
   display: flex;
@@ -562,6 +572,14 @@
   
   background: var(--main-color);
 }
+.action .buy-now-btn,
+.action .add-to-cart {
+  position: absolute;
+  bottom: 27px; /* hoặc bất kỳ khoảng cách nào từ dưới lên */
+  left: 30%;
+  
+  background: var(--main-color);
+}
 .page-button:hover {
   background-color: var(--btn-hover);
 }
@@ -570,6 +588,18 @@
 }
 .product-container .product-item {
   position: relative;
+}
+.product-containerr .product-item {
+  position: relative;
+}
+.product-containerrr .product-item {
+  position: relative;
+}
+#main-content .product-containerr::-webkit-scrollbar {
+  display: none;
+}
+#main-content .product-containerrr::-webkit-scrollbar {
+  display: none;
 }
 
 #main-content .product-container::-webkit-scrollbar {
@@ -584,12 +614,40 @@
   position: relative;
 }
 
+
+.hieule {
+  display: flex;
+  justify-content: center; /* Căn giữa theo chiều ngang */
+  align-items: center; /* Căn giữa theo chiều dọc */
+  width: 100%; /* Đảm bảo nó chiếm hết chiều rộng */
+  text-align: center; /* Căn giữa văn bản */
+  padding: 20px;
+  font-size: 18px;
+  font-weight: bold;
+  color: #333;
+}
 .product-container .block-product {
+  margin: 1.25em 0;
+  background: var(--primary-white);
+}
+.product-containerr .block-product {
+  margin: 1.25em 0;
+  background: var(--primary-white);
+}
+.product-containerrr .block-product {
   margin: 1.25em 0;
   background: var(--primary-white);
 }
 
 .product-container .block-product:hover {
+  animation: zoomScale linear 0.1s forwards;
+  box-shadow: 0 1px 0.25em var(--primary-dark);
+}
+.product-containerr .block-product:hover {
+  animation: zoomScale linear 0.1s forwards;
+  box-shadow: 0 1px 0.25em var(--primary-dark);
+}
+.product-containerrr .block-product:hover {
   animation: zoomScale linear 0.1s forwards;
   box-shadow: 0 1px 0.25em var(--primary-dark);
 }
