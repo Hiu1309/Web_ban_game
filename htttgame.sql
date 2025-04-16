@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Apr 01, 2025 at 08:48 AM
+-- Generation Time: Apr 16, 2025 at 04:31 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -29,9 +29,61 @@ SET time_zone = "+00:00";
 
 CREATE TABLE `account` (
   `Username` varchar(50) NOT NULL,
-  `Password` varchar(50) NOT NULL,
+  `Password` varchar(100) NOT NULL,
   `RoleID` varchar(10) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `account`
+--
+
+INSERT INTO `account` (`Username`, `Password`, `RoleID`) VALUES
+('Hiếu Lê', '$2y$10$HHRV2oUzA5hnkhGcMQAMUOdxPoV9/.PYBgOoBNm1xCGceSVH7hkOm', 'R4'),
+('Híu Hiếu', '$2y$10$uHFIcqN.t6vSqLnFQ5iDAevJuHiLH7pRi5f7vayYnWMPqjw7XbLmm', 'R2');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `cart`
+--
+
+CREATE TABLE `cart` (
+  `CartID` varchar(10) NOT NULL,
+  `CustomerID` varchar(10) NOT NULL,
+  `CreatedDate` datetime DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `cart`
+--
+
+INSERT INTO `cart` (`CartID`, `CustomerID`, `CreatedDate`) VALUES
+('CART67f8cc', 'MT3H00001', '2025-04-11 15:01:34');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `cart_item`
+--
+
+CREATE TABLE `cart_item` (
+  `CartItemID` int(11) NOT NULL,
+  `CartID` varchar(10) NOT NULL,
+  `ProductID` varchar(10) NOT NULL,
+  `Quantity` int(11) DEFAULT 1
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `cart_item`
+--
+
+INSERT INTO `cart_item` (`CartItemID`, `CartID`, `ProductID`, `Quantity`) VALUES
+(89, 'CART67f8cc', 'GAME016', 1),
+(90, 'CART67f8cc', 'GAME003', 1),
+(91, 'CART67f8cc', 'GAME004', 1),
+(92, 'CART67f8cc', 'GAME005', 1),
+(93, 'CART67f8cc', 'GAME008', 1),
+(94, 'CART67f8cc', 'GAME031', 1);
 
 -- --------------------------------------------------------
 
@@ -48,6 +100,14 @@ CREATE TABLE `customer` (
   `Phone` varchar(25) DEFAULT NULL,
   `TotalSpending` double DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `customer`
+--
+
+INSERT INTO `customer` (`CustomerID`, `Fullname`, `Username`, `Email`, `Address`, `Phone`, `TotalSpending`) VALUES
+('MT3H00001', 'Hiếu Lê', 'Hiếu Lê', 'hjuiihy67@gmail.com', 'saddddddddddd', '0842498241', NULL),
+('MT3H00002', 'Híu Hiếu', 'Híu Hiếu', 'tienhieu2309@gmail.com', NULL, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -74,6 +134,7 @@ CREATE TABLE `detail_sales_invoice` (
   `DetailSalesID` varchar(10) NOT NULL,
   `SalesID` varchar(10) DEFAULT NULL,
   `ProductID` varchar(10) DEFAULT NULL,
+  `Order_status` varchar(10) DEFAULT NULL,
   `Quantity` int(11) DEFAULT NULL,
   `Price` double DEFAULT NULL,
   `TotalPrice` double DEFAULT NULL
@@ -177,7 +238,7 @@ INSERT INTO `product` (`ProductID`, `ProductName`, `ProductImg`, `Author`, `Publ
 ('GAME006', 'The Witcher 3', '/Assets/Images/Game/witcher_3.jpg', 'CD Projekt Red', 'CD Projekt', 80, 1499099, 'Game nhập vai với thế giới mở rộng lớn', 'SUP001', 'Available'),
 ('GAME007', 'GTA V', '/Assets/Images/Game/gta_v.jpg', 'Rockstar Games', 'Rockstar Games', 250, 1019745, 'Game hành động phiêu lưu trong thế giới mở', 'SUP002', 'Available'),
 ('GAME008', 'Fallout 4', '/Assets/Images/Game/fallout_4.jpg', 'Bethesda Softworks', 'Bethesda Softworks', 90, 1147009, 'Game nhập vai thế giới mở trong bối cảnh hậu tận thế', 'SUP003', 'Available'),
-('GAME009', 'Uncharted ', '/Assets/Images/Games/uncharted.jpg', 'Naughty Dog', 'Sony Computer Entertainment', 110, 1274000, 'Game hành động phiêu lưu với đồ họa tuyệt vời', 'SUP004', 'Available'),
+('GAME009', 'ARK: Survival Ascended', '/Assets/Images/Game/ark.jpg', ' Studio Wildcard', ' Studio Wildcard', 110, 1274000, 'Game hành động phiêu lưu thế giới mở với đồ họa tuyệt vời', 'SUP004', 'Available'),
 ('GAME010', 'Portal 2', '/Assets/Images/Game/portal_2.jpg', 'Valve Corporation', 'Valve Corporation', 95, 509745, 'Game giải đố với cơ chế cổng không gian', 'SUP005', 'Available'),
 ('GAME011', 'Assassin\'s Creed Valhalla', '/Assets/Images/Game/acvalhalla.jpg', 'Ubisoft', 'Ubisoft', 100, 1529745, 'Game hành động thế giới mở', 'SUP001', 'Available'),
 ('GAME012', 'Watch Dogs: Legion', '/Assets/Images/Game/watchdogslegion.jpg', 'Ubisoft', 'Ubisoft', 80, 1274000, 'Game hành động phiêu lưu trong thế giới mở', 'SUP002', 'Available'),
@@ -193,12 +254,12 @@ INSERT INTO `product` (`ProductID`, `ProductName`, `ProductImg`, `Author`, `Publ
 ('GAME022', 'Horizon Zero Dawn', '/Assets/Images/Game/horizonzerodawn.jpg', 'Guerrilla Games', 'Sony Interactive Entertainment', 110, 1274000, 'Game hành động nhập vai', 'SUP002', 'Available'),
 ('GAME023', 'No Man\'s Sky', '/Assets/Images/Game/nms.jpg', 'Hello Games', 'Hello Games', 130, 1019745, 'Game phiêu lưu thế giới mở', 'SUP003', 'Available'),
 ('GAME024', 'Cyber Hunter', '/Assets/Images/Game/cyberhunter.jpg', 'Nexon', 'Nexon', 100, 0, 'Game free-to-play nhập vai hành động', 'SUP004', 'Available'),
-('GAME025', 'PUBG', '/Assets/Images/Game/pubg.jpg', 'PUBG Corporation', 'PUBG Corporation', 200, 764.745, 'Game sinh tồn', 'SUP005', 'Available'),
+('GAME025', 'PUBG', '/Assets/Images/Game/pubg.jpg', 'PUBG Corporation', 'PUBG Corporation', 200, 764745, 'Game sinh tồn', 'SUP005', 'Available'),
 ('GAME026', 'Apex Legends', '/Assets/Images/Game/apexlegends.jpg', 'Respawn Entertainment', 'Electronic Arts', 150, 0, 'Game free-to-play bắn súng', 'SUP001', 'Available'),
 ('GAME027', 'Infestation: Battle Royale', '/Assets/Images/Game/infestation.jpg', 'Epic Games', 'Epic Games', 250, 0, 'Game free-to-play sinh tồn', 'SUP002', 'Available'),
 ('GAME028', 'Warframe', '/Assets/Images/Game/warframe.jpg', '\nDigital Extremes', '\nDigital Extremes', 500, 0, 'Game MOBA free-to-play', 'SUP003', 'Available'),
-('GAME029', 'Minecraft', '/Assets/Images/Game/minecraft.jpg', 'Mojang Studios', 'Mojang Studios', 300, 509745, 'Game phiêu lưu xây dựng', 'SUP004', 'Available'),
-('GAME030', 'Rocket League', '/Assets/Images/Game/rocketleague.jpg', 'Psyonix', 'Psyonix', 200, 509745, 'Game thể thao online', 'SUP005', 'Available'),
+('GAME029', 'Minecraft', '/Assets/Images/Game/minecraft.jpg', 'Mojang Studios', 'Mojang Studios', 300, 0, 'Game phiêu lưu xây dựng', 'SUP004', 'Available'),
+('GAME030', 'Rocket League', '/Assets/Images/Game/rocketleague.jpg', 'Psyonix', 'Psyonix', 200, 0, 'Game thể thao online', 'SUP005', 'Available'),
 ('GAME031', 'The Sims 4', '/Assets/Images/Game/thesims4.jpg', 'Riot Games', 'Riot Games', 400, 0, 'Game bắn súng chiến thuật free-to-play', 'SUP001', 'Available'),
 ('GAME032', 'Hogwarts Legacy', '/Assets/Images/Game/hogwartslegacy.jpg', 'Blizzard Entertainment', 'Blizzard Entertainment', 100, 382245, 'Game nhập vai trực tuyến', 'SUP002', 'Available'),
 ('GAME033', 'The Division 2', '/Assets/Images/Game/division2.jpg', 'Ubisoft', 'Ubisoft', 150, 1529745, 'Game hành động thế giới mở', 'SUP003', 'Available'),
@@ -208,7 +269,7 @@ INSERT INTO `product` (`ProductID`, `ProductName`, `ProductImg`, `Author`, `Publ
 ('GAME037', 'Dragon Age: Inquisition', '/Assets/Images/Game/dragonageinquisition.jpg', 'BioWare', 'Electronic Arts', 60, 1529745, 'Game nhập vai thế giới mở', 'SUP002', 'Available'),
 ('GAME038', 'Divinity: Original Sin 2', '/Assets/Images/Game/divinityoriginalsin2.jpg', 'Larian Studios', 'Larian Studios', 55, 1274000, 'Game nhập vai chiến thuật', 'SUP003', 'Available'),
 ('GAME039', 'Star Wars Jedi: Fallen Order', '/Assets/Images/Game/starwarsjedi.jpg', 'Respawn Entertainment', 'Electronic Arts', 90, 1529745, 'Game hành động phiêu lưu', 'SUP004', 'Available'),
-('GAME040', 'Enshrouded', '/Assets/Images/Game/enshrouded.jpg', 'Capcom', 'Capcom', 120, 1529745, 'Game nhập vai hành động', 'SUP005', 'Available');
+('GAME040', 'Enshrouded', '/Assets/Images/Game/enshrouded.jpg', 'Cpcom', 'Cpcom', 120, 1529745, 'Game nhập vai hành động', 'SUP005', 'Available');
 
 -- --------------------------------------------------------
 
@@ -242,10 +303,13 @@ CREATE TABLE `rolepermissions` (
 
 CREATE TABLE `sales_invoice` (
   `SalesID` varchar(10) NOT NULL,
+  `CustomerID` varchar(10) NOT NULL,
   `EmployeeID` varchar(10) DEFAULT NULL,
-  `CustomerID` varchar(10) DEFAULT NULL,
-  `Date` date DEFAULT NULL,
-  `TotalPrice` double DEFAULT NULL
+  `PaymentMethod` varchar(50) DEFAULT NULL,
+  `ShippingAddress` text DEFAULT NULL,
+  `TotalPrice` double DEFAULT NULL,
+  `Note` text DEFAULT NULL,
+  `Date` datetime DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -294,9 +358,9 @@ INSERT INTO `type_product` (`TypeID`, `ProductID`) VALUES
 ('AC001', 'GAME015'),
 ('AC001', 'GAME016'),
 ('AC001', 'GAME017'),
+('AC001', 'GAME025'),
 ('AC001', 'GAME039'),
 ('F2P001', 'GAME024'),
-('F2P001', 'GAME025'),
 ('F2P001', 'GAME026'),
 ('F2P001', 'GAME027'),
 ('F2P001', 'GAME028'),
@@ -339,6 +403,21 @@ INSERT INTO `type_product` (`TypeID`, `ProductID`) VALUES
 --
 ALTER TABLE `account`
   ADD PRIMARY KEY (`Username`);
+
+--
+-- Indexes for table `cart`
+--
+ALTER TABLE `cart`
+  ADD PRIMARY KEY (`CartID`),
+  ADD KEY `CustomerID` (`CustomerID`);
+
+--
+-- Indexes for table `cart_item`
+--
+ALTER TABLE `cart_item`
+  ADD PRIMARY KEY (`CartItemID`),
+  ADD KEY `CartID` (`CartID`),
+  ADD KEY `ProductID` (`ProductID`);
 
 --
 -- Indexes for table `customer`
@@ -422,8 +501,8 @@ ALTER TABLE `rolepermissions`
 --
 ALTER TABLE `sales_invoice`
   ADD PRIMARY KEY (`SalesID`),
-  ADD KEY `EmployeeID` (`EmployeeID`),
-  ADD KEY `CustomerID` (`CustomerID`);
+  ADD KEY `CustomerID` (`CustomerID`),
+  ADD KEY `EmployeeID` (`EmployeeID`);
 
 --
 -- Indexes for table `supplier`
@@ -439,8 +518,31 @@ ALTER TABLE `type_product`
   ADD KEY `ProductID` (`ProductID`);
 
 --
+-- AUTO_INCREMENT for dumped tables
+--
+
+--
+-- AUTO_INCREMENT for table `cart_item`
+--
+ALTER TABLE `cart_item`
+  MODIFY `CartItemID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=95;
+
+--
 -- Constraints for dumped tables
 --
+
+--
+-- Constraints for table `cart`
+--
+ALTER TABLE `cart`
+  ADD CONSTRAINT `cart_ibfk_1` FOREIGN KEY (`CustomerID`) REFERENCES `customer` (`CustomerID`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints for table `cart_item`
+--
+ALTER TABLE `cart_item`
+  ADD CONSTRAINT `cart_item_ibfk_1` FOREIGN KEY (`CartID`) REFERENCES `cart` (`CartID`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `cart_item_ibfk_2` FOREIGN KEY (`ProductID`) REFERENCES `product` (`ProductID`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `customer`
@@ -499,8 +601,8 @@ ALTER TABLE `rolepermissions`
 -- Constraints for table `sales_invoice`
 --
 ALTER TABLE `sales_invoice`
-  ADD CONSTRAINT `sales_invoice_ibfk_1` FOREIGN KEY (`EmployeeID`) REFERENCES `employee` (`EmployeeID`),
-  ADD CONSTRAINT `sales_invoice_ibfk_2` FOREIGN KEY (`CustomerID`) REFERENCES `customer` (`CustomerID`);
+  ADD CONSTRAINT `sales_invoice_ibfk_1` FOREIGN KEY (`CustomerID`) REFERENCES `customer` (`CustomerID`),
+  ADD CONSTRAINT `sales_invoice_ibfk_2` FOREIGN KEY (`EmployeeID`) REFERENCES `employee` (`EmployeeID`);
 
 --
 -- Constraints for table `type_product`
