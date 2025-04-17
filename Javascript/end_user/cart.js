@@ -298,7 +298,7 @@ function setupCheckoutHandler() {
                 alert("Đặt hàng thành công!");
                 window.location.href = "/index.php";
             } else {
-                alert("Đã có lỗi xảy ra khi đặt hàng. Vui lòng thử lại.");
+                alert("Đã có lỗi xảy ra khi đặt hàng hoặc do bạn chưa đăng nhập");
             }
         })
         .catch(err => {
