@@ -554,6 +554,43 @@
   gap: 10px;
   margin-top: 20px;
 }
+.address-warning {
+  position: fixed;
+  top: 10px;
+  right: 20px;
+  background-color: #ffc2c2;
+  color: #740202;
+  padding: 18px 70px;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  font-weight: 600;
+  font-size: 16px;
+  z-index: 9999;
+  transition: opacity 0.3s ease-in-out;
+}
+
+.address-warning.hidden {
+  display: none;
+}
+.cart-added-alert {
+  position: fixed;
+  top: 10px;
+  right: 20px;
+  background-color: #c3ffc2;
+  color: #0a7402;
+  padding: 12px 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  font-weight: 600;
+  font-size: 16px;
+  z-index: 9999;
+  transition: opacity 0.3s ease-in-out;
+}
+
+.cart-added-alert.hidden {
+  display: none;
+}
+
 
 .page-button {
   padding: 5px 10px;

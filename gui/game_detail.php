@@ -94,7 +94,7 @@ switch ($type_id_prefix) {
                                                        </div>
                                                        <div class="block-product-price margin-bottom-12">
                                                             <span
-                                                                 class="price new-price font-bold padding-right-8 font-size-26"><?php echo number_format($product['Price']); ?>₫</span>
+                                                                 class="price new-price font-bold padding-right-8 font-size-26"><?php echo $product['Price'] == 0 ? "Miễn phí" : number_format($product['Price']) . "₫"; ?></span>
                                                             
                                                        </div>
                                                        <div
@@ -124,21 +124,22 @@ switch ($type_id_prefix) {
 
                                                        <div class="product-selector margin-top-16">
                                                             
-                                                            <div
-                                                                 class="quantity-box margin-bottom-12 grid-col col-l-2-4 col-m-3 col-s-5 no-gutter">
-                                                                 <input type="button" value="-" class="reduce">
-                                                                 <input type="text" name="quantity" 
-                                                                      placeholder="1" value="1" class="quantity-cart">
-                                                                 <input type="button" value="+" class="increase">
-                                                            </div>
+                                                           
                                                             
                                                             <div
                                                                  class="grid-col col-l-8 col-m-6 col-s-12 no-gutter flex justify-space-between margin-bottom-12">
-                                                                <!-- <div class="buy-btn button margin-bottom-8" data-id="<?php echo $product['ProductID']; ?>">mua ngay
-                                                                 </div>-->
+                                                                 <div class="buy-btn button margin-bottom-8 buy-now-btn" data-id="<?php echo $product['ProductID']; ?>">mua ngay</div>
+                                                                 <div
+                                                                 class="quantity-box margin-bottom-12 grid-col col-l-2 col-m-10 col-s-10 no-gutter">
+                                                                 <!-- <input type="button" value="-" class="reduce">-->
+                                                                 <input type="number" name="quantity" 
+                                                                      placeholder="1" value="1" class="quantity-cart">
+                                                                <!-- <input type="button" value="+" class="increase">-->
+                                                            </div>
                                                                  <div class="add-to-cart button margin-bottom-8 add-to-cart-btn" data-id="<?php echo $product['ProductID']; ?>" >thêm
                                                                       vào giỏ hàng</div>
                                                             </div>
+                                                            
                                                       
                                                     </div>
                    

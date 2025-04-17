@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Apr 16, 2025 at 06:57 PM
+-- Generation Time: Apr 17, 2025 at 07:22 PM
 -- Server version: 10.4.32-MariaDB
--- PHP Version: 8.2.12
+-- PHP Version: 8.1.25
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -38,9 +38,7 @@ CREATE TABLE `account` (
 --
 
 INSERT INTO `account` (`Username`, `Password`, `RoleID`) VALUES
-('Hiếu Lê', '$2y$10$HHRV2oUzA5hnkhGcMQAMUOdxPoV9/.PYBgOoBNm1xCGceSVH7hkOm', 'R4'),
-('Híu Hiếu', '$2y$10$uHFIcqN.t6vSqLnFQ5iDAevJuHiLH7pRi5f7vayYnWMPqjw7XbLmm', 'R2'),
-('van a', '$2y$10$.92Q/RhInlotD9rlxFnHaOlfHv2tUbhau7e6Csn9ijS1HLDquapDW', 'R4');
+('Hiếu Lê', '$2y$10$HHRV2oUzA5hnkhGcMQAMUOdxPoV9/.PYBgOoBNm1xCGceSVH7hkOm', 'R4');
 
 -- --------------------------------------------------------
 
@@ -59,8 +57,7 @@ CREATE TABLE `cart` (
 --
 
 INSERT INTO `cart` (`CartID`, `CustomerID`, `CreatedDate`) VALUES
-('CART67f8cc', 'MT3H00001', '2025-04-11 15:01:34'),
-('CART67ff1e', 'MT3H00003', '2025-04-16 10:07:21');
+('CART67f8cc', 'MT3H00001', '2025-04-11 15:01:34');
 
 -- --------------------------------------------------------
 
@@ -80,14 +77,9 @@ CREATE TABLE `cart_item` (
 --
 
 INSERT INTO `cart_item` (`CartItemID`, `CartID`, `ProductID`, `Quantity`) VALUES
-(89, 'CART67f8cc', 'GAME016', 1),
-(90, 'CART67f8cc', 'GAME003', 1),
-(91, 'CART67f8cc', 'GAME004', 1),
-(92, 'CART67f8cc', 'GAME005', 1),
-(93, 'CART67f8cc', 'GAME008', 1),
-(94, 'CART67f8cc', 'GAME031', 1),
-(95, 'CART67ff1e', 'GAME028', 1),
-(96, 'CART67ff1e', 'GAME029', 1);
+(119, 'CART67f8cc', 'GAME016', 1),
+(120, 'CART67f8cc', 'GAME015', 1),
+(121, 'CART67f8cc', 'GAME017', 1);
 
 -- --------------------------------------------------------
 
@@ -110,9 +102,7 @@ CREATE TABLE `customer` (
 --
 
 INSERT INTO `customer` (`CustomerID`, `Fullname`, `Username`, `Email`, `Address`, `Phone`, `TotalSpending`) VALUES
-('MT3H00001', 'Hiếu Lê', 'Hiếu Lê', 'hjuiihy67@gmail.com', 'saddddddddddd', '0842498241', NULL),
-('MT3H00002', 'Híu Hiếu', 'Híu Hiếu', 'tienhieu2309@gmail.com', NULL, NULL, NULL),
-('MT3H00003', 'van a', 'van a', 'vana@gmail.com', NULL, NULL, NULL);
+('MT3H00001', 'Hiếu Lê', 'Hiếu Lê', 'hjuiihy67@gmail.com', 'sdadadasdadadsa', '0842498241', NULL);
 
 -- --------------------------------------------------------
 
@@ -136,14 +126,26 @@ CREATE TABLE `detail_import_invoice` (
 --
 
 CREATE TABLE `detail_sales_invoice` (
-  `DetailSalesID` varchar(10) NOT NULL,
+  `DetailSalesID` int(11) NOT NULL,
   `SalesID` varchar(10) DEFAULT NULL,
   `ProductID` varchar(10) DEFAULT NULL,
-  `Order_status` varchar(10) DEFAULT NULL,
+  `Order_status` varchar(50) DEFAULT '''Chờ xử lý''',
   `Quantity` int(11) DEFAULT NULL,
   `Price` double DEFAULT NULL,
   `TotalPrice` double DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `detail_sales_invoice`
+--
+
+INSERT INTO `detail_sales_invoice` (`DetailSalesID`, `SalesID`, `ProductID`, `Order_status`, `Quantity`, `Price`, `TotalPrice`) VALUES
+(7, 'SI68013639', 'GAME016', 'Đang xử lý', 1, 1529745, 1529745),
+(8, 'SI68013639', 'GAME015', 'Đang xử lý', 1, 1019745, 1019745),
+(9, 'SI68013639', 'GAME017', 'Đang xử lý', 1, 1019745, 1019745),
+(10, 'SI6801372b', 'GAME016', 'Đang xử lý', 4, 1529745, 6118980),
+(11, 'SI6801372b', 'GAME015', 'Đang xử lý', 1, 1019745, 1019745),
+(12, 'SI6801372b', 'GAME017', 'Đang xử lý', 1, 1019745, 1019745);
 
 -- --------------------------------------------------------
 
@@ -162,6 +164,28 @@ CREATE TABLE `employee` (
   `Gender` enum('Nam','Nữ') DEFAULT NULL,
   `Salary` double DEFAULT NULL,
   `StartDate` date DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `genre`
+--
+
+CREATE TABLE `genre` (
+  `GenreID` varchar(10) NOT NULL,
+  `GenreName` varchar(50) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `genre_detail`
+--
+
+CREATE TABLE `genre_detail` (
+  `ProductID` varchar(10) NOT NULL,
+  `GenreID` varchar(10) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -231,7 +255,7 @@ INSERT INTO `product` (`ProductID`, `ProductName`, `ProductImg`, `Author`, `Publ
 ('GAME016', 'TEKKEN 8', '/Assets/Images/Game/tekken8.jpg', 'Sucker Punch Productions', 'Sony Interactive Entertainment', 60, 1529745, 'Game hành động phiêu lưu trong thế giới mở', 'SUP001', 'Available'),
 ('GAME017', 'Final Fantasy XV', '/Assets/Images/Game/ffxv.jpg', 'Square Enix', 'Square Enix', 85, 1019745, 'Game nhập vai thế giới mở', 'SUP002', 'Available'),
 ('GAME018', 'Kingdom Come: Deliverance', '/Assets/Images/Game/kingdomcome.jpg', 'Warhorse Studios', 'Deep Silver', 50, 1274000, 'Game nhập vai hành động', 'SUP003', 'Available'),
-('GAME019', 'Monster Hunter: World', '/Assets/Images/Game/mhw.jpg', 'Capcom', 'Capcom', 120, 1529745, 'Game nhập vai hành động', 'SUP004', 'Available'),
+('GAME019', 'Monster Hunter: Wild', '/Assets/Images/Game/mhw.jpg', 'Capcom', 'Capcom', 120, 1529745, 'Game nhập vai hành động', 'SUP004', 'Available'),
 ('GAME020', 'Elden Ring', '/Assets/Images/Game/eldenring.jpg', 'FromSoftware', 'Bandai Namco Entertainment', 75, 1529745, 'Game nhập vai thế giới mở', 'SUP005', 'Available'),
 ('GAME021', 'Dying Light 2', '/Assets/Images/Game/dyinglight2.jpg', 'Techland', 'Techland', 100, 1274000, 'Game hành động thế giới mở', 'SUP001', 'Available'),
 ('GAME022', 'Horizon Zero Dawn', '/Assets/Images/Game/horizonzerodawn.jpg', 'Guerrilla Games', 'Sony Interactive Entertainment', 110, 1274000, 'Game hành động nhập vai', 'SUP002', 'Available'),
@@ -266,14 +290,6 @@ CREATE TABLE `role` (
   `Description` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
---
--- Dumping data for table `role`
---
-
-INSERT INTO `role` (`RoleID`, `RoleName`, `Description`) VALUES
-('R2', 'SalesStaff', NULL),
-('R4', 'Customer', NULL);
-
 -- --------------------------------------------------------
 
 --
@@ -300,8 +316,16 @@ CREATE TABLE `sales_invoice` (
   `ShippingAddress` text DEFAULT NULL,
   `TotalPrice` double DEFAULT NULL,
   `Note` text DEFAULT NULL,
-  `Date` datetime DEFAULT current_timestamp()
+  `SalesDate` datetime DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `sales_invoice`
+--
+
+INSERT INTO `sales_invoice` (`SalesID`, `CustomerID`, `EmployeeID`, `PaymentMethod`, `ShippingAddress`, `TotalPrice`, `Note`, `SalesDate`) VALUES
+('SI68013639', 'MT3H00001', NULL, 'payment-option-3', 'sdadadasdadadsa', 3569235, '', '2025-04-17 19:11:21'),
+('SI6801372b', 'MT3H00001', NULL, 'payment-option-1', 'sdadadasdadadsa', 8158470, '', '2025-04-17 19:15:23');
 
 -- --------------------------------------------------------
 
@@ -393,8 +417,7 @@ INSERT INTO `type_product` (`TypeID`, `ProductID`) VALUES
 -- Indexes for table `account`
 --
 ALTER TABLE `account`
-  ADD PRIMARY KEY (`Username`),
-  ADD KEY `fk_account_role` (`RoleID`);
+  ADD PRIMARY KEY (`Username`);
 
 --
 -- Indexes for table `cart`
@@ -440,6 +463,19 @@ ALTER TABLE `detail_sales_invoice`
 ALTER TABLE `employee`
   ADD PRIMARY KEY (`EmployeeID`),
   ADD UNIQUE KEY `Username` (`Username`);
+
+--
+-- Indexes for table `genre`
+--
+ALTER TABLE `genre`
+  ADD PRIMARY KEY (`GenreID`);
+
+--
+-- Indexes for table `genre_detail`
+--
+ALTER TABLE `genre_detail`
+  ADD PRIMARY KEY (`ProductID`,`GenreID`),
+  ADD KEY `GenreID` (`GenreID`);
 
 --
 -- Indexes for table `import_invoice`
@@ -504,17 +540,17 @@ ALTER TABLE `type_product`
 -- AUTO_INCREMENT for table `cart_item`
 --
 ALTER TABLE `cart_item`
-  MODIFY `CartItemID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=97;
+  MODIFY `CartItemID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=122;
+
+--
+-- AUTO_INCREMENT for table `detail_sales_invoice`
+--
+ALTER TABLE `detail_sales_invoice`
+  MODIFY `DetailSalesID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
 -- Constraints for dumped tables
 --
-
---
--- Constraints for table `account`
---
-ALTER TABLE `account`
-  ADD CONSTRAINT `fk_account_role` FOREIGN KEY (`RoleID`) REFERENCES `role` (`RoleID`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `cart`
@@ -554,6 +590,13 @@ ALTER TABLE `detail_sales_invoice`
 --
 ALTER TABLE `employee`
   ADD CONSTRAINT `employee_ibfk_1` FOREIGN KEY (`Username`) REFERENCES `account` (`Username`);
+
+--
+-- Constraints for table `genre_detail`
+--
+ALTER TABLE `genre_detail`
+  ADD CONSTRAINT `genre_detail_ibfk_1` FOREIGN KEY (`ProductID`) REFERENCES `product` (`ProductID`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `genre_detail_ibfk_2` FOREIGN KEY (`GenreID`) REFERENCES `genre` (`GenreID`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `import_invoice`

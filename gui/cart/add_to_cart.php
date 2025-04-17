@@ -6,6 +6,7 @@ $conn = connectDB::getConnection();
 header('Content-Type: application/json');
 
 $productID = $_POST['productID'];
+$quantity = isset($_POST['quantity']) ? max(1, intval($_POST['quantity'])) : 1;
 $response = [
     'status' => 'success',
     'message' => '',
@@ -20,16 +21,15 @@ if (!isset($_SESSION['CustomerID'])) {
     }
 
     if (isset($_SESSION['cart'][$productID])) {
-        $_SESSION['cart'][$productID]['quantity'] += 1;
+        $_SESSION['cart'][$productID]['quantity'] += $quantity;
         $response['alreadyExists'] = true;
     } else {
         $_SESSION['cart'][$productID] = [
             'productID' => $productID,
-            'quantity' => 1
+            'quantity' => $quantity
         ];
-    }
-
-    $response['message'] = 'Đã thêm vào giỏ hàng (tạm thời)';
+    }    
+    
     echo json_encode($response);
     exit;
 }
@@ -62,19 +62,19 @@ $stmtCheck->execute();
 $resultItem = $stmtCheck->get_result();
 
 if ($resultItem->num_rows > 0) {
-    $sqlUpdate = "UPDATE cart_item SET Quantity = Quantity + 1 WHERE CartID = ? AND ProductID = ?";
+    $sqlUpdate = "UPDATE cart_item SET Quantity = Quantity + ? WHERE CartID = ? AND ProductID = ?";
     $stmtUpdate = $conn->prepare($sqlUpdate);
-    $stmtUpdate->bind_param("ss", $cartID, $productID);
+    $stmtUpdate->bind_param("iss", $quantity, $cartID, $productID);
     $stmtUpdate->execute();
     $response['alreadyExists'] = true;
 } else {
-    $sqlInsert = "INSERT INTO cart_item (CartID, ProductID, Quantity) VALUES (?, ?, 1)";
+    $sqlInsert = "INSERT INTO cart_item (CartID, ProductID, Quantity) VALUES (?, ?, ?)";
     $stmtInsert = $conn->prepare($sqlInsert);
-    $stmtInsert->bind_param("ss", $cartID, $productID);
+    $stmtInsert->bind_param("ssi", $cartID, $productID, $quantity);
     $stmtInsert->execute();
 }
 
-$response['message'] = 'Đã thêm vào giỏ hàng.';
+
 echo json_encode($response);
 exit;
 ?>

@@ -104,11 +104,7 @@
             <section
               class="header-items grid-col col-l-5 col-m-2 col-s-2 s-m-hidden font-size-14"
             >
-              <!-- <div id="change-bg-btn" class="full-height">
-                  <a href="#" onclick="return false" title="Change background color" >
-                      <i class="fa-solid fa-circle-half-stroke fa-xl btn" style="color: var(--main-color);"></i>
-                  </a>
-            </div> -->
+              
 
               <div class="hotline full-height">
                 <div class="flex align-center full-height">
@@ -191,6 +187,7 @@
           </section>
         </section>
       </header>
+      
 
       <main id="main-container">
         <!-- html for sub header -->
@@ -325,7 +322,9 @@
                  </div>
             </div>
        </section>
-
+       <!-- Thông báo địa chỉ -->
+<div id="address-warning" class="address-warning hidden">Chưa có địa chỉ mặc định.</div>
+<div id="cart-added-alert" class="cart-added-alert hidden">Đã thêm vào giỏ hàng!</div>
        <!-- html for main content -->
        <section id="main-content">
             

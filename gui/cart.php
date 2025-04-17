@@ -119,7 +119,7 @@ if ($isLoggedIn) {
     </script>
 <?php else: ?>
     <?php foreach ($cartItems as $index => $item): ?>
-        <div class="block-product" data-price="<?= $item['Price'] ?>" 
+        <div class="block-product" data-id="<?= $item['ProductID'] ?>" data-price="<?= $item['Price'] ?>" 
         data-quantity="<?= $item['Quantity'] ?>">
             <input type="checkbox" name="select-block-product" 
                    class="cart-item-checkbox grid-col col-l-1 col-m-1 col-s-1" />
@@ -182,7 +182,7 @@ if ($isLoggedIn) {
                                                             </h4>
                                                             <ul>
                                                                  <li class="flex align-center">
-                                                                      <input type="radio" name="payment-option"
+                                                                      <input type="radio" name="payment-option" value="COD"
                                                                            id="payment-option-1" class="margin-right-8"
                                                                            checked />
                                                                       <img
@@ -192,7 +192,7 @@ if ($isLoggedIn) {
                                                                       </p>
                                                                  </li>
                                                                  <li class="flex align-center">
-                                                                      <input type="radio" name="payment-option"
+                                                                      <input type="radio" name="payment-option" value="Momo"
                                                                            id="payment-option-2"
                                                                            class="margin-right-8" />
                                                                       <img
@@ -203,7 +203,7 @@ if ($isLoggedIn) {
                                                                        </div>
                                                                  </li>
                                                                  <li class="flex align-center">
-                                                                      <input type="radio" name="payment-option"
+                                                                      <input type="radio" name="payment-option" value="Banking"
                                                                            id="payment-option-3"
                                                                            class="margin-right-8" />
                                                                       <img
@@ -225,6 +225,7 @@ if ($isLoggedIn) {
                                                                  <input type="checkbox" name="selection-address" data-default-address="<?= htmlspecialchars($defaultAddress) ?>"
                                                                  id="selection-address" class="selection-address capitalize margin-bottom-8" />
                                                                  <label class="font-size-14"> địa chỉ mặc định</label>
+                                                                 
                                                             </div>
                                                             <ul>
                                                                  <li class="flex flex-direction-y justify-center">
@@ -265,11 +266,12 @@ if ($isLoggedIn) {
                                                             </div>
 
                                                             <button type="submit"
-                                                                 class="checkout-btn button margin-top-12">
-                                                                 <p class="uppercase font-size-16 font-bold">
-                                                                      Đặt hàng
-                                                                 </p>
-                                                            </button>
+                                                             id="checkout-btn"
+                                                                  class="checkout-btn button margin-top-12">
+                                                                  <p class="uppercase font-size-16 font-bold">
+                                                                    Đặt hàng
+                                                                          </p>
+                                                                  </button>
                                                        </div>
                                                   </div>
 
