@@ -9,6 +9,7 @@ $daban = $data->getAllChiTietHoaDon();
 $top5User = $data->getTop5Customers();
 $last6MonthSales = $data->getOrderStatsLast6Months();
 $last6MonthImports = $data->getImportStatsLast6Months();
+$last6MonthCount = $data->getLast6MonthsTotal(); // ✅ lấy số đơn hàng theo tháng
 ?>
 
 <!DOCTYPE html>
@@ -51,7 +52,7 @@ $last6MonthImports = $data->getImportStatsLast6Months();
         <!-- Chọn loại biểu đồ -->
         <div class="mb-4">
             <label for="ChartSelect" class="block text-gray-700 font-medium mb-2">Chọn biểu đồ</label>
-            <select id="ChartSelect" class="border border-gray-300 rounded-md p-2 w-full sm:w-1/2"  style="width: 250px;">
+            <select id="ChartSelect" class="border border-gray-300 rounded-md p-2 w-full sm:w-1/2" style="width: 250px;">
                 <option value="salesCount">Số đơn hàng 6 tháng qua</option>
                 <option value="topCustomer">Top khách hàng</option>
                 <option value="salesTotal">Giá trị bán theo tháng</option>
@@ -91,21 +92,40 @@ $last6MonthImports = $data->getImportStatsLast6Months();
             hideAllCharts();
             charts.salesCount.style.display = 'block';
 
+            // Số đơn hàng theo tháng (bar chart)
             new Chart(charts.salesCount, {
-                type: 'line',
+                type: 'bar',
                 data: {
-                    labels: <?= json_encode(array_column($last6MonthSales, 'month')) ?>,
+                    labels: <?= json_encode(array_column($last6MonthCount, 'month')) ?>,
                     datasets: [{
-                        label: 'Số đơn hàng 6 tháng qua',
-                        data: <?= json_encode(array_column($last6MonthSales, 'total_sales')) ?>,
+                        label: 'Số lượng đơn hàng theo tháng',
+                        data: <?= json_encode(array_column($last6MonthCount, 'total_bill')) ?>,
+                        backgroundColor: 'rgba(54, 162, 235, 0.6)',
                         borderColor: 'rgba(54, 162, 235, 1)',
-                        backgroundColor: 'rgba(54, 162, 235, 0.2)',
-                        borderWidth: 2,
-                        tension: 0.4
+                        borderWidth: 1
                     }]
+                },
+                options: {
+                    responsive: true,
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            title: {
+                                display: true,
+                                text: 'Số đơn hàng'
+                            }
+                        },
+                        x: {
+                            title: {
+                                display: true,
+                                text: 'Tháng'
+                            }
+                        }
+                    }
                 }
             });
 
+            // Top khách hàng
             new Chart(charts.topCustomer, {
                 type: 'bar',
                 data: {
@@ -120,6 +140,7 @@ $last6MonthImports = $data->getImportStatsLast6Months();
                 }
             });
 
+            // Tổng giá trị đơn hàng
             new Chart(charts.salesTotal, {
                 type: 'line',
                 data: {
@@ -135,6 +156,7 @@ $last6MonthImports = $data->getImportStatsLast6Months();
                 }
             });
 
+            // Tổng giá trị nhập kho
             new Chart(charts.importTotal, {
                 type: 'line',
                 data: {
