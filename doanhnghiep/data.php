@@ -7,9 +7,7 @@ class Data {
         $username = "root";
         $password = "";
         $dbname = "htttgame";
-
         $this->conn = new mysqli($servername, $username, $password, $dbname);
-
         if ($this->conn->connect_error) {
             die("Kết nối thất bại: " . $this->conn->connect_error);
         }
@@ -100,44 +98,89 @@ class Data {
         return $data;
     }
 
-public function getImportStatsLast6Months() {
-    $sql = "
-        SELECT DATE_FORMAT(Date, '%Y-%m') AS month, 
-               SUM(TotalPrice) AS total_import
-        FROM import_invoice
-        WHERE Date >= DATE_SUB(CURDATE(), INTERVAL 6 MONTH)
-        GROUP BY month
-        ORDER BY month ASC
-    ";
-    $result = $this->conn->query($sql);
-    $data = [];
-    if ($result && $result->num_rows > 0) {
-        while ($row = $result->fetch_assoc()) {
-            $data[] = $row;
+    public function getTop5CustomersByMonth($month) {
+        $sql = "
+            SELECT u.Fullname, SUM(h.TotalPrice) AS totalSpent
+            FROM customer u
+            JOIN sales_invoice h ON u.CustomerID = h.CustomerID
+            WHERE DATE_FORMAT(h.Date, '%Y-%m') = ?  
+            GROUP BY u.CustomerID
+            ORDER BY totalSpent DESC
+            LIMIT 5
+        ";
+        $stmt = $this->conn->prepare($sql);
+        $stmt->bind_param("s", $month); 
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $data = [];
+        if ($result && $result->num_rows > 0) {
+            while ($row = $result->fetch_assoc()) {
+                $data[] = $row;
+            }
         }
+        return $data;
     }
-    return $data;
-}
 
-public function getOrderStatsLast6Months() {
-    $sql = "
-        SELECT DATE_FORMAT(Date, '%Y-%m') AS month, 
-               SUM(TotalPrice) AS total_sales
-        FROM sales_invoice
-        WHERE Date >= DATE_SUB(CURDATE(), INTERVAL 6 MONTH)
-        GROUP BY month
-        ORDER BY month ASC
-    ";
-    $result = $this->conn->query($sql);
-    $data = [];
-    if ($result && $result->num_rows > 0) {
-        while ($row = $result->fetch_assoc()) {
-            $data[] = $row;
+    public function getImportStatsLast6Months() {
+        $sql = "
+            SELECT DATE_FORMAT(Date, '%Y-%m') AS month, 
+                   SUM(TotalPrice) AS total_import
+            FROM import_invoice
+            WHERE Date >= DATE_SUB(CURDATE(), INTERVAL 6 MONTH)
+            GROUP BY month
+            ORDER BY month ASC
+        ";
+        $result = $this->conn->query($sql);
+        $data = [];
+        if ($result && $result->num_rows > 0) {
+            while ($row = $result->fetch_assoc()) {
+                $data[] = $row;
+            }
         }
+        return $data;
     }
-    return $data;
-}
 
+    public function getOrderStatsLast6Months() {
+        $sql = "
+            SELECT DATE_FORMAT(Date, '%Y-%m') AS month, 
+                   SUM(TotalPrice) AS total_sales
+            FROM sales_invoice
+            WHERE Date >= DATE_SUB(CURDATE(), INTERVAL 6 MONTH)
+            GROUP BY month
+            ORDER BY month ASC
+        ";
+        $result = $this->conn->query($sql);
+        $data = [];
+        if ($result && $result->num_rows > 0) {
+            while ($row = $result->fetch_assoc()) {
+                $data[] = $row;
+            }
+        }
+        return $data;
+    }
+
+    public function getTop5StaffByMonth($month) {
+        $sql = "
+            SELECT u.Fullname, COUNT(h.EmployeeID) AS totalApproved
+            FROM employee u
+            JOIN sales_invoice h ON u.EmployeeID = h.EmployeeID 
+            WHERE DATE_FORMAT(h.Date, '%Y-%m') = ?   
+            GROUP BY u.EmployeeID
+            ORDER BY totalApproved DESC
+            LIMIT 5
+        ";
+        $stmt = $this->conn->prepare($sql);
+        $stmt->bind_param("s", $month); 
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $data = [];
+        if ($result && $result->num_rows > 0) {
+            while ($row = $result->fetch_assoc()) {
+                $data[] = $row;
+            }
+        }
+        return $data;
+    }
 
     public function __destruct() {
         $this->conn->close();
