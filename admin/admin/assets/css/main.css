@@ -53,6 +53,7 @@
     font-weight: 500;
     display: flex;
     align-items: center;
+    border: 2px solid #4568dc;
   }
   
   .sidebar a:hover {
@@ -96,6 +97,7 @@
       width: 100%;
       text-align: center;
       justify-content: center;
+      border: 1px solid #4568dc;
     }
     
     .header {
