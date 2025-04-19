@@ -269,9 +269,9 @@
                         style="color: var(--main-color)"
                       ></i
                     ></span>
-                    <p class="padding-left-8 font-size-13 font-bold">
+                    <a href="/gui/news.php"><p class="padding-left-8 font-size-13 font-bold">
                       Tin tức & Sự kiện
-                    </p>
+                    </p></a>
                   </div>
                 </div>
 
@@ -283,7 +283,8 @@
                         style="color: var(--main-color)"
                       ></i
                     ></span>
-                    <p class="padding-left-8 font-size-13 font-bold">MT3H</p>
+                    <a href="/gui/MT3H.php">
+                    <p class="padding-left-8 font-size-13 font-bold">MT3H</p></a>
                   </div>
                 </div>
 
