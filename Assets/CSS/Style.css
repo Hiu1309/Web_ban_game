@@ -560,11 +560,11 @@
   right: 20px;
   background-color: #ffc2c2;
   color: #740202;
-  padding: 18px 70px;
+  padding: 18px 50px;
   border-radius: 8px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   font-weight: 600;
-  font-size: 16px;
+  font-size: 15px;
   z-index: 9999;
   transition: opacity 0.3s ease-in-out;
 }
@@ -582,7 +582,7 @@
   border-radius: 8px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   font-weight: 600;
-  font-size: 16px;
+  font-size: 15px;
   z-index: 9999;
   transition: opacity 0.3s ease-in-out;
 }

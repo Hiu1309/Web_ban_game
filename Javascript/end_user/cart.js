@@ -93,7 +93,7 @@ function handleBuyNow(event) {
         if (data.status === "success") {
             window.location.href = "/gui/cart.php";
         } else {
-            alert("Có lỗi xảy ra khi thêm vào giỏ hàng.");
+            showAlert2("Có lỗi xảy ra khi thêm vào giỏ hàng.");
         }
     })
     .catch((error) => {
@@ -262,12 +262,12 @@ function setupCheckoutHandler() {
         const note = document.getElementById("order-note")?.value || '';
 
         if (selectedItems.length === 0) {
-            alert("Vui lòng chọn ít nhất một sản phẩm để đặt hàng.");
+            showAlert2("Vui lòng chọn ít nhất một sản phẩm để đặt hàng.");
             return;
         }
 
         if (!address.trim()) {
-            alert("Vui lòng nhập địa chỉ giao hàng.");
+            showAlert2("Vui lòng nhập địa chỉ giao hàng.");
             return;
         }
 
@@ -295,19 +295,47 @@ function setupCheckoutHandler() {
                 // Xóa giỏ hàng trong localStorage nếu dùng cho khách
                 localStorage.removeItem("cart");
 
-                alert("Đặt hàng thành công!");
+                
                 window.location.href = "/index.php";
+                showAlert("Đặt hàng thành công!");
             } else {
-                alert("Đã có lỗi xảy ra khi đặt hàng hoặc do bạn chưa đăng nhập");
+                showAlert2("Đã có lỗi xảy ra khi đặt hàng hoặc do bạn chưa đăng nhập");
             }
         })
         .catch(err => {
             console.error("Lỗi khi đặt hàng:", err);
-            alert("Lỗi kết nối đến máy chủ.");
+            showAlert2("Lỗi kết nối đến máy chủ.");
         });
     });
 }
 
+
+export function showAlert(message, isSuccess = false) {
+    const alertElem = document.getElementById("cart-added-alert");
+    if (!alertElem) return;
+
+    alertElem.textContent = message;
+    alertElem.classList.remove("hidden");
+    alertElem.classList.toggle("success", isSuccess);
+
+    setTimeout(() => {
+        alertElem.classList.add("hidden");
+        alertElem.classList.remove("success");
+    }, 2000);
+}
+export function showAlert2(message, isSuccess = false) {
+    const alert2Elem = document.getElementById("address-warning");
+    if (!alert2Elem) return;
+
+    alert2Elem.textContent = message;
+    alert2Elem.classList.remove("hidden");
+    alert2Elem.classList.toggle("success", isSuccess);
+
+    setTimeout(() => {
+        alert2Elem.classList.add("hidden");
+        alert2Elem.classList.remove("success");
+    }, 2000);
+}
 
 
 
@@ -321,6 +349,4 @@ document.addEventListener("DOMContentLoaded", function () {
     setupSelectAllCheckbox();
     setupDefaultAddressCheckbox();
     setupCheckoutHandler();
-
-
 });
