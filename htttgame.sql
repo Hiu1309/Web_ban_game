@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Apr 19, 2025 at 02:01 AM
+-- Generation Time: Apr 19, 2025 at 01:16 PM
 -- Server version: 10.4.32-MariaDB
--- PHP Version: 8.2.12
+-- PHP Version: 8.1.25
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -43,6 +43,7 @@ INSERT INTO `account` (`Username`, `Password`, `RoleID`, `Status`, `Lock`) VALUE
 ('admin r1', '12345678', 'R1', 1, 1),
 ('admin r3', '12345678', 'R3', 1, 1),
 ('daonhnghiep r0', '12345678', 'R0', 1, 1),
+('Hiếu Lê', '123123123', 'R4', 1, 1),
 ('Ngô Hiếu', '12345678', 'R4', 1, 1);
 
 -- --------------------------------------------------------
@@ -62,7 +63,8 @@ CREATE TABLE `cart` (
 --
 
 INSERT INTO `cart` (`CartID`, `CustomerID`, `CreatedDate`) VALUES
-('CART6802e3', 'MT3H00001', '2025-04-19 06:41:41');
+('CART6802e3', 'MT3H00001', '2025-04-19 06:41:41'),
+('CART68032d', 'MT3H00005', '2025-04-19 12:00:29');
 
 -- --------------------------------------------------------
 
@@ -108,7 +110,8 @@ INSERT INTO `customer` (`CustomerID`, `Fullname`, `Username`, `Email`, `Address`
 ('MT3H00001', 'Ngô Hiếu', 'Ngô Hiếu', 'tienhieu2309@gmail.com', '36', '0878985119', NULL),
 ('MT3H00002', 'admin r1', 'admin r1', 'adminr1@gmail.com', NULL, NULL, NULL),
 ('MT3H00003', 'admin r3', 'admin r3', 'adminr3@gmail.com', NULL, NULL, NULL),
-('MT3H00004', 'daonhnghiep r0', 'daonhnghiep r0', 'dnr0@gmail.com', NULL, NULL, NULL);
+('MT3H00004', 'daonhnghiep r0', 'daonhnghiep r0', 'dnr0@gmail.com', NULL, NULL, NULL),
+('MT3H00005', 'Hiếu Lê', 'Hiếu Lê', 'hjuiihy67@gmail.com', 'sdadadasdadadsa', '0842498241', NULL);
 
 -- --------------------------------------------------------
 
@@ -133,13 +136,27 @@ CREATE TABLE `detail_import_invoice` (
 
 CREATE TABLE `detail_sales_invoice` (
   `DetailSalesID` int(11) NOT NULL,
-  `SalesID` varchar(10) DEFAULT NULL,
+  `SalesID` int(11) NOT NULL,
   `ProductID` varchar(10) DEFAULT NULL,
   `Order_status` varchar(50) DEFAULT '''Chờ xử lý''',
   `Quantity` int(11) DEFAULT NULL,
   `Price` double DEFAULT NULL,
   `TotalPrice` double DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `detail_sales_invoice`
+--
+
+INSERT INTO `detail_sales_invoice` (`DetailSalesID`, `SalesID`, `ProductID`, `Order_status`, `Quantity`, `Price`, `TotalPrice`) VALUES
+(104, 3, 'GAME010', 'Đã hủy', 1, 509745, 509745),
+(105, 3, 'GAME015', 'Đã hủy', 1, 1019745, 1019745),
+(106, 3, 'GAME016', 'Đã hủy', 1, 1529745, 1529745),
+(107, 4, 'GAME034', 'Đang xử lý', 1, 1274000, 1274000),
+(108, 4, 'GAME038', 'Đang xử lý', 1, 1274000, 1274000),
+(109, 4, 'GAME040', 'Đang xử lý', 1, 1529745, 1529745),
+(110, 5, 'GAME010', 'Đã hủy', 1, 509745, 509745),
+(111, 5, 'GAME001', 'Đã hủy', 4, 1499099, 5996396);
 
 -- --------------------------------------------------------
 
@@ -292,15 +309,25 @@ CREATE TABLE `rolepermissions` (
 --
 
 CREATE TABLE `sales_invoice` (
-  `SalesID` varchar(10) NOT NULL,
+  `SalesID` int(11) NOT NULL,
   `CustomerID` varchar(10) NOT NULL,
   `EmployeeID` varchar(10) DEFAULT NULL,
   `PaymentMethod` varchar(50) DEFAULT NULL,
   `ShippingAddress` text DEFAULT NULL,
   `TotalPrice` double DEFAULT NULL,
   `Note` text DEFAULT NULL,
-  `Date` datetime DEFAULT current_timestamp()
+  `Date` datetime DEFAULT current_timestamp(),
+  `Status` varchar(50) NOT NULL DEFAULT 'chờ xử lý'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `sales_invoice`
+--
+
+INSERT INTO `sales_invoice` (`SalesID`, `CustomerID`, `EmployeeID`, `PaymentMethod`, `ShippingAddress`, `TotalPrice`, `Note`, `Date`, `Status`) VALUES
+(3, 'MT3H00005', NULL, 'payment-option-1', 'sdadadasdadadsa', 3079235, '', '2025-04-19 13:12:15', 'Đã hủy'),
+(4, 'MT3H00005', NULL, 'payment-option-1', 'sdadadasdadadsa', 4097745, '', '2025-04-19 13:13:23', 'chờ xử lý'),
+(5, 'MT3H00005', NULL, 'payment-option-1', 'sdadadasdadadsa', 6526141, '', '2025-04-19 13:13:36', 'chờ xử lý');
 
 -- --------------------------------------------------------
 
@@ -503,13 +530,19 @@ ALTER TABLE `type_product`
 -- AUTO_INCREMENT for table `cart_item`
 --
 ALTER TABLE `cart_item`
-  MODIFY `CartItemID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=124;
+  MODIFY `CartItemID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=218;
 
 --
 -- AUTO_INCREMENT for table `detail_sales_invoice`
 --
 ALTER TABLE `detail_sales_invoice`
-  MODIFY `DetailSalesID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+  MODIFY `DetailSalesID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=112;
+
+--
+-- AUTO_INCREMENT for table `sales_invoice`
+--
+ALTER TABLE `sales_invoice`
+  MODIFY `SalesID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- Constraints for dumped tables
@@ -551,7 +584,7 @@ ALTER TABLE `detail_import_invoice`
 -- Constraints for table `detail_sales_invoice`
 --
 ALTER TABLE `detail_sales_invoice`
-  ADD CONSTRAINT `detail_sales_invoice_ibfk_1` FOREIGN KEY (`SalesID`) REFERENCES `sales_invoice` (`SalesID`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `detail_sales_invoice_ibfk_1` FOREIGN KEY (`SalesID`) REFERENCES `sales_invoice` (`SalesID`),
   ADD CONSTRAINT `detail_sales_invoice_ibfk_2` FOREIGN KEY (`ProductID`) REFERENCES `product` (`ProductID`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --

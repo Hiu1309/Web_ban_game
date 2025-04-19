@@ -1,4 +1,4 @@
-
+import { showAlert,showAlert2 } from './cart.js';
 document.addEventListener("DOMContentLoaded", function () {
     const editBtn = document.querySelector(".js-edit-btn");
     const submitBtn = document.querySelector(".js-submit-btn");
@@ -29,12 +29,12 @@ document.addEventListener("DOMContentLoaded", function () {
                 
                 inputs.forEach(input => input.disabled = true);
             } else {
-                alert("Cập nhật thất bại: " + response.message);
+                showAlert2("Cập nhật thất bại: " + response.message);
             }
         })
         .catch(err => {
             console.error(err);
-            alert("Lỗi khi gửi yêu cầu cập nhật.");
+            showAlert2("Lỗi khi gửi yêu cầu cập nhật.");
         });
     });
 });

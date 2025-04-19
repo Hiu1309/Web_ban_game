@@ -2,9 +2,7 @@
 session_start();
 require_once "../../database/connectDB.php";
 $conn = connectDB::getConnection();
-
 header('Content-Type: application/json');
-
 $productID = $_POST['productID'];
 $quantity = isset($_POST['quantity']) ? max(1, intval($_POST['quantity'])) : 1;
 $response = [
@@ -15,11 +13,9 @@ $response = [
 ];
 
 if (!isset($_SESSION['CustomerID'])) {
-    // Nếu chưa đăng nhập, xử lý giỏ hàng bằng session
     if (!isset($_SESSION['cart'])) {
         $_SESSION['cart'] = [];
     }
-
     if (isset($_SESSION['cart'][$productID])) {
         $_SESSION['cart'][$productID]['quantity'] += $quantity;
         $response['alreadyExists'] = true;
@@ -34,10 +30,8 @@ if (!isset($_SESSION['CustomerID'])) {
     exit;
 }
 
-// Đã đăng nhập => thao tác với database
 $customerID = $_SESSION['CustomerID'];
 
-// Lấy CartID
 $sqlCart = "SELECT CartID FROM cart WHERE CustomerID = ?";
 $stmtCart = $conn->prepare($sqlCart);
 $stmtCart->bind_param("s", $customerID);
@@ -54,7 +48,6 @@ if ($result->num_rows > 0) {
     $stmtCreate->execute();
 }
 
-// Kiểm tra sản phẩm đã có chưa
 $sqlCheckItem = "SELECT * FROM cart_item WHERE CartID = ? AND ProductID = ?";
 $stmtCheck = $conn->prepare($sqlCheckItem);
 $stmtCheck->bind_param("ss", $cartID, $productID);

@@ -530,7 +530,136 @@
 }
 
 /* end flash sale container */
+.order-success-wrapper {
+  font-family: 'Open Sans', sans-serif;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+}
 
+.order-success-container {
+  background-color: #f8f8f8;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  width: 880px;
+  padding: 30px;
+  text-align: center;
+}
+
+.order-success-container h2 {
+  color: #861313;
+  font-size: 34px;
+  margin-bottom: 25px;
+}
+
+.order-summaryD {
+  background-color: #fff;
+  border-radius: 8px;
+  padding: 60px;
+  text-align: left;
+  margin-bottom: -10px;
+}
+
+.order-summaryD h3 {
+  margin-top: -10px;
+  color: #861313;
+  font-size: 24px;
+}
+
+.order-summaryD p {
+  margin: 6px 0;
+  font-size: 18px;
+  color: #333;
+}
+
+.order-summaryD p span {
+  font-weight: bold;
+  color: #861313;
+}
+
+.order-button {
+  background-color: #861313;
+  color: white;
+  border: none;
+  padding: 12px 20px;
+  font-size: 14px;
+  border-radius: 6px;
+  cursor: pointer;
+  width: 100%;
+}
+
+.order-button:hover {
+  background-color: #a31a1a;
+}
+.history-tracking-container{
+  background-color: #fff;
+  padding: 20px;
+  font-family: 'Open Sans', sans-serif;
+}
+.order-status-header{
+  color: #7a1515;
+  margin-bottom: 20px;
+}
+
+.rmbtn{
+  align-self: start;
+  padding: 8px 16px;
+  background-color: #7a1515;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+.rmbtn:hover{
+  background-color: #5a0f0f;
+}
+.history-order-table{
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+  margin: 0 auto;
+  justify-content: flex-start;
+  max-width: 1000px;
+}
+.history-order-table .order-card {
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.05);
+  padding: 20px;
+  width: 300px;
+display: flex;
+flex-direction: column;
+justify-content: space-between;
+}
+
+.history-order-table .order-header {
+display: flex;
+justify-content: space-between;
+margin-bottom: 10px;
+color: #7a1515;
+}
+
+.history-order-table .order-card p {
+margin-bottom: 15px;
+color:#740202
+}
+
+.history-order-table .detail-btn {
+align-self: start;
+padding: 8px 16px;
+background-color: #7a1515;
+color: white;
+border: none;
+border-radius: 6px;
+cursor: pointer;
+transition: background-color 0.3s;
+}
+
+.history-order-table .detail-btn:hover {
+background-color: #5a0f0f;
+}
 /* is also use in some other file html */
 #main-content .product-container {
   margin-bottom: 0.5em;
@@ -560,11 +689,11 @@
   right: 20px;
   background-color: #ffc2c2;
   color: #740202;
-  padding: 18px 70px;
+  padding: 18px 50px;
   border-radius: 8px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   font-weight: 600;
-  font-size: 16px;
+  font-size: 15px;
   z-index: 9999;
   transition: opacity 0.3s ease-in-out;
 }
@@ -582,7 +711,7 @@
   border-radius: 8px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   font-weight: 600;
-  font-size: 16px;
+  font-size: 15px;
   z-index: 9999;
   transition: opacity 0.3s ease-in-out;
 }
