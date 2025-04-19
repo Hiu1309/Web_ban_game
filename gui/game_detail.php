@@ -114,7 +114,7 @@ switch ($type_id_prefix) {
                                                             <div class="grid-col col-l-6 col-m-6 col-s-12 no-gutter">
                                                                 <strong>Trạng thái</strong>
                                                                 <div class="b-status opacity-0-8">
-                                                                    <?php echo ($product['Status'] == 1) ? "Còn hàng" : "Hết hàng"; ?>
+                                                                    <?php echo ($product['Status'] == 1) ? "Còn bán" : "Hết bán"; ?>
                                                                 </div>
                                                             </div>
 
