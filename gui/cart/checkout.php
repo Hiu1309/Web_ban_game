@@ -92,7 +92,7 @@ try {
         $quantity = $item['quantity'];
         $price = $productPrices[$productID];
         $totalItem = $price * $quantity;
-        $orderStatus = "Đang xử lý";
+        $orderStatus = "Chưa duyệt";
 
         $stmt = $conn->prepare("INSERT INTO detail_sales_invoice (SalesID, ProductID, Order_status, Quantity, Price, TotalPrice) VALUES (?, ?, ?, ?, ?, ?)");
         $stmt->bind_param("issidd", $salesID, $productID, $orderStatus, $quantity, $price, $totalItem);

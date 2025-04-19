@@ -62,7 +62,7 @@ $result = $conn->query($sql);
 
 <body>
     <div class="container mt-5">
-        <h2 class="text-center">Danh sách hóa đơn</h2>
+    <h2 class="text-center" style="margin-bottom:15px">Danh sách hóa đơn</h2>
         <table class="table table-bordered table-hover">
             <thead class="table-primary">
                 <tr>

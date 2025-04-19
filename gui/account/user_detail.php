@@ -35,9 +35,11 @@ if ($conn) {
                                              <div class="account-history-bill grid-col col-l-3 no-gutter">
                                              <div >
                                              <a href="/index.php" class="category-btn button margin-left-12 js-signout exit-color">Thoát</a></div>
-                                                  <article class="history-order-link button">
-                                                       <div class="history-order-btn font-bold capitalize text-center">xem lịch sử mua hàng</div>
-                                                  </article>
+                                                  <a href="/gui/history.php">
+                                                       <article class="history-order-link button">
+                                                            <div class="history-order-btn font-bold capitalize text-center">xem lịch sử mua hàng</div>
+                                                       </article>
+                                                  </a>
                                              </div>
 
                                              <div class="account-info padding-top-16">
