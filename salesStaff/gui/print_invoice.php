@@ -71,6 +71,87 @@ foreach ($invoices as $invoice) {
     <link rel="stylesheet" href="../assets/css/print_invoice.css">
 
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <style>
+        /* Căn giữa danh sách hóa đơn */
+        .invoice-container {
+            max-width: 1200px;
+            margin: 0 auto; /* Căn giữa theo chiều ngang */
+            padding: 20px;
+            border-radius: 12px;
+            background-color: #ffffff;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Căn giữa tiêu đề */
+        .invoice-header h2 {
+            text-align: center; /* Căn giữa tiêu đề */
+            color: #2c3e50;
+            font-weight: 600;
+            margin-bottom: 30px;
+            position: relative;
+            padding-bottom: 10px;
+        }
+
+        .invoice-header h2:after {
+            content: "";
+            position: absolute;
+            width: 80px;
+            height: 3px;
+            background-color: #3498db;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        /* Căn giữa các phần tử trong bảng */
+        .table {
+            width: 100%;
+            margin-bottom: 20px;
+            border-collapse: collapse;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+        }
+
+        .table th, .table td {
+            text-align: center; /* Căn giữa nội dung trong bảng */
+            vertical-align: middle; /* Căn giữa theo chiều dọc */
+            padding: 12px;
+            font-size: 14px;
+            color: #555;
+        }
+
+        .table thead {
+            background-color: #2ea1ed;
+            color: white;
+        }
+
+        .table tbody tr:nth-child(even) {
+            background-color: #f7faff;
+        }
+
+        .table tbody tr:hover {
+            background-color: rgba(52, 152, 219, 0.05);
+        }
+
+        /* Nút */
+        .btn {
+            font-size: 14px;
+            padding: 6px 12px;
+            border-radius: 5px;
+        }
+
+        .btn-primary {
+            background-color: #3498db;
+            border-color: #3498db;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background-color: #2980b9;
+            border-color: #2980b9;
+        }
+    </style>
 </head>
 
 <body>

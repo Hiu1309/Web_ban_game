@@ -4,6 +4,12 @@ Array
         (
             [0] => Array
                 (
+                    [productID] => GAME035
+                    [quantity] => 1
+                )
+
+            [1] => Array
+                (
                     [productID] => GAME031
                     [quantity] => 1
                 )
@@ -11,6 +17,6 @@ Array
         )
 
     [paymentMethod] => payment-option-1
-    [address] => 36
+    [address] => dfsdf
     [note] => 
 )
