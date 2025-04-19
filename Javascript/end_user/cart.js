@@ -345,7 +345,18 @@ export function showAlert2(message, isSuccess = false) {
         alert2Elem.classList.remove("success");
     }, 2000);
 }
-
+function handleCancelOrder(orderId) {
+    showConfirm("Bạn có chắc chắn muốn hủy đơn hàng #" + orderId + " không?", function(confirmed) {
+      if (confirmed) {
+        // Gọi AJAX, chuyển trang hoặc xử lý hủy tại đây
+        console.log("Hủy đơn hàng:", orderId);
+        // Ví dụ: window.location.href = "cancel_order.php?id=" + orderId;
+      } else {
+        console.log("Không hủy đơn hàng.");
+      }
+    });
+  }
+  
 
 
 document.addEventListener("DOMContentLoaded", function () {

@@ -15,9 +15,8 @@ if (!isset($_GET['SalesID'])) {
 
 $salesID = $_GET['SalesID'];
 
-// Kiểm tra nếu yêu cầu hủy sản phẩm được gửi
 if (isset($_POST['cancel_order'])) {
-  $productID = $_POST['ProductID']; // Lấy ProductID từ form
+  $productID = $_POST['ProductID']; 
 
   $conn->begin_transaction();
   
@@ -118,7 +117,7 @@ $stmt->close();
   </section>
 </div>
 
-<!-- JavaScript để hiển thị pop-up xác nhận -->
+
 <script type="text/javascript">
   function confirmCancel() {
     return confirm("Bạn có chắc chắn muốn hủy sản phẩm này?");
@@ -126,6 +125,5 @@ $stmt->close();
 </script>
 
 <?php
-// Kết thúc output buffering và gửi mọi dữ liệu ra trình duyệt
 ob_end_flush();
 ?>
