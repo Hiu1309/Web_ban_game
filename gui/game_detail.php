@@ -112,9 +112,12 @@ switch ($type_id_prefix) {
                                                                  <div class="b-publisher opacity-0-8"><?php echo $product['Publisher']; ?></div>
                                                             </div>
                                                             <div class="grid-col col-l-6 col-m-6 col-s-12 no-gutter">
-                                                                 <strong>Trạng thái</strong>
-                                                                 <div class="b-status opacity-0-8"><?php echo $product['Status'] ? $product['Status'] : (($product['Quantity'] > 0) ? "Còn hàng" : "Hết hàng"); ?></div>
+                                                                <strong>Trạng thái</strong>
+                                                                <div class="b-status opacity-0-8">
+                                                                    <?php echo ($product['Status'] == 1) ? "Còn hàng" : "Hết hàng"; ?>
+                                                                </div>
                                                             </div>
+
                                                        </div>
 
                                                        <div class="short-desc">

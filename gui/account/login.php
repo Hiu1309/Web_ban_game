@@ -26,7 +26,7 @@
 
      if ($result->num_rows == 1) {
           $account = $result->fetch_assoc();
-          if (password_verify($password, $account["Password"])) {
+          if ($password === $account["Password"]) {
                // Lưu thông tin người dùng vào session
                $_SESSION["username"] = $account["Username"];
                $_SESSION["fullname"] = $account["Fullname"];
@@ -98,13 +98,16 @@
                          header("Location: /index.php");
                          exit;
                     case "R3":
-                         header("Location: /staff/sales.php");
+                         header("Location: /salesStaff/index.php?page=order_management");
                          exit;
                     case "R2":
-                         header("Location: /admin/salesStaff/index.php?page=order_management");                         
+                         header("Location: ");                         
                          exit;
                     case "R1":
-                         header("Location: /admin/dashboard.php");
+                         header("Location: /admin/admin.php");
+                         exit;
+                    case "R0":
+                         header("Location: /doanhnghiep/DN.php");
                          exit;
                     default:
                          $error_message = "Vai trò không hợp lệ!";
