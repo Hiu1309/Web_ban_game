@@ -259,7 +259,14 @@ function setupCheckoutHandler() {
             document.querySelector('input[name="payment-method"]:checked')?.value ||
             document.querySelector('input[name="payment-option"]:checked')?.id || ''; // fallback
         const address = document.getElementById("user-address")?.value || '';
-        const note = document.getElementById("order-note")?.value || '';
+        const note = document.getElementById("user-note")?.value || '';
+    const shippingDiscountText = document.querySelector(".shipping-discount")?.textContent || "0đ";
+const shippingFeeText = document.querySelector(".shipping-fee")?.textContent || "0đ";
+
+// Chuyển từ "5.000đ" => 5000
+const shippingDiscount = parseInt(shippingDiscountText.replace(/[^\d]/g, '')) || 0;
+const shippingFee = parseInt(shippingFeeText.replace(/[^\d]/g, '')) || 0;
+
 
         if (selectedItems.length === 0) {
             showAlert2("Vui lòng chọn ít nhất một sản phẩm để đặt hàng.");
@@ -280,7 +287,9 @@ function setupCheckoutHandler() {
                 items: selectedItems,
                 paymentMethod,
                 address,
-                note
+                note,
+                shippingDiscount,
+                shippingFee
             })
         })
         .then(res => res.json())
@@ -296,8 +305,8 @@ function setupCheckoutHandler() {
                 localStorage.removeItem("cart");
 
                 
-                window.location.href = "/index.php";
-                showAlert("Đặt hàng thành công!");
+                window.location.href = "/gui/order_success.php";
+              
             } else {
                 showAlert2("Đã có lỗi xảy ra khi đặt hàng hoặc do bạn chưa đăng nhập");
             }

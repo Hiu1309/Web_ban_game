@@ -8,12 +8,10 @@ header('Content-Type: application/json');
 $count = 0;
 
 if (!isset($_SESSION['CustomerID'])) {
-    // Với người dùng chưa đăng nhập
     if (isset($_SESSION['cart'])) {
         $count = count($_SESSION['cart']);
     }
 } else {
-    // Với người dùng đã đăng nhập → query database
     $customerID = $_SESSION['CustomerID'];
     $sql = "SELECT COUNT(*) AS productCount
             FROM cart_item ci
