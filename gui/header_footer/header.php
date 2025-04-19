@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -15,7 +14,7 @@
     />
     <link rel="stylesheet" href="/Assets/CSS/index.css" />
     <link rel="stylesheet" href="/Assets/CSS/Responsive.css" />
-    <!-- <script type="module" src="../Javascript/Index.js"></script> -->
+    <script type="module" src="/Javascript/end_user/index.js"></script>
     <title>Welcome to MT3H</title>
   </head>
 
@@ -105,11 +104,7 @@
             <section
               class="header-items grid-col col-l-5 col-m-2 col-s-2 s-m-hidden font-size-14"
             >
-              <!-- <div id="change-bg-btn" class="full-height">
-                  <a href="#" onclick="return false" title="Change background color" >
-                      <i class="fa-solid fa-circle-half-stroke fa-xl btn" style="color: var(--main-color);"></i>
-                  </a>
-            </div> -->
+              
 
               <div class="hotline full-height">
                 <div class="flex align-center full-height">
@@ -136,7 +131,6 @@
                 </div>
               </a>
 
-
               <div id="user-account" class="account full-height">
                 <div class="flex align-center full-height">
                   <div id="no-sign-in" class="flex justify-center align-center">
@@ -146,18 +140,18 @@
                     ></i>
                     <p class="padding-left-8">Tài khoản</p>
                   </div>
+                  <a href="/gui/account/user_detail.php?featured=true">
 
-                  <div
-                    class="header-user-info flex justify-center align-center disable"
-                  >
+                  <div class="header-user-info flex justify-center align-center disable">
+                    
                     <i
-                      class="fa-brands fa-napster"
+                      class="fa-brands fa-napster fa-xl"
                       style="color: var(--main-color)"
                     ></i>
-                    <div class="user-name font-bold font-size-14">
+                    <div class="user-name padding-left-8 uppercase">
                       user-profile
                     </div>
-                  </div>
+                  </div></a>
 
                   <!-- account -->
                   <nav class="nav-account flex justify-center align-center flex-direction-y">
@@ -178,11 +172,11 @@
                     >
                       <div class="font-bold uppercase">Đăng ký</div>
                     </button>
-
                     <button
                       type="button"
                       title="Đăng xuất"
                       class="lnw-btn disable"
+                      onclick="window.location.href='/gui/account/logout.php';"
                     >
                       <div class="font-bold uppercase">Đăng xuất</div>
                     </button>
@@ -194,6 +188,7 @@
           </section>
         </section>
       </header>
+      
 
       <main id="main-container">
         <!-- html for sub header -->
@@ -221,183 +216,32 @@
 
                     <!-- Nav content -->
                     <nav class="nav-categories js-bg-white full-width">
-                      <div class="nav-item">
-                        <a
-                          href=""
-                          class="manga flex full-width"
-                          title="manga-container"
-                        >
-                          <img
-                            src="/Assets/Images/Icons/Other_icons/Manga.webp"
-                            alt="FREE TO PLAY"
-                            width="20em"
-                          />
-                          <p class="padding-left-8 font-size-14 font-bold">
-                            FREE TO PLAY
-                          </p>
-                        </a>
+                    <div class="nav-item">
+                          <a class="filter-btn flex full-width" data-type="AC001">
+                              <img src="/Assets/Images/Icons/Other_icons/hq720.jpg" alt="ACTION" width="20em" />
+                              <p class="padding-left-8 font-size-14 font-bold">ACTION</p>
+                          </a>
                       </div>
                       <div class="nav-item">
-                        <a
-                          href=""
-                          class="light-novel flex full-width"
-                          title="light-novel-container"
-                        >
-                          <img
-                            src="/Assets/Images/Icons/Other_icons/LN.webp"
-                            alt="ROLE-PLAYING"
-                            width="20em"
-                          />
-                          <p class="padding-left-8 font-size-14 font-bold">
-                            ROLE-PLAYING
-                          </p>
-                        </a>
+                          <a class="filter-btn flex full-width" data-type="RPG001">
+                              <img src="/Assets/Images/Icons/Other_icons/LN.webp" alt="ROLE-PLAYING" width="20em" />
+                              <p class="padding-left-8 font-size-14 font-bold">ROLE-PLAYING</p>
+                          </a>
                       </div>
                       <div class="nav-item">
-                        <a
-                          href=""
-                          class="light-novel flex full-width"
-                          title="light-novel-container"
-                        >
-                          <img
-                            src="/Assets/Images/Icons/Other_icons/Collage-Maker-15-Sep-2023-02-43-PM-9410.jpg"
-                            alt="OPEN WORLD"
-                            width="20em"
-                          />
-                          <p class="padding-left-8 font-size-14 font-bold">
-                            OPEN WORLD
-                          </p>
-                        </a>
-                      </div>
+                          <a class="filter-btn flex full-width" data-type="F2P001">
+                              <img src="/Assets/Images/Icons/Other_icons/Manga.webp" alt="FREE TO PLAY" width="20em" />
+                              <p class="padding-left-8 font-size-14 font-bold">FREE TO PLAY</p>
+                          </a>
+                      </div>                  
                       <div class="nav-item">
-                        <a
-                          href=""
-                          class="light-novel flex full-width"
-                          title="light-novel-container"
-                        >
-                          <img
-                            src="/Assets/Images/Icons/Other_icons/ExitLag-Best-Sports-Games-for-All-Platforms-in-2024.webp"
-                            alt="ALL SPORTS"
-                            width="20em"
-                          />
-                          <p class="padding-left-8 font-size-14 font-bold">
-                            ALL SPORTS
-                          </p>
-                        </a>
-                      </div>
-                      <div class="nav-item">
-                        <a
-                          href=""
-                          class="light-novel flex full-width"
-                          title="light-novel-container"
-                        >
-                          <img
-                            src="/Assets/Images/Icons/Other_icons/hq720.jpg"
-                            alt="ACTION"
-                            width="20em"
-                          />
-                          <p class="padding-left-8 font-size-14 font-bold">
-                            ACTION
-                          </p>
-                        </a>
-                      </div>
-                      <div class="nav-item">
-                        <a
-                          href=""
-                          class="light-novel flex full-width"
-                          title="light-novel-container"
-                        >
-                          <img
-                            src="/Assets/Images/Icons/Other_icons/survivalgames-1576274136.jpg"
-                            alt="SURVIVAL"
-                            width="20em"
-                          />
-                          <p class="padding-left-8 font-size-14 font-bold">
-                            SURVIVAL
-                          </p>
-                        </a>
-                      </div>
-                      <div class="nav-item">
-                        <a
-                          href=""
-                          class="light-novel flex full-width"
-                          title="light-novel-container"
-                        >
-                          <img
-                            src="/Assets/Images/Icons/Other_icons/images.jpg"
-                            alt="HORROR"
-                            width="20em"
-                          />
-                          <p class="padding-left-8 font-size-14 font-bold">
-                            HORROR
-                          </p>
-                        </a>
-                      </div>
-                      <div class="nav-item">
-                        <a
-                          href=""
-                          class="light-novel flex full-width"
-                          title="light-novel-container"
-                        >
-                          <img
-                            src="/Assets/Images/Icons/Other_icons/best-nintendo-switch-couch-co-op-games.webp"
-                            alt="CO-OPERATTIVE"
-                            width="20em"
-                          />
-                          <p class="padding-left-8 font-size-14 font-bold">
-                            CO-OPERATTIVE
-                          </p>
-                        </a>
-                      </div>
-                      <div class="nav-item">
-                        <a
-                          href=""
-                          class="light-novel flex full-width"
-                          title="light-novel-container"
-                        >
-                          <img
-                            src="/Assets/Images/Icons/Other_icons/simulation.webp"
-                            alt="SIMULATOR"
-                            width="20em"
-                          />
-                          <p class="padding-left-8 font-size-14 font-bold">
-                            SIMULATOR
-                          </p>
-                        </a>
-                      </div>
-                      <div class="nav-item">
-                        <a
-                          href=""
-                          class="light-novel flex full-width"
-                          title="light-novel-container"
-                        >
-                          <img
-                            src="/Assets/Images/Icons/Other_icons/fighting_martial_arts.webp"
-                            alt="light novel"
-                            width="20em"
-                          />
-                          <p class="padding-left-8 font-size-14 font-bold">
-                            FIGHTING
-                          </p>
-                        </a>
-                      </div>
-                      <div class="nav-item">
-                        <a
-                          href=""
-                          class="light-novel flex full-width"
-                          title="light-novel-container"
-                        >
-                          <img
-                            src="/Assets/Images/Icons/Other_icons/story_rich.webp"
-                            alt="light novel"
-                            width="20em"
-                          />
-                          <p class="padding-left-8 font-size-14 font-bold">
-                            STORY-RICH
-                          </p>
-                        </a>
-                      </div>
-                    </nav>
+                          <a class="filter-btn flex full-width" data-type="OW001">
+                              <img src="/Assets/Images/Icons/Other_icons/Collage-Maker-15-Sep-2023-02-43-PM-9410.jpg" alt="OPEN WORLD" width="20em" />
+                              <p class="padding-left-8 font-size-14 font-bold">OPEN WORLD</p>
+                          </a>
+                      </div>                      
+                  </nav>
+
                   </div>
                 </div>
 
@@ -410,10 +254,10 @@
                         class="fa-solid fa-file-invoice fa-lg"
                         style="color: var(--main-color)"
                       ></i>
-                    </span>
+                    </span><a href="/gui/history.php">
                     <p class="padding-left-8 font-size-13 font-bold">
                       Lịch sử mua hàng
-                    </p>
+                    </p></a>
                   </div>
                 </div>
 
@@ -479,7 +323,9 @@
                  </div>
             </div>
        </section>
-
+       <!-- Thông báo địa chỉ -->
+<div id="address-warning" class="address-warning hidden">Chưa có địa chỉ mặc định.</div>
+<div id="cart-added-alert" class="cart-added-alert hidden">Đã thêm vào giỏ hàng!</div>
        <!-- html for main content -->
        <section id="main-content">
             
