@@ -72,17 +72,19 @@ foreach ($items as $item) {
 $finalTotal = max(0, $productTotal + $shippingFee - $shippingDiscount);
 
 // Bắt đầu giao dịch
-$salesID = "SI" . uniqid();
 $conn->begin_transaction();
 
 try {
-    // Thêm vào bảng hóa đơn
-    $stmt = $conn->prepare("INSERT INTO sales_invoice (SalesID, CustomerID, PaymentMethod, ShippingAddress, TotalPrice, Note, Date) VALUES (?, ?, ?, ?, ?, ?, ?)");
-    $stmt->bind_param("sssssss", $salesID, $customerID, $paymentMethod, $address, $finalTotal, $note, $date);
+    // Thêm vào bảng hóa đơn (SalesID sẽ được tự động tăng)
+    $stmt = $conn->prepare("INSERT INTO sales_invoice (CustomerID, PaymentMethod, ShippingAddress, TotalPrice, Note, Date) VALUES (?, ?, ?, ?, ?, ?)");
+    $stmt->bind_param("ssssss", $customerID, $paymentMethod, $address, $finalTotal, $note, $date);
 
     if (!$stmt->execute()) {
         throw new Exception("Không thể tạo hóa đơn");
     }
+
+    // Lấy SalesID vừa tạo
+    $salesID = $conn->insert_id;
 
     // Thêm chi tiết hóa đơn
     foreach ($items as $item) {
@@ -93,7 +95,7 @@ try {
         $orderStatus = "Đang xử lý";
 
         $stmt = $conn->prepare("INSERT INTO detail_sales_invoice (SalesID, ProductID, Order_status, Quantity, Price, TotalPrice) VALUES (?, ?, ?, ?, ?, ?)");
-        $stmt->bind_param("sssidd", $salesID, $productID, $orderStatus, $quantity, $price, $totalItem);
+        $stmt->bind_param("issidd", $salesID, $productID, $orderStatus, $quantity, $price, $totalItem);
 
         if (!$stmt->execute()) {
             throw new Exception("Không thể thêm chi tiết đơn hàng cho sản phẩm $productID");

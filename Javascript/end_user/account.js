@@ -79,11 +79,13 @@ document.addEventListener("DOMContentLoaded", function () {
 
         if (btnLogout) {
           btnLogout.onclick = function () {
-            fetch("/gui/account/logout.php").then(() =>
-              window.location.reload()
-            );
+            fetch("/gui/account/logout.php")
+              .then(() => {
+                window.location.href = "/index.php"; // Chuyển hướng đến trang index.php
+              });
           };
         }
+        
       }
     });
 });

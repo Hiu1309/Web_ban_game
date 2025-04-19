@@ -176,6 +176,7 @@
                       type="button"
                       title="Đăng xuất"
                       class="lnw-btn disable"
+                      onclick="window.location.href='/gui/account/logout.php';"
                     >
                       <div class="font-bold uppercase">Đăng xuất</div>
                     </button>
@@ -253,10 +254,10 @@
                         class="fa-solid fa-file-invoice fa-lg"
                         style="color: var(--main-color)"
                       ></i>
-                    </span>
+                    </span><a href="/gui/history.php">
                     <p class="padding-left-8 font-size-13 font-bold">
                       Lịch sử mua hàng
-                    </p>
+                    </p></a>
                   </div>
                 </div>
 
