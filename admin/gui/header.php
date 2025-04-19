@@ -1,7 +1,7 @@
 <?php
-    echo '<div class="header">
+echo '<div class="header">
         <span>Xin chào, Admin</span>
-        <a href="logout.php" class="logout-btn">Thoát</a>
+        <a href="../../index.php" class="logout-btn">Chuyển sang trang mua hàng</a>
     </div>
     
     <div class="container">

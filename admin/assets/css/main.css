@@ -127,3 +127,29 @@
   .sidebar a:nth-child(4)::before {
     content: "⚙";
   }
+  .header {
+    display: flex;
+    justify-content: space-between; /* Căn đều hai bên */
+    align-items: center; /* Căn giữa theo chiều dọc */
+    padding: 10px 20px;
+    background-color: #4568dc; /* Màu nền */
+    color: white; /* Màu chữ */
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.logout-btn {
+    background-color: #ca7ef3;
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    text-decoration: none; /* Xóa gạch chân */
+    transition: background-color 0.3s ease;
+}
+
+.logout-btn:hover {
+    background-color: #f75757;
+}
