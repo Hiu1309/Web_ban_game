@@ -113,19 +113,35 @@
                 // Bắt đầu transaction để đảm bảo tính nhất quán dữ liệu
                 $conn->begin_transaction();
                 try {
-                    // Cập nhật username trong bảng customer trước để tránh lỗi foreign key
+                    // CẢI TIẾN: Thêm bản ghi mới vào account với username mới
+                    $sql_get_account = "SELECT Password, RoleID, Status, `Lock` FROM account WHERE Username = ?";
+                    $stmt_get = $conn->prepare($sql_get_account);
+                    $stmt_get->bind_param("s", $old_username);
+                    $stmt_get->execute();
+                    $result_account = $stmt_get->get_result();
+                    $account_data = $result_account->fetch_assoc();
+                    $stmt_get->close();
+                    
+                    // Thêm bản ghi mới cho username mới
+                    $sql_new_account = "INSERT INTO account (Username, Password, RoleID, Status, `Lock`) VALUES (?, ?, ?, ?, ?)";
+                    $stmt_new = $conn->prepare($sql_new_account);
+                    $stmt_new->bind_param("sssii", $new_username, $account_data['Password'], $roleID, $account_data['Status'], $account_data['Lock']);
+                    $stmt_new->execute();
+                    $stmt_new->close();
+                    
+                    // Cập nhật username trong bảng customer
                     $sql_update_customer = "UPDATE customer SET Username = ?, Fullname = ?, Email = ?, Address = ?, Phone = ? WHERE Username = ?";
                     $stmt_customer = $conn->prepare($sql_update_customer);
                     $stmt_customer->bind_param("ssssss", $new_username, $fullname, $email, $address, $phone, $old_username);
                     $stmt_customer->execute();
                     $stmt_customer->close();
-
-                    // Sau đó cập nhật bảng account
-                    $sql_update_account = "UPDATE account SET Username = ?, RoleID = ? WHERE Username = ?";
-                    $stmt_account = $conn->prepare($sql_update_account);
-                    $stmt_account->bind_param("sss", $new_username, $roleID, $old_username);
-                    $stmt_account->execute();
-                    $stmt_account->close();
+                    
+                    // Xóa bản ghi cũ trong account
+                    $sql_delete_old = "DELETE FROM account WHERE Username = ?";
+                    $stmt_delete = $conn->prepare($sql_delete_old);
+                    $stmt_delete->bind_param("s", $old_username);
+                    $stmt_delete->execute();
+                    $stmt_delete->close();
 
                     // Commit transaction nếu không có lỗi
                     $conn->commit();
