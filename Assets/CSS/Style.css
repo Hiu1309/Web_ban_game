@@ -606,7 +606,85 @@
   font-family: 'Inter', sans-serif;
   text-align: center;
 }
+.contact-wrapper {
+  background-color: #f8f8f8;
+  padding: 40px;
+  display: flex;
+  justify-content: space-around;
+  flex-wrap: wrap;
+  gap: 20px;
+}
 
+.contact-card {
+  background-color: #fff;
+  padding: 30px;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  flex: 1;
+  min-width: 300px;
+  max-width: 500px;
+}
+
+.contact-card h2 {
+  font-size: 1.4rem;
+  font-weight: 700;
+  margin-bottom: 20px;
+  color: #111;
+}
+
+.contact-card p {
+  margin: 15px 0;
+  color: #333;
+  font-size: 1rem;
+}
+
+.contact-card a {
+  color: #333;
+  text-decoration: underline;
+}
+
+.contact-socials {
+  margin-top: 15px;
+}
+
+.contact-socials a {
+  margin-right: 15px;
+  color: #333;
+  font-size: 1.2rem;
+}
+.contact-wrapper a {
+  padding: 6px 12px;
+  background-color: #f3f3f3;
+  border-radius: 6px;
+  display: inline-block;
+  margin-bottom: 6px;
+  text-decoration: none;
+}
+
+.contact-wrapper a:hover {
+  background-color: #861313;
+  color: white;
+}
+
+.contact-map img {
+  width: 100%;
+  border-radius: 10px;
+  margin-top: 15px;
+}
+
+
+.contact-logo {
+  font-size: 1.4rem;
+  font-weight: bold;
+  color: #222;
+}
+
+.contact-nav a {
+  margin-left: 20px;
+  text-decoration: none;
+  color: #333;
+  font-weight: 500;
+}
 .homepage-container {
   font-family: 'Inter', sans-serif;
   background-color: #f9fafb;

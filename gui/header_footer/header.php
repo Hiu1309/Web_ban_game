@@ -296,7 +296,7 @@
                         style="color: var(--main-color)"
                       ></i>
                     </span>
-                    <p class="padding-left-8 font-size-13 font-bold">Liên hệ</p>
+                   <a href="/gui/contact.php"> <p class="padding-left-8 font-size-13 font-bold">Liên hệ</p></a>
                   </div>
                 </div>
               </div>
