@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Apr 19, 2025 at 01:16 PM
+-- Generation Time: Apr 19, 2025 at 03:24 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.1.25
 
@@ -149,14 +149,8 @@ CREATE TABLE `detail_sales_invoice` (
 --
 
 INSERT INTO `detail_sales_invoice` (`DetailSalesID`, `SalesID`, `ProductID`, `Order_status`, `Quantity`, `Price`, `TotalPrice`) VALUES
-(104, 3, 'GAME010', 'Đã hủy', 1, 509745, 509745),
-(105, 3, 'GAME015', 'Đã hủy', 1, 1019745, 1019745),
-(106, 3, 'GAME016', 'Đã hủy', 1, 1529745, 1529745),
-(107, 4, 'GAME034', 'Đang xử lý', 1, 1274000, 1274000),
-(108, 4, 'GAME038', 'Đang xử lý', 1, 1274000, 1274000),
-(109, 4, 'GAME040', 'Đang xử lý', 1, 1529745, 1529745),
-(110, 5, 'GAME010', 'Đã hủy', 1, 509745, 509745),
-(111, 5, 'GAME001', 'Đã hủy', 4, 1499099, 5996396);
+(112, 6, 'GAME031', 'Đã hủy', 1, 0, 0),
+(113, 6, 'GAME016', 'Đã hủy', 3, 1529745, 4589235);
 
 -- --------------------------------------------------------
 
@@ -325,9 +319,7 @@ CREATE TABLE `sales_invoice` (
 --
 
 INSERT INTO `sales_invoice` (`SalesID`, `CustomerID`, `EmployeeID`, `PaymentMethod`, `ShippingAddress`, `TotalPrice`, `Note`, `Date`, `Status`) VALUES
-(3, 'MT3H00005', NULL, 'payment-option-1', 'sdadadasdadadsa', 3079235, '', '2025-04-19 13:12:15', 'Đã hủy'),
-(4, 'MT3H00005', NULL, 'payment-option-1', 'sdadadasdadadsa', 4097745, '', '2025-04-19 13:13:23', 'chờ xử lý'),
-(5, 'MT3H00005', NULL, 'payment-option-1', 'sdadadasdadadsa', 6526141, '', '2025-04-19 13:13:36', 'chờ xử lý');
+(6, 'MT3H00005', NULL, 'payment-option-1', 'sdadadasdadadsa', 4609235, 'âsdasdasdasdadads', '2025-04-19 19:08:05', 'Đã hủy');
 
 -- --------------------------------------------------------
 
@@ -530,19 +522,19 @@ ALTER TABLE `type_product`
 -- AUTO_INCREMENT for table `cart_item`
 --
 ALTER TABLE `cart_item`
-  MODIFY `CartItemID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=218;
+  MODIFY `CartItemID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=220;
 
 --
 -- AUTO_INCREMENT for table `detail_sales_invoice`
 --
 ALTER TABLE `detail_sales_invoice`
-  MODIFY `DetailSalesID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=112;
+  MODIFY `DetailSalesID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=114;
 
 --
 -- AUTO_INCREMENT for table `sales_invoice`
 --
 ALTER TABLE `sales_invoice`
-  MODIFY `SalesID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `SalesID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- Constraints for dumped tables
@@ -584,8 +576,8 @@ ALTER TABLE `detail_import_invoice`
 -- Constraints for table `detail_sales_invoice`
 --
 ALTER TABLE `detail_sales_invoice`
-  ADD CONSTRAINT `detail_sales_invoice_ibfk_1` FOREIGN KEY (`SalesID`) REFERENCES `sales_invoice` (`SalesID`),
-  ADD CONSTRAINT `detail_sales_invoice_ibfk_2` FOREIGN KEY (`ProductID`) REFERENCES `product` (`ProductID`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `detail_sales_invoice_ibfk_2` FOREIGN KEY (`ProductID`) REFERENCES `product` (`ProductID`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `fk_sales` FOREIGN KEY (`SalesID`) REFERENCES `sales_invoice` (`SalesID`) ON DELETE CASCADE;
 
 --
 -- Constraints for table `employee`
