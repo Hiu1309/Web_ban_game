@@ -58,11 +58,272 @@ $result = $conn->query($sql);
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="../assets/css/view_invoice.css">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f8f9fa;
+            color: #333;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            border-radius: 8px;
+        }
+
+        /* Tiêu đề trang */
+        h2.text-center {
+            color: #2c3e50;
+            font-weight: 600;
+            margin-bottom: 30px;
+            position: relative;
+            padding-bottom: 10px;
+        }
+
+        h2.text-center:after {
+            content: "";
+            position: absolute;
+            width: 80px;
+            height: 3px;
+            background-color: #3498db;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+       
+        /* Bảng */
+        .table {
+            width: 100%;
+            margin-bottom: 20px;
+            border-collapse: collapse;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .table thead {
+            background-color: #2ea1ed;
+            color: white;
+        }
+
+        .table th {
+            font-weight: 600;
+            text-transform: uppercase;
+            font-size: 14px;
+            padding: 12px !important;
+            text-align: center;
+
+        }
+
+        .table td {
+            padding: 12px !important;
+            vertical-align: middle;
+            text-align: center;
+        }
+
+        .table tbody tr:hover {
+            background-color: rgba(52, 152, 219, 0.05);
+        }
+
+        /* Nút */
+        .btn {
+            padding: 8px 20px;
+            font-weight: 500;
+            border-radius: 5px;
+            transition: all 0.3s;
+        }
+
+        .btn-info {
+            background-color: #3498db;
+            color: white;
+            border: none;
+        }
+
+        .btn-info:hover {
+            background-color: #2980b9;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .btn-success {
+            background-color: #2ecc71;
+            color: white;
+            border: none;
+        }
+
+        .btn-success:hover {
+            background-color: #27ae60;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .btn-danger {
+            background-color: #e74c3c;
+            color: white;
+            border: none;
+        }
+
+        .btn-danger:hover {
+            background-color: #c0392b;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Modal */
+        .modal-content {
+            border: none;
+            border-radius: 10px;
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+
+        .modal-header {
+            background-color: #3498db;
+            color: white;
+            border-top-left-radius: 10px;
+            border-top-right-radius: 10px;
+            padding: 15px 20px;
+        }
+
+        .modal-title {
+            font-weight: 600;
+            font-size: 20px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .modal-body {
+            padding: 20px;
+            background-color: #f9f9f9;
+        }
+
+        .modal-body .customer-info {
+            margin-bottom: 20px;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            background-color: #ffffff;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+        }
+
+        .modal-body .customer-info h3 {
+            font-size: 18px;
+            font-weight: 600;
+            color: #2c3e50;
+            margin-bottom: 15px;
+            border-bottom: 2px solid #3498db;
+            padding-bottom: 5px;
+        }
+
+        .modal-body .customer-info p {
+            margin: 0;
+            padding: 5px 0;
+            font-size: 14px;
+            color: #555;
+        }
+
+        .modal-body .customer-info p strong {
+            color: #2c3e50;
+            font-weight: 600;
+            min-width: 120px;
+            display: inline-block;
+        }
+
+        .modal-body .product-section {
+            margin-top: 20px;
+        }
+
+        .modal-body .product-section h3 {
+            font-size: 18px;
+            font-weight: 600;
+            color: #2c3e50;
+            margin-bottom: 15px;
+            border-bottom: 2px solid #3498db;
+            padding-bottom: 5px;
+        }
+
+        .modal-body .table {
+            margin-bottom: 0;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+        }
+
+        .modal-body .table thead {
+            background-color: #3498db;
+            color: white;
+            text-transform: uppercase;
+            font-size: 14px;
+        }
+
+        .modal-body .table th,
+        .modal-body .table td {
+            padding: 10px;
+            text-align: center;
+            font-size: 14px;
+            color: #555;
+        }
+
+        .modal-body .table tbody tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+
+        .modal-body .table tbody tr:hover {
+            background-color: rgba(52, 152, 219, 0.1);
+        }
+
+        .modal-body .total-section {
+            margin-top: 20px;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            background-color: #ffffff;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+            text-align: right;
+        }
+
+        .modal-body .total-section h4 {
+            font-size: 18px;
+            font-weight: 600;
+            color: #27ae60;
+            margin: 0;
+        }
+
+        .modal-footer {
+            border-top: 1px solid #ddd;
+            padding: 15px 20px;
+            background-color: #f9f9f9;
+            justify-content: flex-end;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .table {
+                display: block;
+                overflow-x: auto;
+            }
+
+            .modal-body p strong {
+                min-width: 100px;
+            }
+
+            .modal-body .customer-info p strong {
+                min-width: 100px;
+            }
+
+            .modal-body .table {
+                display: block;
+                overflow-x: auto;
+            }
+        }
+    </style>
 </head>
 
 <body>
     <div class="container mt-5">
-    <h2 class="text-center" style="margin-bottom:15px">Danh sách hóa đơn</h2>
+        <h2 class="text-center" style="margin-bottom:15px">Danh sách hóa đơn</h2>
         <table class="table table-bordered table-hover">
             <thead class="table-primary">
                 <tr>
@@ -79,7 +340,7 @@ $result = $conn->query($sql);
             <tbody>
                 <?php if ($result->num_rows > 0): ?>
                     <?php $index = 1; ?>
-                    <?php while ($row = $result->fetch_assoc()): 
+                    <?php while ($row = $result->fetch_assoc()):
                         // Tách các giá trị đã được gộp bằng GROUP_CONCAT
                         $products = explode('||', $row['Products']);
                         $authors = explode('||', $row['Authors']);
@@ -87,7 +348,7 @@ $result = $conn->query($sql);
                         $quantities = explode('||', $row['Quantities']);
                         $itemTotalPrices = explode('||', $row['ItemTotalPrices']);
                         $productCount = count($products);
-                    ?>
+                        ?>
                         <tr>
                             <td><?= $index++ ?></td>
                             <td><?= $row['SalesID'] ?></td>
@@ -97,16 +358,11 @@ $result = $conn->query($sql);
                             <td><?= $productCount ?></td>
                             <td><?= number_format($row['GrandTotal'], 0, ',', '.') ?> VND</td>
                             <td>
-                                <button class="btn btn-info btn-sm view-invoice" 
-                                    data-bs-toggle="modal" 
-                                    data-bs-target="#invoiceModal"
-                                    data-salesid="<?= $row['SalesID'] ?>"
-                                    data-username="<?= $row['Username'] ?>"
-                                    data-fullname="<?= $row['Fullname'] ?>"
-                                    data-phone="<?= $row['Phone'] ?>"
-                                    data-address="<?= $row['Address'] ?>"
-                                    data-date="<?= $row['Date'] ?>"
-                                    data-products="<?= htmlspecialchars($row['Products']) ?>"
+                                <button class="btn btn-info btn-sm view-invoice" data-bs-toggle="modal"
+                                    data-bs-target="#invoiceModal" data-salesid="<?= $row['SalesID'] ?>"
+                                    data-username="<?= $row['Username'] ?>" data-fullname="<?= $row['Fullname'] ?>"
+                                    data-phone="<?= $row['Phone'] ?>" data-address="<?= $row['Address'] ?>"
+                                    data-date="<?= $row['Date'] ?>" data-products="<?= htmlspecialchars($row['Products']) ?>"
                                     data-authors="<?= htmlspecialchars($row['Authors']) ?>"
                                     data-prices="<?= htmlspecialchars($row['Prices']) ?>"
                                     data-quantities="<?= htmlspecialchars($row['Quantities']) ?>"
@@ -130,7 +386,8 @@ $result = $conn->query($sql);
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="invoiceModalLabel">Chi tiết hóa đơn #<span id="modal-salesid"></span></h5>
+                    <h5 class="modal-title" id="invoiceModalLabel">Chi tiết hóa đơn #<span id="modal-salesid"></span>
+                    </h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
@@ -203,7 +460,7 @@ $result = $conn->query($sql);
                 // Thêm từng sản phẩm vào bảng
                 for (let i = 0; i < products.length; i++) {
                     const row = document.createElement('tr');
-                    
+
                     row.innerHTML = `
                         <td>${i + 1}</td>
                         <td>${products[i]}</td>
@@ -212,7 +469,7 @@ $result = $conn->query($sql);
                         <td>${quantities[i]}</td>
                         <td>${itemTotalPrices[i]} VND</td>
                     `;
-                    
+
                     productTableBody.appendChild(row);
                 }
             });

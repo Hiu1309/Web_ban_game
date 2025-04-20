@@ -270,77 +270,74 @@
             </div>
 
             <!-- Bảng hiển thị tài khoản -->
-            <div class="table-responsive">
-                <table class="table table-striped table-hover">
-                    <thead class="table-dark">
-                        <tr>
-                            <th>CustomerID</th>
-                            <th>Username</th>
-                            <th>Vai trò</th>
-                            <th>Họ và tên</th>
-                            <th>Email</th>
-                            <th>Địa chỉ</th>
-                            <th>Số điện thoại</th>
-                            <th>Tổng chi tiêu</th>
-                            <th>Trạng thái</th>
-                            <th class="action-column-header">Chỉnh sửa</th>
-                            <th class="action-column-header">Xóa</th>
-                            <th class="action-column-header">Khóa</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <?php
-                        if ($result->num_rows > 0) {
-                            while ($row = $result->fetch_assoc()) {
-                                echo "<tr>";
-                                echo "<td>" . $row["CustomerID"] . "</td>";
-                                echo "<td>" . $row["Username"] . "</td>";
-                                echo "<td>" . getRoleName($row["RoleID"]) . "</td>";
-                                echo "<td>" . $row["Fullname"] . "</td>";
-                                echo "<td>" . $row["Email"] . "</td>";
-                                echo "<td>" . $row["Address"] . "</td>";
-                                echo "<td>" . $row["Phone"] . "</td>";
-                                echo "<td>" . number_format($row["TotalSpending"]) . " VNĐ</td>";
-                                echo "<td>" . ($row["Status"] == 1 ? '<span class="badge status-badge status-active">Kích hoạt</span>' : '<span class="badge status-badge status-inactive">Chưa kích hoạt</span>') . "</td>";
+            <!-- Bảng hiển thị tài khoản -->
+<div class="table-responsive">
+    <table class="table table-striped table-hover">
+        <thead class="table-dark">
+            <tr>
+                <th>CustomerID</th>
+                <th>Username</th>
+                <th>Vai trò</th>
+                <th>Họ và tên</th>
+                <th>Email</th>
+                <th>Địa chỉ</th>
+                <th>Số điện thoại</th>
+                <th class="action-column-header">Chỉnh sửa</th>
+                <th class="action-column-header">Xóa</th>
+                <th class="action-column-header">Khóa</th>
+            </tr>
+        </thead>
+        <tbody>
+            <?php
+            if ($result->num_rows > 0) {
+                while ($row = $result->fetch_assoc()) {
+                    echo "<tr>";
+                    echo "<td>" . $row["CustomerID"] . "</td>";
+                    echo "<td>" . $row["Username"] . "</td>";
+                    echo "<td>" . getRoleName($row["RoleID"]) . "</td>";
+                    echo "<td>" . $row["Fullname"] . "</td>";
+                    echo "<td>" . $row["Email"] . "</td>";
+                    echo "<td>" . $row["Address"] . "</td>";
+                    echo "<td>" . $row["Phone"] . "</td>";
 
-                                // Cột Chỉnh sửa
-                                echo "<td>
-                                    <button class='btn btn-sm btn-warning edit-btn btn-action' data-bs-toggle='modal' data-bs-target='#editModal' 
-                                        data-username='" . $row["Username"] . "' 
-                                        data-roleid='" . $row["RoleID"] . "' 
-                                        data-status='" . $row["Status"] . "' 
-                                        data-fullname='" . $row["Fullname"] . "' 
-                                        data-email='" . $row["Email"] . "' 
-                                        data-address='" . $row["Address"] . "' 
-                                        data-phone='" . $row["Phone"] . "'>
-                                        <i class='fas fa-edit'></i> Sửa
-                                    </button>
-                                </td>";
+                    // Cột Chỉnh sửa
+                    echo "<td>
+                        <button class='btn btn-sm btn-warning edit-btn btn-action' data-bs-toggle='modal' data-bs-target='#editModal' 
+                            data-username='" . $row["Username"] . "' 
+                            data-roleid='" . $row["RoleID"] . "' 
+                            data-status='" . $row["Status"] . "' 
+                            data-fullname='" . $row["Fullname"] . "' 
+                            data-email='" . $row["Email"] . "' 
+                            data-address='" . $row["Address"] . "' 
+                            data-phone='" . $row["Phone"] . "'>
+                            <i class='fas fa-edit'></i> Sửa
+                        </button>
+                    </td>";
 
-                                // Cột Xóa
-                                echo "<td>
-                                    <button class='btn btn-sm btn-danger delete-btn btn-action' onclick='confirmDelete(\"" . $row["Username"] . "\")'>
-                                        <i class='fas fa-trash-alt'></i> Xóa
-                                    </button>
-                                </td>";
+                    // Cột Xóa
+                    echo "<td>
+                        <button class='btn btn-sm btn-danger delete-btn btn-action' onclick='confirmDelete(\"" . $row["Username"] . "\")'>
+                            <i class='fas fa-trash-alt'></i> Xóa
+                        </button>
+                    </td>";
 
-                                // Cột Khóa/Mở khóa
-                                echo "<td class='text-center'>";
-                                if ($row["Lock"] == 1) {
-                                    echo "<i class='fas fa-lock-open fa-lg text-success lock-icon' title='Đã mở - Nhấn để khóa' onclick='confirmLock(\"" . $row["Username"] . "\", 0)'></i>";
-                                } else {
-                                    echo "<i class='fas fa-lock fa-lg text-danger lock-icon' title='Đã khóa - Nhấn để mở' onclick='confirmLock(\"" . $row["Username"] . "\", 1)'></i>";
-                                }
-                                echo "</td>";
-                                echo "</tr>";
-                            }
-                        } else {
-                            echo "<tr><td colspan='12' class='text-center'>Không có dữ liệu</td></tr>";
-                        }
-                        ?>
-                    </tbody>
-                </table>
-            </div>
+                    // Cột Khóa/Mở khóa
+                    echo "<td class='text-center'>";
+                    if ($row["Lock"] == 1) {
+                        echo "<i class='fas fa-lock-open fa-lg text-success lock-icon' title='Đã mở - Nhấn để khóa' onclick='confirmLock(\"" . $row["Username"] . "\", 0)'></i>";
+                    } else {
+                        echo "<i class='fas fa-lock fa-lg text-danger lock-icon' title='Đã khóa - Nhấn để mở' onclick='confirmLock(\"" . $row["Username"] . "\", 1)'></i>";
+                    }
+                    echo "</td>";
+                    echo "</tr>";
+                }
+            } else {
+                echo "<tr><td colspan='10' class='text-center'>Không có dữ liệu</td></tr>";
+            }
+            ?>
+        </tbody>
+    </table>
+</div>
         </div>
 
         <!-- Modal thêm tài khoản -->
