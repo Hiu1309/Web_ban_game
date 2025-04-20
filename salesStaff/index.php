@@ -20,6 +20,8 @@
             include_once("gui/print_invoice.php");
         }elseif($page == 'view_invoice'){
             include_once("gui/view_invoice.php");
+        }elseif($page == 'view_statistics'){
+            include_once("gui/report.php");
         }
     ?>
 
