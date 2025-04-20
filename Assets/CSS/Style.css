@@ -588,7 +588,156 @@
   cursor: pointer;
   width: 100%;
 }
+.news-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  background-color: #f9fafb;
+  padding: 20px 40px;
+  flex-wrap: wrap;
+}
 
+
+.news-title {
+  font-size: 34px;
+  font-weight: 800;
+  flex-grow: 1;
+  font-family: 'Inter', sans-serif;
+  text-align: center;
+}
+.contact-wrapper {
+  background-color: #f8f8f8;
+  padding: 40px;
+  display: flex;
+  justify-content: space-around;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+.contact-card {
+  background-color: #fff;
+  padding: 30px;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  flex: 1;
+  min-width: 300px;
+  max-width: 500px;
+}
+
+.contact-card h2 {
+  font-size: 1.4rem;
+  font-weight: 700;
+  margin-bottom: 20px;
+  color: #111;
+}
+
+.contact-card p {
+  margin: 15px 0;
+  color: #333;
+  font-size: 1rem;
+}
+
+.contact-card a {
+  color: #333;
+  text-decoration: underline;
+}
+
+.contact-socials {
+  margin-top: 15px;
+}
+
+.contact-socials a {
+  margin-right: 15px;
+  color: #333;
+  font-size: 1.2rem;
+}
+.contact-wrapper a {
+  padding: 6px 12px;
+  background-color: #f3f3f3;
+  border-radius: 6px;
+  display: inline-block;
+  margin-bottom: 6px;
+  text-decoration: none;
+}
+
+.contact-wrapper a:hover {
+  background-color: #861313;
+  color: white;
+}
+
+.contact-map img {
+  width: 100%;
+  border-radius: 10px;
+  margin-top: 15px;
+}
+
+
+.contact-logo {
+  font-size: 1.4rem;
+  font-weight: bold;
+  color: #222;
+}
+
+.contact-nav a {
+  margin-left: 20px;
+  text-decoration: none;
+  color: #333;
+  font-weight: 500;
+}
+.homepage-container {
+  font-family: 'Inter', sans-serif;
+  background-color: #f9fafb;
+  padding: 40px;
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+  justify-content:flex-start
+}
+
+.cardD {
+  width: 300px;
+  background: white;
+  border-radius: 16px;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+  width: 360px;
+  overflow: hidden;
+  transition: transform 0.2s ease;
+}
+
+.cardD:hover {
+  transform: translateY(-4px);
+}
+
+.cardD img {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+  border-top-left-radius: 16px;
+  border-top-right-radius: 16px;
+}
+
+.card-contentD {
+  padding: 20px;
+}
+
+.card-titleD {
+  font-size: 18px;
+  font-weight: 600;
+  color: #1f2937;
+  margin-bottom: 8px;
+}
+.card-link {
+  text-decoration: none;
+  color: inherit;
+  display: block;
+}
+
+.card-descriptionD {
+  font-size: 14px;
+  color: #4b5563;
+  line-height: 1.6;
+}
 .order-button:hover {
   background-color: #a31a1a;
 }
