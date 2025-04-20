@@ -182,6 +182,30 @@ class Data {
         return $data;
     }
 
+    public function getTop5ProductsByMonth($month) {
+        $sql = "
+            SELECT g.ProductName AS ProductName, SUM(cthd.Quantity) AS totalSold
+            FROM sales_invoice h
+            JOIN detail_sales_invoice cthd ON h.SalesID = cthd.SalesID
+            JOIN product g ON cthd.ProductID = g.ProductID
+            WHERE DATE_FORMAT(h.Date, '%Y-%m') = ?
+            GROUP BY g.ProductID
+            ORDER BY totalSold DESC
+            LIMIT 5
+        ";
+        $stmt = $this->conn->prepare($sql);
+        $stmt->bind_param("s", $month);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $data = [];
+        if ($result && $result->num_rows > 0) {
+            while ($row = $result->fetch_assoc()) {
+                $data[] = $row;
+            }
+        }
+        return $data;
+    }
+
     public function __destruct() {
         $this->conn->close();
     }
