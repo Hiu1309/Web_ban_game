@@ -10,7 +10,45 @@ if ($conn->connect_error) {
     die("Kết nối thất bại: " . $conn->connect_error);
 }
 
-// Lấy tất cả các hóa đơn đã duyệt
+// Phân trang
+$records_per_page = 5;
+$page_num = isset($_GET['page_num']) ? intval($_GET['page_num']) : 1;
+if ($page_num < 1) {
+    $page_num = 1; // Đảm bảo giá trị $page_num luôn >= 1
+}
+$offset = ($page_num - 1) * $records_per_page;
+if ($offset < 0) {
+    $offset = 0; // Đảm bảo giá trị $offset luôn >= 0
+}
+
+// Xử lý tìm kiếm theo ngày
+$search_date = isset($_GET['search_date']) ? $_GET['search_date'] : '';
+$date_condition = '';
+if (!empty($search_date)) {
+    $date_condition = "AND DATE(sales_invoice.Date) = '" . $conn->real_escape_string($search_date) . "'";
+}
+
+// Đếm tổng số hóa đơn để phân trang
+$count_sql = "SELECT COUNT(DISTINCT sales_invoice.SalesID) as total
+        FROM 
+            Customer
+        INNER JOIN 
+            sales_invoice ON Customer.CustomerID = sales_invoice.CustomerID
+        INNER JOIN 
+            detail_sales_invoice ON sales_invoice.SalesID = detail_sales_invoice.SalesID
+        WHERE 
+            detail_sales_invoice.Order_status = 'Đã duyệt'
+            $date_condition";
+
+$count_result = $conn->query($count_sql);
+$count_row = $count_result->fetch_assoc();
+$total_records = $count_row['total'];
+$total_pages = ceil($total_records / $records_per_page);
+if ($total_pages < 1) {
+    $total_pages = 1; // Đảm bảo tổng số trang luôn >= 1
+}
+
+// Lấy tất cả các hóa đơn đã duyệt với phân trang và tìm kiếm
 $sql = "SELECT DISTINCT
             sales_invoice.SalesID,
             Customer.Username,
@@ -27,8 +65,12 @@ $sql = "SELECT DISTINCT
             detail_sales_invoice ON sales_invoice.SalesID = detail_sales_invoice.SalesID
         WHERE 
             detail_sales_invoice.Order_status = 'Đã duyệt'
+            $date_condition
         GROUP BY
-            sales_invoice.SalesID";
+            sales_invoice.SalesID
+        ORDER BY
+            sales_invoice.Date DESC
+        LIMIT $offset, $records_per_page";
 
 $result = $conn->query($sql);
 $invoices = $result->fetch_all(MYSQLI_ASSOC);
@@ -69,9 +111,53 @@ foreach ($invoices as $invoice) {
     <title>In hóa đơn</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="../assets/css/print_invoice.css">
-
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
     <style>
+        .search-bar {
+            margin-bottom: 20px;
+        }
+        .pagination {
+            margin-top: 20px;
+            justify-content: center;
+        }
+        @media print {
+            .non-printable, .pagination, .search-bar {
+                display: none !important;
+            }
+        }
+        .invoice-details {
+            margin: 20px auto;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            background-color: #fff;
+        }
+        .customer-info {
+            margin-bottom: 20px;
+        }
+        .product-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+        .product-table th, .product-table td {
+            padding: 8px;
+            border: 1px solid #ddd;
+        }
+        .product-table th {
+            background-color: #f2f2f2;
+        }
+        .total-section {
+            text-align: right;
+            font-weight: bold;
+            font-size: 1.1em;
+            margin-top: 10px;
+        }
+        .footer {
+            margin-top: 30px;
+            text-align: center;
+            font-style: italic;
+        }
         /* Thiết lập chung */
         body {
             font-family: 'Roboto', sans-serif;
@@ -497,8 +583,6 @@ foreach ($invoices as $invoice) {
             left: 50%;
             transform: translateX(-50%);
         }
-    </style>
-    <style>
         /* Căn giữa danh sách hóa đơn */
         .invoice-container {
             max-width: 1200px;
@@ -587,9 +671,27 @@ foreach ($invoices as $invoice) {
 </head>
 
 <body>
-    <div class="invoice-container">
+    <div class="container invoice-container">
         <div class="invoice-header non-printable">
             <h2>Danh sách hóa đơn</h2>
+        </div>
+
+        <!-- Tìm kiếm theo ngày -->
+        <div class="search-bar non-printable">
+            <form method="GET" class="row g-3">
+                <input type="hidden" name="page" value="print_invoice">
+                <div class="col-md-4">
+                    <input type="date" class="form-control" id="search_date" name="search_date" value="<?= htmlspecialchars($search_date) ?>">
+                </div>
+                <div class="col-md-2 d-flex align-items-end">
+                    <button type="submit" class="btn btn-primary">Tìm kiếm</button>
+                </div>
+                <?php if (!empty($search_date)): ?>
+                <div class="col-md-2 d-flex align-items-end">
+                    <a href="index.php?page=print_invoice" class="btn btn-secondary">Xóa bộ lọc</a>
+                </div>
+                <?php endif; ?>
+            </form>
         </div>
 
         <!-- Hiển thị danh sách hóa đơn -->
@@ -621,7 +723,7 @@ foreach ($invoices as $invoice) {
                         }
                         ?>
                         <tr>
-                            <td><?= $index + 1 ?></td>
+                            <td><?= $offset + $index + 1 ?></td>
                             <td><?= $salesID ?></td>
                             <td><?= $invoice['Fullname'] ?></td>
                             <td><?= $invoice['Phone'] ?></td>
@@ -640,6 +742,51 @@ foreach ($invoices as $invoice) {
                 <?php endif; ?>
             </tbody>
         </table>
+
+        <!-- Phân trang -->
+        <?php if ($total_pages > 1): ?>
+        <nav aria-label="Page navigation" class="non-printable">
+            <ul class="pagination">
+                <?php if ($page_num > 1): ?>
+                    <li class="page-item">
+                        <a class="page-link" href="index.php?page=print_invoice&page_num=1<?= !empty($search_date) ? '&search_date='.$search_date : '' ?>" aria-label="First">
+                            <span aria-hidden="true">&laquo;&laquo;</span>
+                        </a>
+                    </li>
+                    <li class="page-item">
+                        <a class="page-link" href="index.php?page=print_invoice&page_num=<?= $page_num - 1 ?><?= !empty($search_date) ? '&search_date='.$search_date : '' ?>" aria-label="Previous">
+                            <span aria-hidden="true">&laquo;</span>
+                        </a>
+                    </li>
+                <?php endif; ?>
+
+                <?php
+                // Hiển thị tối đa 5 nút trang
+                $start_page = max(1, min($page_num - 2, $total_pages - 4));
+                $end_page = min($total_pages, max(5, $page_num + 2));
+
+                for ($i = $start_page; $i <= $end_page; $i++):
+                ?>
+                    <li class="page-item <?= ($i == $page_num) ? 'active' : '' ?>">
+                        <a class="page-link" href="index.php?page=print_invoice&page_num=<?= $i ?><?= !empty($search_date) ? '&search_date='.$search_date : '' ?>"><?= $i ?></a>
+                    </li>
+                <?php endfor; ?>
+
+                <?php if ($page_num < $total_pages): ?>
+                    <li class="page-item">
+                        <a class="page-link" href="index.php?page=print_invoice&page_num=<?= $page_num + 1 ?><?= !empty($search_date) ? '&search_date='.$search_date : '' ?>" aria-label="Next">
+                            <span aria-hidden="true">&raquo;</span>
+                        </a>
+                    </li>
+                    <li class="page-item">
+                        <a class="page-link" href="index.php?page=print_invoice&page_num=<?= $total_pages ?><?= !empty($search_date) ? '&search_date='.$search_date : '' ?>" aria-label="Last">
+                            <span aria-hidden="true">&raquo;&raquo;</span>
+                        </a>
+                    </li>
+                <?php endif; ?>
+            </ul>
+        </nav>
+        <?php endif; ?>
 
         <!-- Phần này sẽ chứa dữ liệu đơn hàng được chọn để in -->
         <div class="invoice-details" style="display: none;">

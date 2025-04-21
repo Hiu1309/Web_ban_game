@@ -3,7 +3,7 @@
 session_start(); // Khởi tạo session
 echo '  <div class="header-container">
             <div class="header-text">
-                Xin chào, nhân viên bán hàng <span class="text-warning">' . htmlspecialchars($_SESSION["username"]) . '</span>!
+                Nhân viên bán hàng <span class="text-warning">' . htmlspecialchars($_SESSION["username"]) . '</span>!
             </div>
             <a href="../../index.php" class="logout-btn">Thoát</a>
        </div>';

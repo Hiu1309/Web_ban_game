@@ -17,7 +17,53 @@ function writeDebugLog($message)
     file_put_contents($logFile, "[$timestamp] $message" . PHP_EOL, FILE_APPEND);
 }
 
-// Lấy danh sách đơn hàng, gom nhóm theo SalesID
+// Xử lý tìm kiếm theo ngày
+$date_filter = '';
+$start_date = '';
+$end_date = '';
+
+if (isset($_GET['start_date']) && !empty($_GET['start_date'])) {
+    $start_date = $_GET['start_date'];
+    $date_filter .= " AND sales_invoice.Date >= '$start_date'";
+}
+
+if (isset($_GET['end_date']) && !empty($_GET['end_date'])) {
+    $end_date = $_GET['end_date'];
+    $date_filter .= " AND sales_invoice.Date <= '$end_date 23:59:59'";
+}
+
+// Đếm tổng số đơn hàng để phân trang
+$count_sql = "SELECT COUNT(DISTINCT sales_invoice.SalesID) as total FROM 
+                Customer
+              INNER JOIN 
+                sales_invoice ON Customer.CustomerID = sales_invoice.CustomerID
+              INNER JOIN 
+                detail_sales_invoice ON sales_invoice.SalesID = detail_sales_invoice.SalesID
+              WHERE 
+                1=1 $date_filter
+              GROUP BY 
+                sales_invoice.SalesID
+              HAVING 
+                CASE 
+                    WHEN SUM(CASE WHEN detail_sales_invoice.Order_status = 'Chưa duyệt' THEN 1 ELSE 0 END) = COUNT(*) THEN 'Chưa duyệt'
+                    WHEN SUM(CASE WHEN detail_sales_invoice.Order_status = 'Đã hủy' THEN 1 ELSE 0 END) = COUNT(*) THEN 'Đã hủy'
+                    WHEN SUM(CASE WHEN detail_sales_invoice.Order_status = 'Đã duyệt' THEN 1 ELSE 0 END) = COUNT(*) THEN 'Đã duyệt'
+                    ELSE 'Đang xử lý' 
+                END = 'Chưa duyệt'";
+
+$count_result = $conn->query($count_sql);
+$total_orders = 0;
+while ($row = $count_result->fetch_assoc()) {
+    $total_orders++;
+}
+
+// Thiết lập phân trang
+$items_per_page = 5;
+$total_pages = ceil($total_orders / $items_per_page);
+$current_page = isset($_GET['page_num']) ? max(1, min($total_pages, intval($_GET['page_num']))) : 1;
+$offset = ($current_page - 1) * $items_per_page;
+
+// Lấy danh sách đơn hàng, gom nhóm theo SalesID với phân trang
 $sql = "SELECT 
             sales_invoice.SalesID,
             Customer.Username,
@@ -40,12 +86,15 @@ $sql = "SELECT
             sales_invoice ON Customer.CustomerID = sales_invoice.CustomerID
         INNER JOIN 
             detail_sales_invoice ON sales_invoice.SalesID = detail_sales_invoice.SalesID
+        WHERE 
+            1=1 $date_filter
         GROUP BY 
             sales_invoice.SalesID
         HAVING 
             Order_status = 'Chưa duyệt'
         ORDER BY 
-            sales_invoice.Date DESC";
+            sales_invoice.Date DESC
+        LIMIT $offset, $items_per_page";
 
 $result = $conn->query($sql);
 
@@ -108,6 +157,19 @@ if ($result && $result->num_rows > 0) {
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="../assets/css/detail_order_managerment.css">
     <style>
+        .search-box {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+
+        .pagination {
+            justify-content: center;
+            margin-top: 20px;
+        }
+
+
         /* Thiết lập chung */
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -359,228 +421,267 @@ if ($result && $result->num_rows > 0) {
 </head>
 
 <body>
-    <h2 class="text-center my-4">Quản lý đơn hàng</h2>
+    <div class="container">
+        <h2 class="text-center my-4">Quản lý đơn hàng</h2>
 
-    <table class="table table-bordered table-hover">
-        <thead class="table-primary">
-            <tr>
-                <th>Mã đơn hàng</th>
-                <th>Username</th>
-                <th>Họ và tên</th>
-                <th>Email</th>
-                <th>Số điện thoại</th>
-                <th>Ngày mua</th>
-                <th>Số sản phẩm</th>
-                <th>Số lượng</th>
-                <th>Tổng giá</th>
-                <th>Trạng thái</th>
-                <th>Hành động</th>
-            </tr>
-        </thead>
-        <tbody>
-            <?php
-            if ($result && $result->num_rows > 0) {
-                while ($row = $result->fetch_assoc()) {
-                    echo "<tr>
-                            <td>{$row['SalesID']}</td>
-                            <td>{$row['Username']}</td>
-                            <td>{$row['Fullname']}</td>
-                            <td>{$row['Email']}</td>
-                            <td>{$row['Phone']}</td>
-                            <td>{$row['Date']}</td>
-                            <td>{$row['ProductCount']}</td>
-                            <td>{$row['TotalQuantity']}</td>
-                            <td>" . number_format($row['TotalOrderPrice'], 0, ',', '.') . " VND</td>
-                            <td>{$row['Order_status']}</td>
-                            <td>
-                                <button class='btn btn-info btn-sm view-details' data-bs-toggle='modal' data-bs-target='#orderModal' 
-                                    data-order-id='{$row['SalesID']}'
-                                    data-username='{$row['Username']}'
-                                    data-fullname='{$row['Fullname']}'
-                                    data-email='{$row['Email']}'
-                                    data-phone='{$row['Phone']}'
-                                    data-date='{$row['Date']}'
-                                    data-totalprice='" . number_format($row['TotalOrderPrice'], 0, ',', '.') . " VND'>
-                                    Duyệt
-                                </button>
-                            </td>
-                        </tr>";
-                }
-            } else {
-                echo "<tr><td colspan='11' class='text-center'>Không có đơn hàng nào.</td></tr>";
-            }
-            ?>
-        </tbody>
-    </table>
-
-    <!-- Modal Chi tiết đơn hàng -->
-    <div class="modal fade" id="orderModal" tabindex="-1" aria-labelledby="orderModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-lg">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="orderModalLabel">Chi tiết đơn hàng #<span
-                            id="modal-order-id-display"></span></h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        <!-- Form tìm kiếm theo ngày -->
+        <div class="search-box">
+            <form method="GET" action="" class="row g-3">
+                <input type="hidden" name="page" value="order_management">
+                <div class="col-md-4">
+                    <label for="start_date" class="form-label">Từ ngày:</label>
+                    <input type="date" class="form-control" id="start_date" name="start_date"
+                        value="<?php echo $start_date; ?>">
                 </div>
-                <div class="modal-body">
-                    <!-- Thông tin khách hàng -->
-                    <div class="mb-4">
-                        <h6 class="fw-bold">Thông tin khách hàng</h6>
-                        <div class="row">
-                            <div class="col-md-6">
-                                <p><strong>Username:</strong> <span id="modal-username"></span></p>
-                                <p><strong>Họ và tên:</strong> <span id="modal-fullname"></span></p>
-                                <p><strong>Email:</strong> <span id="modal-email"></span></p>
-                            </div>
-                            <div class="col-md-6">
-                                <p><strong>Số điện thoại:</strong> <span id="modal-phone"></span></p>
-                                <p><strong>Ngày mua:</strong> <span id="modal-date"></span></p>
-                                <p><strong>Tổng giá:</strong> <span id="modal-totalprice"></span></p>
+                <div class="col-md-4">
+                    <label for="end_date" class="form-label">Đến ngày:</label>
+                    <input type="date" class="form-control" id="end_date" name="end_date"
+                        value="<?php echo $end_date; ?>">
+                </div>
+                <div class="col-md-4 d-flex align-items-end">
+                    <button type="submit" class="btn btn-primary me-2" style="background-color: #3498db;">Tìm kiếm</button>
+                    <a href="index.php?page=order_management" class="btn btn-secondary">Đặt lại</a>
+                </div>
+            </form>
+        </div>
+
+        <table class="table table-bordered table-hover">
+            <thead class="table-primary">
+                <tr>
+                    <th>Mã đơn hàng</th>
+                    <th>Username</th>
+                    <th>Họ và tên</th>
+                    <th>Email</th>
+                    <th>Số điện thoại</th>
+                    <th>Ngày mua</th>
+                    <th>Số sản phẩm</th>
+                    <th>Số lượng</th>
+                    <th>Tổng giá</th>
+                    <th>Trạng thái</th>
+                    <th>Hành động</th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php
+                if ($result && $result->num_rows > 0) {
+                    while ($row = $result->fetch_assoc()) {
+                        echo "<tr>
+                                <td>{$row['SalesID']}</td>
+                                <td>{$row['Username']}</td>
+                                <td>{$row['Fullname']}</td>
+                                <td>{$row['Email']}</td>
+                                <td>{$row['Phone']}</td>
+                                <td>{$row['Date']}</td>
+                                <td>{$row['ProductCount']}</td>
+                                <td>{$row['TotalQuantity']}</td>
+                                <td>" . number_format($row['TotalOrderPrice'], 0, ',', '.') . " VND</td>
+                                <td>{$row['Order_status']}</td>
+                                <td>
+                                    <button class='btn btn-info btn-sm view-details' data-bs-toggle='modal' data-bs-target='#orderModal' 
+                                        data-order-id='{$row['SalesID']}'
+                                        data-username='{$row['Username']}'
+                                        data-fullname='{$row['Fullname']}'
+                                        data-email='{$row['Email']}'
+                                        data-phone='{$row['Phone']}'
+                                        data-date='{$row['Date']}'
+                                        data-totalprice='" . number_format($row['TotalOrderPrice'], 0, ',', '.') . " VND'>
+                                        Duyệt
+                                    </button>
+                                </td>
+                            </tr>";
+                    }
+                } else {
+                    echo "<tr><td colspan='11' class='text-center'>Không có đơn hàng nào.</td></tr>";
+                }
+                ?>
+            </tbody>
+        </table>
+
+        <!-- Phân trang -->
+        <?php if ($total_pages > 1): ?>
+            <nav aria-label="Phân trang đơn hàng">
+                <ul class="pagination">
+                    <?php if ($current_page > 1): ?>
+                        <li class="page-item">
+                            <a class="page-link"
+                                href="?page=order_management&page_num=<?php echo $current_page - 1; ?><?php echo $start_date ? '&start_date=' . $start_date : ''; ?><?php echo $end_date ? '&end_date=' . $end_date : ''; ?>"
+                                aria-label="Previous">
+                                <span aria-hidden="true">&laquo;</span>
+                            </a>
+                        </li>
+                    <?php endif; ?>
+
+                    <?php
+                    // Hiển thị các nút số trang
+                    $start_page = max(1, $current_page - 2);
+                    $end_page = min($total_pages, $current_page + 2);
+
+                    if ($start_page > 1) {
+                        echo '<li class="page-item"><a class="page-link" href="?page=order_management&page_num=1' . ($start_date ? '&start_date=' . $start_date : '') . ($end_date ? '&end_date=' . $end_date : '') . '">1</a></li>';
+                        if ($start_page > 2) {
+                            echo '<li class="page-item disabled"><a class="page-link" href="#">...</a></li>';
+                        }
+                    }
+
+                    for ($i = $start_page; $i <= $end_page; $i++) {
+                        echo '<li class="page-item ' . ($i == $current_page ? 'active' : '') . '">
+                        <a class="page-link" href="?page=order_management&page_num=' . $i . ($start_date ? '&start_date=' . $start_date : '') . ($end_date ? '&end_date=' . $end_date : '') . '">' . $i . '</a>
+                    </li>';
+                    }
+
+                    if ($end_page < $total_pages) {
+                        if ($end_page < $total_pages - 1) {
+                            echo '<li class="page-item disabled"><a class="page-link" href="#">...</a></li>';
+                        }
+                        echo '<li class="page-item"><a class="page-link" href="?page=order_management&page_num=' . $total_pages . ($start_date ? '&start_date=' . $start_date : '') . ($end_date ? '&end_date=' . $end_date : '') . '">' . $total_pages . '</a></li>';
+                    }
+                    ?>
+
+                    <?php if ($current_page < $total_pages): ?>
+                        <li class="page-item">
+                            <a class="page-link"
+                                href="?page=order_management&page_num=<?php echo $current_page + 1; ?><?php echo $start_date ? '&start_date=' . $start_date : ''; ?><?php echo $end_date ? '&end_date=' . $end_date : ''; ?>"
+                                aria-label="Next">
+                                <span aria-hidden="true">&raquo;</span>
+                            </a>
+                        </li>
+                    <?php endif; ?>
+                </ul>
+            </nav>
+        <?php endif; ?>
+
+        <!-- Modal Chi tiết đơn hàng -->
+        <div class="modal fade" id="orderModal" tabindex="-1" aria-labelledby="orderModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="orderModalLabel">Chi tiết đơn hàng #<span
+                                id="modal-order-id-display"></span></h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <!-- Thông tin khách hàng -->
+                        <div class="mb-4">
+                            <h6 class="fw-bold">Thông tin khách hàng</h6>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <p><strong>Username:</strong> <span id="modal-username"></span></p>
+                                    <p><strong>Họ và tên:</strong> <span id="modal-fullname"></span></p>
+                                    <p><strong>Email:</strong> <span id="modal-email"></span></p>
+                                </div>
+                                <div class="col-md-6">
+                                    <p><strong>Số điện thoại:</strong> <span id="modal-phone"></span></p>
+                                    <p><strong>Ngày mua:</strong> <span id="modal-date"></span></p>
+                                    <p><strong>Tổng giá:</strong> <span id="modal-totalprice"></span></p>
+                                </div>
                             </div>
                         </div>
-                    </div>
 
-                    <!-- Danh sách sản phẩm -->
-                    <h6 class="fw-bold">Danh sách sản phẩm</h6>
-                    <div class="table-responsive">
-                        <table class="table table-bordered table-striped">
-                            <thead class="table-light">
-                                <tr>
-                                    <th>Mã SP</th>
-                                    <th>Tên sản phẩm</th>
-                                    <th>Số lượng</th>
-                                    <th>Đơn giá</th>
-                                    <th>Thành tiền</th>
-                                </tr>
-                            </thead>
-                            <tbody id="product-details">
-                                <!-- Dữ liệu sản phẩm sẽ được thêm vào đây bằng JavaScript -->
-                            </tbody>
-                        </table>
+                        <!-- Danh sách sản phẩm -->
+                        <h6 class="fw-bold">Danh sách sản phẩm</h6>
+                        <div class="table-responsive">
+                            <table class="table table-bordered table-striped">
+                                <thead class="table-light">
+                                    <tr>
+                                        <th>Mã SP</th>
+                                        <th>Tên sản phẩm</th>
+                                        <th>Số lượng</th>
+                                        <th>Đơn giá</th>
+                                        <th>Thành tiền</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="product-details">
+                                    <!-- Dữ liệu sản phẩm sẽ được thêm vào đây bằng JavaScript -->
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
-                </div>
-                <div class="modal-footer">
-                    <form method="POST" action="">
-                        <input type="hidden" name="sales_id" id="modal-order-id">
-                        <button type="submit" name="approve_all_order" class="btn btn-success">Duyệt đơn hàng</button>
-                        <button type="submit" name="cancel_all_order" class="btn btn-danger" style="margin-left: 15px;"
-                            onclick="return confirmCancelOrder()">Hủy đơn hàng</button>
-                    </form>
+                    <div class="modal-footer">
+                        <form method="POST" action="">
+                            <input type="hidden" name="sales_id" id="modal-order-id">
+                            <input type="hidden" name="current_page" value="<?php echo $current_page; ?>">
+                            <input type="hidden" name="start_date" value="<?php echo $start_date; ?>">
+                            <input type="hidden" name="end_date" value="<?php echo $end_date; ?>">
+                            <button type="submit" name="approve_all_order" class="btn btn-success">Duyệt đơn
+                                hàng</button>
+                            <button type="submit" name="cancel_all_order" class="btn btn-danger"
+                                style="margin-left: 15px;" onclick="return confirmCancelOrder()">Hủy đơn hàng</button>
+                        </form>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script>
-        // Tạo đối tượng JavaScript chứa dữ liệu chi tiết đơn hàng từ PHP
-        const orderDetailsData = <?php echo json_encode($order_details); ?>;
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+        <script>
+            // Tạo đối tượng JavaScript chứa dữ liệu chi tiết đơn hàng từ PHP
+            const orderDetailsData = <?php echo json_encode($order_details); ?>;
 
-        // Sự kiện khi modal hiển thị
-        document.querySelectorAll('.view-details').forEach(button => {
-            button.addEventListener('click', function () {
-                const salesId = this.getAttribute('data-order-id');
+            // Sự kiện khi modal hiển thị
+            document.querySelectorAll('.view-details').forEach(button => {
+                button.addEventListener('click', function () {
+                    const salesId = this.getAttribute('data-order-id');
 
-                // Hiển thị thông tin cơ bản
-                document.getElementById('modal-order-id-display').textContent = salesId;
-                document.getElementById('modal-order-id').value = salesId;
-                document.getElementById('modal-username').textContent = this.getAttribute('data-username');
-                document.getElementById('modal-fullname').textContent = this.getAttribute('data-fullname');
-                document.getElementById('modal-email').textContent = this.getAttribute('data-email');
-                document.getElementById('modal-phone').textContent = this.getAttribute('data-phone');
-                document.getElementById('modal-date').textContent = this.getAttribute('data-date');
-                document.getElementById('modal-totalprice').textContent = this.getAttribute('data-totalprice');
+                    // Hiển thị thông tin cơ bản
+                    document.getElementById('modal-order-id-display').textContent = salesId;
+                    document.getElementById('modal-order-id').value = salesId;
+                    document.getElementById('modal-username').textContent = this.getAttribute('data-username');
+                    document.getElementById('modal-fullname').textContent = this.getAttribute('data-fullname');
+                    document.getElementById('modal-email').textContent = this.getAttribute('data-email');
+                    document.getElementById('modal-phone').textContent = this.getAttribute('data-phone');
+                    document.getElementById('modal-date').textContent = this.getAttribute('data-date');
+                    document.getElementById('modal-totalprice').textContent = this.getAttribute('data-totalprice');
 
-                // Hiển thị chi tiết sản phẩm từ dữ liệu đã nạp sẵn
-                const productDetails = document.getElementById('product-details');
-                productDetails.innerHTML = ''; // Xóa nội dung cũ
+                    // Hiển thị chi tiết sản phẩm từ dữ liệu đã nạp sẵn
+                    const productDetails = document.getElementById('product-details');
+                    productDetails.innerHTML = ''; // Xóa nội dung cũ
 
-                if (!orderDetailsData[salesId] || orderDetailsData[salesId].length === 0) {
-                    productDetails.innerHTML = '<tr><td colspan="6" class="text-center">Không có sản phẩm nào.</td></tr>';
-                    return;
-                }
+                    if (!orderDetailsData[salesId] || orderDetailsData[salesId].length === 0) {
+                        productDetails.innerHTML = '<tr><td colspan="6" class="text-center">Không có sản phẩm nào.</td></tr>';
+                        return;
+                    }
 
-                // Thêm từng sản phẩm vào bảng
-                orderDetailsData[salesId].forEach(product => {
-                    const row = document.createElement('tr');
-                    row.innerHTML = `
-                        <td>${product.ProductID}</td>
-                        <td>${product.ProductName}</td>
-                        <td>${product.Quantity}</td>
-                        <td>${product.UnitPrice}</td>
-                        <td>${product.TotalPrice}</td>
-                    `;
-                    productDetails.appendChild(row);
+                    // Thêm từng sản phẩm vào bảng
+                    orderDetailsData[salesId].forEach(product => {
+                        const row = document.createElement('tr');
+                        row.innerHTML = `
+                            <td>${product.ProductID}</td>
+                            <td>${product.ProductName}</td>
+                            <td>${product.Quantity}</td>
+                            <td>${product.UnitPrice}</td>
+                            <td>${product.TotalPrice}</td>
+                        `;
+                        productDetails.appendChild(row);
+                    });
                 });
             });
-        });
 
-        function confirmCancelOrder() {
-            return confirm("Bạn có chắc chắn muốn hủy tất cả sản phẩm trong đơn hàng này không?");
-        }
-
-        function printInvoice(salesID) {
-            var invoice = invoices.find(inv => inv.SalesID == salesID);
-            var products = invoiceDetails[salesID];
-
-            // Cập nhật nội dung hóa đơn để in
-            document.getElementById('print-invoice-id').textContent = '#' + salesID;
-            document.getElementById('print-fullname').textContent = invoice.Fullname;
-            document.getElementById('print-email').textContent = invoice.Email;
-            document.getElementById('print-phone').textContent = invoice.Phone;
-            document.getElementById('print-address').textContent = invoice.Address;
-            document.getElementById('print-date').textContent = invoice.Date;
-
-            // Xóa dữ liệu sản phẩm cũ
-            document.getElementById('print-products').innerHTML = '';
-
-            // Thêm các sản phẩm vào bảng
-            var productsHtml = '';
-            var totalAmount = 0;
-
-            products.forEach((product, index) => {
-                productsHtml += `
-                    <tr>
-                        <td>${index + 1}</td>
-                        <td>${product.ProductName}</td>
-                        <td>${product.Author}</td>
-                        <td>${formatNumber(product.Price)} VND</td>
-                        <td>${product.Quantity}</td>
-                        <td>${formatNumber(product.TotalPrice)} VND</td>
-                    </tr>
-                `;
-                totalAmount += parseFloat(product.TotalPrice);
-            });
-
-            document.getElementById('print-products').innerHTML = productsHtml;
-            document.getElementById('print-final-total').textContent = formatNumber(totalAmount);
-
-            // Hiển thị phần chi tiết hóa đơn
-            document.querySelector(".invoice-details").style.display = "block";
-
-            // Ẩn bảng và các phần tử không cần in
-            document.querySelector(".table").style.display = "none";
-
-            var nonPrintableElements = document.querySelectorAll('.non-printable');
-            for (var i = 0; i < nonPrintableElements.length; i++) {
-                nonPrintableElements[i].style.display = "none";
+            function confirmCancelOrder() {
+                return confirm("Bạn có chắc chắn muốn hủy tất cả sản phẩm trong đơn hàng này không?");
             }
 
-            // In hóa đơn
-            window.print();
+            // Kiểm tra và đặt giá trị cho trường ngày tìm kiếm
+            document.addEventListener('DOMContentLoaded', function () {
+                const startDate = document.getElementById('start_date');
+                const endDate = document.getElementById('end_date');
 
-            // Khôi phục giao diện sau khi in
-            setTimeout(function () {
-                document.querySelector(".invoice-details").style.display = "none";
-                document.querySelector(".table").style.display = "table";
+                // Đặt giá trị mặc định là ngày hôm nay nếu chưa có
+                endDate.addEventListener('change', function () {
+                    if (startDate.value && this.value && new Date(startDate.value) > new Date(this.value)) {
+                        alert('Ngày kết thúc phải sau ngày bắt đầu!');
+                        this.value = '';
+                    }
+                });
 
-                var nonPrintableElements = document.querySelectorAll('.non-printable');
-                for (var i = 0; i < nonPrintableElements.length; i++) {
-                    nonPrintableElements[i].style.display = "";
-                }
-            }, 100);
-        }
-    </script>
+                startDate.addEventListener('change', function () {
+                    if (endDate.value && this.value && new Date(this.value) > new Date(endDate.value)) {
+                        alert('Ngày bắt đầu phải trước ngày kết thúc!');
+                        this.value = '';
+                    }
+                });
+            });
+        </script>
+    </div>
 </body>
 
 </html>
@@ -589,6 +690,9 @@ if ($result && $result->num_rows > 0) {
 // Xử lý khi duyệt tất cả sản phẩm trong đơn hàng
 if (isset($_POST['approve_all_order'])) {
     $sales_id = $_POST['sales_id'];
+    $current_page = isset($_POST['current_page']) ? $_POST['current_page'] : 1;
+    $start_date_param = isset($_POST['start_date']) ? "&start_date=" . $_POST['start_date'] : "";
+    $end_date_param = isset($_POST['end_date']) ? "&end_date=" . $_POST['end_date'] : "";
 
     writeDebugLog("Bắt đầu duyệt tất cả sản phẩm - SalesID: $sales_id");
 
@@ -617,13 +721,16 @@ if (isset($_POST['approve_all_order'])) {
         echo "<script>alert('Có lỗi xảy ra: " . $e->getMessage() . "');</script>";
     }
 
-    // Reload lại trang
-    echo "<script>window.location.href = 'index.php?page=order_management';</script>";
+    // Reload lại trang với tham số phân trang và tìm kiếm
+    echo "<script>window.location.href = 'index.php?page=order_management&page_num=$current_page$start_date_param$end_date_param';</script>";
 }
 
 // Xử lý khi hủy tất cả sản phẩm trong đơn hàng
 if (isset($_POST['cancel_all_order'])) {
     $sales_id = $_POST['sales_id'];
+    $current_page = isset($_POST['current_page']) ? $_POST['current_page'] : 1;
+    $start_date_param = isset($_POST['start_date']) ? "&start_date=" . $_POST['start_date'] : "";
+    $end_date_param = isset($_POST['end_date']) ? "&end_date=" . $_POST['end_date'] : "";
 
     writeDebugLog("Bắt đầu hủy tất cả sản phẩm - SalesID: $sales_id");
 
@@ -677,8 +784,8 @@ if (isset($_POST['cancel_all_order'])) {
         echo "<script>alert('Có lỗi xảy ra: " . $e->getMessage() . "');</script>";
     }
 
-    // Reload lại trang
-    echo "<script>window.location.href = 'index.php?page=order_management';</script>";
+    // Reload lại trang với tham số phân trang và tìm kiếm
+    echo "<script>window.location.href = 'index.php?page=order_management&page_num=$current_page$start_date_param$end_date_param';</script>";
 }
 
 $conn->close();

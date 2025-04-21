@@ -11,7 +11,31 @@ if ($conn->connect_error) {
     die("Kết nối thất bại: " . $conn->connect_error);
 }
 
-// Truy vấn danh sách hóa đơn - Nhóm theo SalesID
+// Thiết lập phân trang
+$limit = 5; // Số lượng hóa đơn trên mỗi trang
+$page = isset($_GET['page_num']) ? (int)$_GET['page_num'] : 1;
+$start = ($page - 1) * $limit;
+
+// Xử lý tìm kiếm theo ngày
+$search_date = "";
+$where_condition = "detail_sales_invoice.Order_status = 'Đã duyệt'";
+
+if (isset($_GET['search_date']) && !empty($_GET['search_date'])) {
+    $search_date = $_GET['search_date'];
+    $where_condition .= " AND DATE(sales_invoice.Date) = '$search_date'";
+}
+
+// Đếm tổng số hóa đơn thỏa điều kiện tìm kiếm
+$count_sql = "SELECT COUNT(DISTINCT sales_invoice.SalesID) as total FROM 
+                sales_invoice 
+              INNER JOIN detail_sales_invoice ON sales_invoice.SalesID = detail_sales_invoice.SalesID
+              WHERE $where_condition";
+              
+$count_result = $conn->query($count_sql);
+$total_records = $count_result->fetch_assoc()['total'];
+$total_pages = ceil($total_records / $limit);
+
+// Truy vấn danh sách hóa đơn với phân trang - Nhóm theo SalesID
 $sql = "SELECT 
             sales_invoice.SalesID,
             Customer.Username,
@@ -34,7 +58,7 @@ $sql = "SELECT
         INNER JOIN 
             Product ON detail_sales_invoice.ProductID = Product.ProductID
         WHERE 
-            detail_sales_invoice.Order_status = 'Đã duyệt'
+            $where_condition
         GROUP BY 
             sales_invoice.SalesID, 
             Customer.Username,
@@ -43,7 +67,8 @@ $sql = "SELECT
             Customer.Address,
             sales_invoice.Date
         ORDER BY 
-            sales_invoice.Date DESC";
+            sales_invoice.Date DESC
+        LIMIT $start, $limit";
 
 $result = $conn->query($sql);
 ?>
@@ -59,6 +84,7 @@ $result = $conn->query($sql);
     <link rel="stylesheet" href="../assets/css/view_invoice.css">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <style>
+        
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background-color: #f8f9fa;
@@ -318,12 +344,79 @@ $result = $conn->query($sql);
                 overflow-x: auto;
             }
         }
+
+        /* Thanh tìm kiếm */
+        .search-bar {
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .search-bar input[type="date"] {
+            padding: 8px 12px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 14px;
+            width: 250px;
+        }
+
+        .search-bar button {
+            padding: 8px 20px;
+            font-size: 14px;
+            font-weight: 500;
+            border-radius: 5px;
+            border: none;
+            background-color: #3498db;
+            color: white;
+            transition: all 0.3s ease;
+        }
+
+        .search-bar button:hover {
+            background-color: #2980b9;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .search-bar a.btn-secondary {
+            padding: 8px 20px;
+            font-size: 14px;
+            font-weight: 500;
+            border-radius: 5px;
+            border: none;
+            background-color: #6c757d;
+            color: white;
+            transition: all 0.3s ease;
+        }
+
+        .search-bar a.btn-secondary:hover {
+            background-color: #5a6268;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
     </style>
+   
 </head>
 
 <body>
     <div class="container mt-5">
         <h2 class="text-center" style="margin-bottom:15px">Danh sách hóa đơn</h2>
+        
+        <!-- Form tìm kiếm theo ngày -->
+        <div class="row mb-4">
+            <div class="col-md-6 offset-md-3">
+                <form method="GET" action="" class="d-flex search-bar">
+                    <input type="hidden" name="page" value="view_invoice">
+                    <input type="date" name="search_date" class="form-control me-2" value="<?= htmlspecialchars($search_date) ?>">
+                    <button type="submit" class="btn btn-primary">Tìm kiếm</button>
+                    <?php if (!empty($search_date)): ?>
+                        <a href="index.php?page=view_invoice" class="btn btn-secondary ms-2">Xóa bộ lọc</a>
+                    <?php endif; ?>
+                </form>
+            </div>
+        </div>
+        
         <table class="table table-bordered table-hover">
             <thead class="table-primary">
                 <tr>
@@ -339,7 +432,7 @@ $result = $conn->query($sql);
             </thead>
             <tbody>
                 <?php if ($result->num_rows > 0): ?>
-                    <?php $index = 1; ?>
+                    <?php $index = $start + 1; ?>
                     <?php while ($row = $result->fetch_assoc()):
                         // Tách các giá trị đã được gộp bằng GROUP_CONCAT
                         $products = explode('||', $row['Products']);
@@ -354,7 +447,7 @@ $result = $conn->query($sql);
                             <td><?= $row['SalesID'] ?></td>
                             <td><?= $row['Username'] ?></td>
                             <td><?= $row['Fullname'] ?></td>
-                            <td><?= $row['Date'] ?></td>
+                            <td><?= date('d/m/Y', strtotime($row['Date'])) ?></td>
                             <td><?= $productCount ?></td>
                             <td><?= number_format($row['GrandTotal'], 0, ',', '.') ?> VND</td>
                             <td>
@@ -362,7 +455,8 @@ $result = $conn->query($sql);
                                     data-bs-target="#invoiceModal" data-salesid="<?= $row['SalesID'] ?>"
                                     data-username="<?= $row['Username'] ?>" data-fullname="<?= $row['Fullname'] ?>"
                                     data-phone="<?= $row['Phone'] ?>" data-address="<?= $row['Address'] ?>"
-                                    data-date="<?= $row['Date'] ?>" data-products="<?= htmlspecialchars($row['Products']) ?>"
+                                    data-date="<?= date('d/m/Y H:i:s', strtotime($row['Date'])) ?>" 
+                                    data-products="<?= htmlspecialchars($row['Products']) ?>"
                                     data-authors="<?= htmlspecialchars($row['Authors']) ?>"
                                     data-prices="<?= htmlspecialchars($row['Prices']) ?>"
                                     data-quantities="<?= htmlspecialchars($row['Quantities']) ?>"
@@ -380,6 +474,33 @@ $result = $conn->query($sql);
                 <?php endif; ?>
             </tbody>
         </table>
+        
+        <!-- Phân trang -->
+        <?php if ($total_pages > 1): ?>
+        <nav aria-label="Page navigation">
+            <ul class="pagination justify-content-center">
+                <li class="page-item <?= ($page <= 1) ? 'disabled' : '' ?>">
+                    <a class="page-link" href="<?= ($page <= 1) ? '#' : "index.php?page=view_invoice&page_num=".($page-1).(!empty($search_date) ? "&search_date=$search_date" : "") ?>" aria-label="Previous">
+                        <span aria-hidden="true">&laquo;</span>
+                    </a>
+                </li>
+                
+                <?php for($i = 1; $i <= $total_pages; $i++): ?>
+                    <li class="page-item <?= ($page == $i) ? 'active' : '' ?>">
+                        <a class="page-link" href="index.php?page=view_invoice&page_num=<?= $i ?><?= !empty($search_date) ? "&search_date=$search_date" : "" ?>">
+                            <?= $i ?>
+                        </a>
+                    </li>
+                <?php endfor; ?>
+                
+                <li class="page-item <?= ($page >= $total_pages) ? 'disabled' : '' ?>">
+                    <a class="page-link" href="<?= ($page >= $total_pages) ? '#' : "index.php?page=view_invoice&page_num=".($page+1).(!empty($search_date) ? "&search_date=$search_date" : "") ?>" aria-label="Next">
+                        <span aria-hidden="true">&raquo;</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+        <?php endif; ?>
     </div>
 
     <div class="modal fade" id="invoiceModal" tabindex="-1" aria-labelledby="invoiceModalLabel" aria-hidden="true">
@@ -465,9 +586,9 @@ $result = $conn->query($sql);
                         <td>${i + 1}</td>
                         <td>${products[i]}</td>
                         <td>${authors[i]}</td>
-                        <td>${prices[i]} VND</td>
+                        <td>${Number(prices[i]).toLocaleString('vi')} VND</td>
                         <td>${quantities[i]}</td>
-                        <td>${itemTotalPrices[i]} VND</td>
+                        <td>${Number(itemTotalPrices[i]).toLocaleString('vi')} VND</td>
                     `;
 
                     productTableBody.appendChild(row);
