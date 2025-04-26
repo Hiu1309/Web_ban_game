@@ -120,8 +120,8 @@ INSERT INTO `customer` (`CustomerID`, `Fullname`, `Username`, `Email`, `Address`
 --
 
 CREATE TABLE `detail_import_invoice` (
-  `DetailImportID` varchar(10) NOT NULL,
-  `ImportID` varchar(10) DEFAULT NULL,
+  `DetailImportID` varchar(20) NOT NULL,
+  `ImportID` varchar(20) DEFAULT NULL,
   `ProductID` varchar(10) DEFAULT NULL,
   `Quantity` int(11) DEFAULT NULL,
   `Price` double DEFAULT NULL,
@@ -178,7 +178,7 @@ CREATE TABLE `employee` (
 --
 
 CREATE TABLE `import_invoice` (
-  `ImportID` varchar(10) NOT NULL,
+  `ImportID` varchar(20) NOT NULL,
   `EmployeeID` varchar(10) DEFAULT NULL,
   `SupplierID` varchar(10) DEFAULT NULL,
   `Date` date DEFAULT NULL,
