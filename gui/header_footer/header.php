@@ -1,32 +1,3 @@
-<?php
-if (session_status() == PHP_SESSION_NONE) {
-    session_start();
-}
-include_once("C:/xampp/htdocs/Web_ban_game/database/connectDB.php");
-$conn = connectDB::getConnection();
-$roleID=null;
-if (isset($_SESSION["username"])) {
-    $currentUser = $_SESSION["username"];
-    
-    $sql = "SELECT a.RoleID
-            FROM account a
-            WHERE a.Username = ?";
-    
-    $stmt = $conn->prepare($sql);
-    $stmt->bind_param("s", $currentUser);
-    $stmt->execute();
-    
-    $result = $stmt->get_result();
-    
-    if ($result->num_rows > 0) {
-        $row = $result->fetch_assoc();
-        $roleID = $row['RoleID'];
-        // echo $roleID;
-    }
-}
-?>
-
-
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -208,27 +179,7 @@ if (isset($_SESSION["username"])) {
                       onclick="window.location.href='/gui/account/logout.php';"
                     >
                       <div class="font-bold uppercase">Đăng xuất</div>
-                    </button>
-                    <button
-                      type="button"
-                      title="Trang quản trị"
-                      class="lnw-btn go-back-btn"
-                      onclick="
-                        <?php 
-                          if ($roleID == 'R0') {
-                            echo 'window.location.href=\'/doanhnghiep/DN.php\';';
-                          } elseif ($roleID == 'R1') {
-                            echo 'window.location.href=\'/admin/admin.php\';';
-                          } elseif ($roleID == 'R2') {
-                            echo 'window.location.href=\'/stock/index.php\';';
-                          } elseif ($roleID == 'R3') {
-                            echo 'window.location.href=\'/salesStaff/index.php\';';
-                          }
-                        ?>"
-                      style="display: <?php echo ($roleID == 'R0' || $roleID == 'R1' || $roleID == 'R2' || $roleID == 'R3') ? 'block' : 'none'; ?>; margin-top: 5px;"
-                    >
-                    <div class="font-bold uppercase">Trang quản trị</div>
-                    </button>
+                    </button>              
                   </nav>
 
                 </div>
