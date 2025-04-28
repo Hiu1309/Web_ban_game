@@ -27,7 +27,6 @@ $query = mysqli_query($conn, "SELECT * FROM import_invoice $orderBy");
         <thead>
             <tr>
                 <th>Import ID</th>
-                <th>Employee ID</th>
                 <th>Supplier ID</th>
                 <th>
                 <a href="?section=history<?= $sort !== 'none' ? '&sort=' . $nextSort : '&sort=asc' ?>" style="color: white; text-decoration: none;">
@@ -44,8 +43,7 @@ $query = mysqli_query($conn, "SELECT * FROM import_invoice $orderBy");
         <tbody>
             <?php while ($row = mysqli_fetch_assoc($query)) : ?>
                 <tr>
-                    <td><?= $row['ImportID'] ?></td>
-                    <td><?= $row['EmployeeID'] ?></td>
+                    <td><?= $row['ImportID'] ?></td>    
                     <td><?= $row['SupplierID'] ?></td>
                     <td><?= $row['Date'] ?></td>
                     <td><?= number_format($row['TotalPrice'], 0, ',', '.') ?> VND</td>

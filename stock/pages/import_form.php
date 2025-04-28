@@ -2,9 +2,9 @@
 include_once __DIR__ . '/../functions/db.php';
 
 $importID = 'IMP' . date('YmdHis');
-$employeeID = $_SESSION['employeeID'];
 $date = date('Y-m-d');
 
+// Lấy dữ liệu nhà cung cấp và sản phẩm
 $supplier_query = mysqli_query($conn, "SELECT SupplierID, SupplierName FROM supplier");
 $product_query = mysqli_query($conn, "SELECT ProductID, ProductName, SupplierID, Price FROM product");
 
@@ -22,10 +22,6 @@ while ($row = mysqli_fetch_assoc($product_query)) {
     <label>Import ID: </label>
     <input type="text" value="<?= $importID ?>" disabled><br>
     <input type="hidden" name="import_id" value="<?= $importID ?>">
-
-    <label>Employee ID: </label>
-    <input type="text" value="<?= $employeeID ?>" disabled><br>
-    <input type="hidden" name="employee_id" value="<?= $employeeID ?>">
 
     <label>Supplier: </label>
     <select name="supplier_id" id="supplierSelect" required>
@@ -51,7 +47,9 @@ while ($row = mysqli_fetch_assoc($product_query)) {
     <input type="submit" name="submit" value="Lưu phiếu nhập">
 </form>
 </div>
+
 <script>
+// JavaScript chọn sản phẩm theo nhà cung cấp và tính tổng tiền
 const allProducts = <?= json_encode($products) ?>;
 const supplierSelect = document.getElementById("supplierSelect");
 const productSelect = document.getElementById("productSelect");
@@ -91,24 +89,24 @@ function updateTotalPrice() {
     totalPriceInput.value = total.toLocaleString('vi-VN') + " VND";
 }
 </script>
+
 <?php
+// Xử lý lưu phiếu nhập khi submit
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit'])) {
     $importID = $_POST['import_id'];
-    $employeeID = $_POST['employee_id'];
     $supplierID = $_POST['supplier_id'];
     $productID = $_POST['product_id'];
     $quantity = (int)$_POST['quantity'];
     $date = date('Y-m-d');
 
-    // Lấy giá sản phẩm
+    // Lấy giá sản phẩm từ database
     $product_result = mysqli_query($conn, "SELECT Price FROM product WHERE ProductID = '$productID'");
     $product = mysqli_fetch_assoc($product_result);
     $price = $product['Price'];
     $total = $price * $quantity;
 
-    // Lưu vào bảng import_invoice
-    mysqli_query($conn, "INSERT INTO import_invoice (ImportID, EmployeeID, SupplierID, Date, TotalPrice) 
-                         VALUES ('$importID', '$employeeID', '$supplierID', '$date', '$total')");
+    mysqli_query($conn, "INSERT INTO import_invoice (ImportID, SupplierID, Date, TotalPrice) 
+                         VALUES ('$importID', '$supplierID', '$date', '$total')");
 
     // Sinh mã chi tiết
     $detailID = 'D' . rand(100000, 999999);
@@ -123,12 +121,3 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit'])) {
     echo "<p style='color: green;'>✔️ Lưu thành công phiếu nhập!</p>";
 }
 ?>
-
-
-
-
-
-
-
-
-

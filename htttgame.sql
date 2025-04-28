@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Apr 28, 2025 at 02:28 AM
+-- Generation Time: Apr 28, 2025 at 05:25 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -151,6 +151,15 @@ CREATE TABLE `detail_import_invoice` (
   `TotalPrice` double DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Dumping data for table `detail_import_invoice`
+--
+
+INSERT INTO `detail_import_invoice` (`DetailImportID`, `ImportID`, `ProductID`, `Quantity`, `Price`, `TotalPrice`) VALUES
+('D289334', 'IMP20250428050415', 'GAME007', 34, 1019745, 34671330),
+('D483519', 'IMP20250428050502', 'GAME005', 10, 764745, 7647450),
+('D548595', 'IMP20250428050629', 'GAME017', 20, 1019745, 20394900);
+
 -- --------------------------------------------------------
 
 --
@@ -187,9 +196,6 @@ INSERT INTO `detail_sales_invoice` (`DetailSalesID`, `SalesID`, `ProductID`, `Or
 
 -- --------------------------------------------------------
 
-INSERT INTO `employee` (`EmployeeID`, `Username`, `Fullname`, `BirthDay`, `Phone`, `Email`, `Address`, `Gender`, `Salary`, `StartDate`) VALUES 
-('EMP999', 'admin r2', 'Yuki Lolis', '1995-01-01', '0909123456', 'adminr2@gmail.com', '123 Đường ABC, TP.HCM', 1, 100000000, '2025-04-27');
-
 --
 -- Table structure for table `employee`
 --
@@ -221,16 +227,14 @@ CREATE TABLE `import_invoice` (
   `TotalPrice` double DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
--- --------------------------------------------------------
-
 --
--- Table structure for table `permissions`
+-- Dumping data for table `import_invoice`
 --
 
-CREATE TABLE `permissions` (
-  `Permission_id` varchar(10) NOT NULL,
-  `Permission_name` varchar(50) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+INSERT INTO `import_invoice` (`ImportID`, `EmployeeID`, `SupplierID`, `Date`, `TotalPrice`) VALUES
+('IMP20250428050415', NULL, 'SUP002', '2025-04-28', 34671330),
+('IMP20250428050502', NULL, 'SUP005', '2025-05-09', 7647450),
+('IMP20250428050629', NULL, 'SUP002', '2025-06-07', 20394900);
 
 -- --------------------------------------------------------
 
@@ -260,9 +264,9 @@ INSERT INTO `product` (`ProductID`, `ProductName`, `ProductImg`, `Author`, `Publ
 ('GAME002', 'Red Dead Redemption', '/Assets/Images/Game/red_dead.jpg', 'Rockstar Games', 'Rockstar Games', 200, 1274000, 'Game phiêu lưu hành động thế giới mở', 'SUP002', 1),
 ('GAME003', 'Skyrim', '/Assets/Images/Game/skyrim.jpg', 'Bethesda Softworks', 'Bethesda Softworks', 150, 1020000, 'Game nhập vai thế giới mở với nhiều lựa chọn', 'SUP003', 1),
 ('GAME004', 'The Last of Us', '/Assets/Images/Game/last_of_us.jpg', 'Naughty Dog', 'Sony Computer Entertainment', 120, 1274000, 'Game hành động phiêu lưu với cốt truyện cảm động', 'SUP004', 1),
-('GAME005', 'Half-Life ', '/Assets/Images/Game/half_life.jpg', 'Valve Corporation', 'Valve Corporation', 130, 764745, 'Game bắn súng góc nhìn thứ nhất với cốt truyện hấp dẫn', 'SUP005', 1),
+('GAME005', 'Half-Life ', '/Assets/Images/Game/half_life.jpg', 'Valve Corporation', 'Valve Corporation', 140, 764745, 'Game bắn súng góc nhìn thứ nhất với cốt truyện hấp dẫn', 'SUP005', 1),
 ('GAME006', 'The Witcher 3', '/Assets/Images/Game/witcher_3.jpg', 'CD Projekt Red', 'CD Projekt', 80, 1499099, 'Game nhập vai với thế giới mở rộng lớn', 'SUP001', 1),
-('GAME007', 'GTA V', '/Assets/Images/Game/gta_v.jpg', 'Rockstar Games', 'Rockstar Games', 250, 1019745, 'Game hành động phiêu lưu trong thế giới mở', 'SUP002', 1),
+('GAME007', 'GTA V', '/Assets/Images/Game/gta_v.jpg', 'Rockstar Games', 'Rockstar Games', 284, 1019745, 'Game hành động phiêu lưu trong thế giới mở', 'SUP002', 1),
 ('GAME008', 'Fallout 4', '/Assets/Images/Game/fallout_4.jpg', 'Bethesda Softworks', 'Bethesda Softworks', 90, 1147009, 'Game nhập vai thế giới mở trong bối cảnh hậu tận thế', 'SUP003', 1),
 ('GAME009', 'ARK: Survival Ascended', '/Assets/Images/Game/ark.jpg', ' Studio Wildcard', ' Studio Wildcard', 110, 1274000, 'Game hành động phiêu lưu thế giới mở với đồ họa tuyệt vời', 'SUP004', 1),
 ('GAME010', 'Portal 2', '/Assets/Images/Game/portal_2.jpg', 'Valve Corporation', 'Valve Corporation', 95, 509745, 'Game giải đố với cơ chế cổng không gian', 'SUP005', 1),
@@ -272,7 +276,7 @@ INSERT INTO `product` (`ProductID`, `ProductName`, `ProductImg`, `Author`, `Publ
 ('GAME014', 'Hitman 3', '/Assets/Images/Game/hitman3.jpg', 'IO Interactive', 'IO Interactive', 70, 1274000, 'Game hành động lén lút', 'SUP004', 1),
 ('GAME015', 'Far Cry 5', '/Assets/Images/Game/farcry5.jpg', 'Ubisoft', 'Ubisoft', 100, 1019745, 'Game hành động phiêu lưu', 'SUP005', 1),
 ('GAME016', 'TEKKEN 8', '/Assets/Images/Game/tekken8.jpg', 'Sucker Punch Productions', 'Sony Interactive Entertainment', 60, 1529745, 'Game hành động phiêu lưu trong thế giới mở', 'SUP001', 1),
-('GAME017', 'Final Fantasy XV', '/Assets/Images/Game/ffxv.jpg', 'Square Enix', 'Square Enix', 85, 1019745, 'Game nhập vai thế giới mở', 'SUP002', 1),
+('GAME017', 'Final Fantasy XV', '/Assets/Images/Game/ffxv.jpg', 'Square Enix', 'Square Enix', 105, 1019745, 'Game nhập vai thế giới mở', 'SUP002', 1),
 ('GAME018', 'Kingdom Come: Deliverance', '/Assets/Images/Game/kingdomcome.jpg', 'Warhorse Studios', 'Deep Silver', 50, 1274000, 'Game nhập vai hành động', 'SUP003', 1),
 ('GAME019', 'Monster Hunter: Wild', '/Assets/Images/Game/mhw.jpg', 'Capcom', 'Capcom', 120, 1529745, 'Game nhập vai hành động', 'SUP004', 1),
 ('GAME020', 'Elden Ring', '/Assets/Images/Game/eldenring.jpg', 'FromSoftware', 'Bandai Namco Entertainment', 75, 1529745, 'Game nhập vai thế giới mở', 'SUP005', 1),
@@ -319,18 +323,6 @@ INSERT INTO `role` (`RoleID`, `RoleName`, `Description`) VALUES
 ('R2', 'InventoryControlle', 'Quản lý kho'),
 ('R3', 'SalesStaff', 'Nhân viên bán hàng'),
 ('R4', 'Customer', 'Người mua hàng');
-
--- --------------------------------------------------------
-
---
--- Table structure for table `rolepermissions`
---
-
-CREATE TABLE `rolepermissions` (
-  `RoleID` varchar(10) NOT NULL,
-  `Permission_id` varchar(10) NOT NULL,
-  `Prop` varchar(50) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
@@ -507,12 +499,6 @@ ALTER TABLE `import_invoice`
   ADD KEY `SupplierID` (`SupplierID`);
 
 --
--- Indexes for table `permissions`
---
-ALTER TABLE `permissions`
-  ADD PRIMARY KEY (`Permission_id`);
-
---
 -- Indexes for table `product`
 --
 ALTER TABLE `product`
@@ -524,13 +510,6 @@ ALTER TABLE `product`
 --
 ALTER TABLE `role`
   ADD PRIMARY KEY (`RoleID`);
-
---
--- Indexes for table `rolepermissions`
---
-ALTER TABLE `rolepermissions`
-  ADD PRIMARY KEY (`RoleID`,`Permission_id`),
-  ADD KEY `Permission_id` (`Permission_id`);
 
 --
 -- Indexes for table `sales_invoice`
@@ -636,13 +615,6 @@ ALTER TABLE `import_invoice`
 --
 ALTER TABLE `product`
   ADD CONSTRAINT `product_ibfk_1` FOREIGN KEY (`SupplierID`) REFERENCES `supplier` (`SupplierID`);
-
---
--- Constraints for table `rolepermissions`
---
-ALTER TABLE `rolepermissions`
-  ADD CONSTRAINT `rolepermissions_ibfk_1` FOREIGN KEY (`RoleID`) REFERENCES `role` (`RoleID`),
-  ADD CONSTRAINT `rolepermissions_ibfk_2` FOREIGN KEY (`Permission_id`) REFERENCES `permissions` (`Permission_id`);
 
 --
 -- Constraints for table `sales_invoice`

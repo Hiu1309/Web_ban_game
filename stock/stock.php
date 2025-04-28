@@ -2,6 +2,11 @@
 session_start();
 $activeSection = 'home'; // mặc định là Trang chủ
 
+if (!isset($_SESSION["role"]) || !in_array($_SESSION["role"], ["R0", "R2"])) {
+    header("Location: /gui/account/logout.php");
+    exit;
+}
+
 // Nếu có POST (submit form), thì lấy theo form ẩn
 if (isset($_POST['active_section'])) {
     $activeSection = $_POST['active_section'];
@@ -62,7 +67,7 @@ if (isset($_GET['section'])) {
 
 <div class="mainBlock">
     <div  class="sideMenu">
-        <h2>ADMIN</h2>
+        <h2>QUẢN LÍ KHO</h2>
         <ul class="sideList">
     <li><a href="?section=home">Trang chủ</a></li>
     <li><a href="?section=products">Quản lý sản phẩm</a></li>
@@ -79,7 +84,7 @@ if (isset($_GET['section'])) {
     <div class="container">
         <!-- Trang chủ -->
         <div id="home" class="section <?= $activeSection == 'home' ? 'active' : '' ?>">
-    <h2>Chào mừng Admin!</h2>
+    <h2>Chào mừng Quản lí kho!</h2>
     <p>Chọn chức năng từ menu bên trái để quản lý kho hàng.</p>
 </div>
 

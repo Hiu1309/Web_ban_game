@@ -21,14 +21,6 @@ if (isset($_GET['month'])) {
     exit();
 }
 
-// AJAX xử lý top nhân viên
-if (isset($_GET['topStaffMonth'])) {
-    $month = $_GET['topStaffMonth'];
-    $topStaff = $data->getTop5StaffByMonth($month);
-    echo json_encode($topStaff);
-    exit();
-}
-
 // AJAX xử lý top sản phẩm
 if (isset($_GET['topProductMonth'])) {
     $month = $_GET['topProductMonth'];
@@ -40,7 +32,6 @@ if (isset($_GET['topProductMonth'])) {
 // Mặc định khi không có AJAX
 $currentMonth = date('Y-m');
 $top5User = $data->getTop5CustomersByMonth($currentMonth);
-$top5Staff = $data->getTop5StaffByMonth($currentMonth);
 $games = $data->getAllGame();
 $users = $data->getAllUser();
 $allHoaDon = $data->getAllHoaDon();
@@ -71,7 +62,7 @@ $last6MonthCount = $data->getLast6MonthsTotal();
         <div id="sideMenu" class="side-menu">
             <ul class="menu-list">
                 <li><a href="../salesStaff/index.php" class="menu-item">Nhân viên</a></li>
-                <li><a href="../stock/index.php" class="menu-item">Kho</a></li>
+                <li><a href="../stock/stock.php" class="menu-item">Kho</a></li>
                 <li><a href="../index.php" class="menu-item">Cửa hàng</a></li>
             </ul>
             <hr class="menu-divider">
@@ -104,7 +95,6 @@ $last6MonthCount = $data->getLast6MonthsTotal();
             <option value="salesTotal">Doanh thu 6 tháng qua</option>
             <option value="importTotal">Chi phí nhập kho 6 tháng qua</option>
             <option value="topCustomer">Top khách hàng</option>
-            <option value="topStaff">Top nhân viên duyệt đơn</option>
             <option value="topProduct">Top sản phẩm bán chạy</option>
         </select>
         <div id="monthPickerWrapper" class="mb-4" style="display:none">
@@ -116,8 +106,7 @@ $last6MonthCount = $data->getLast6MonthsTotal();
         <canvas id="salesCountChart"></canvas>
         <canvas id="topCustomerChart" style="display: none;"></canvas>
         <canvas id="salesTotalChart" style="display: none;"></canvas>
-        <canvas id="importTotalChart" style="display: none;"></canvas>
-        <canvas id="topStaffChart" style="display: none;"></canvas>
+        <canvas id="importTotalChart" style="display: none;"></canvas>        
         <canvas id="topProductChart" style="display: none;"></canvas>
     </div>
 </div>
@@ -128,7 +117,6 @@ $last6MonthCount = $data->getLast6MonthsTotal();
         topCustomer: document.getElementById('topCustomerChart'),
         salesTotal: document.getElementById('salesTotalChart'),
         importTotal: document.getElementById('importTotalChart'),
-        topStaff: document.getElementById('topStaffChart'),
         topProduct: document.getElementById('topProductChart'),
     };
     const monthPickerWrapper = document.getElementById('monthPickerWrapper');
@@ -140,10 +128,10 @@ $last6MonthCount = $data->getLast6MonthsTotal();
         hideAllCharts();
         const selected = this.value;
         charts[selected].style.display = 'block';
-        monthPickerWrapper.style.display = (['topCustomer', 'topStaff', 'topProduct'].includes(selected)) ? 'block' : 'none';
+        monthPickerWrapper.style.display = (['topCustomer', 'topProduct'].includes(selected)) ? 'block' : 'none';
     });
 
-    let topCustomerChart, topStaffChart, topProductChart;
+    let topCustomerChart, topProductChart;
     document.addEventListener('DOMContentLoaded', function () {
         const currentMonth = new Date().toISOString().slice(0, 7);
         timeSelect.value = currentMonth;
@@ -178,19 +166,6 @@ $last6MonthCount = $data->getLast6MonthsTotal();
             }
         });
 
-        topStaffChart = new Chart(charts.topStaff, {
-            type: 'bar',
-            data: {
-                labels: <?= json_encode(array_column($top5Staff, 'Fullname')) ?>,
-                datasets: [{
-                    label: 'Top nhân viên duyệt đơn',
-                    data: <?= json_encode(array_column($top5Staff, 'totalApproved')) ?>,
-                    backgroundColor: 'rgba(153, 102, 255, 0.5)',
-                    borderColor: 'rgba(153, 102, 255, 1)',
-                    borderWidth: 1
-                }]
-            }
-        });
 
         topProductChart = new Chart(charts.topProduct, {
             type: 'bar',
@@ -246,14 +221,6 @@ $last6MonthCount = $data->getLast6MonthsTotal();
                     topCustomerChart.data.labels = data.map(item => item.Fullname);
                     topCustomerChart.data.datasets[0].data = data.map(item => item.totalSpent);
                     topCustomerChart.update();
-                });
-        } else if (chartSelect.value === 'topStaff') {
-            fetch(`DN.php?topStaffMonth=${selectedMonth}`)
-                .then(res => res.json())
-                .then(data => {
-                    topStaffChart.data.labels = data.map(item => item.Fullname);
-                    topStaffChart.data.datasets[0].data = data.map(item => item.totalApproved);
-                    topStaffChart.update();
                 });
         } else if (chartSelect.value === 'topProduct') {
             fetch(`DN.php?topProductMonth=${selectedMonth}`)

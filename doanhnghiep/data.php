@@ -159,29 +159,6 @@ class Data {
         return $data;
     }
 
-    public function getTop5StaffByMonth($month) {
-        $sql = "
-            SELECT u.Fullname, COUNT(h.EmployeeID) AS totalApproved
-            FROM employee u
-            JOIN sales_invoice h ON u.EmployeeID = h.EmployeeID 
-            WHERE DATE_FORMAT(h.Date, '%Y-%m') = ?   
-            GROUP BY u.EmployeeID
-            ORDER BY totalApproved DESC
-            LIMIT 5
-        ";
-        $stmt = $this->conn->prepare($sql);
-        $stmt->bind_param("s", $month); 
-        $stmt->execute();
-        $result = $stmt->get_result();
-        $data = [];
-        if ($result && $result->num_rows > 0) {
-            while ($row = $result->fetch_assoc()) {
-                $data[] = $row;
-            }
-        }
-        return $data;
-    }
-
     public function getTop5ProductsByMonth($month) {
         $sql = "
             SELECT g.ProductName AS ProductName, SUM(cthd.Quantity) AS totalSold
