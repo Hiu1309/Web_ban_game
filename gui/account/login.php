@@ -107,7 +107,7 @@
                          header("Location: /salesStaff/index.php?page=order_management");
                          exit;
                     case "R2":
-                         header("Location: ");                         
+                         header("Location: /stock/stock.php");                         
                          exit;
                     case "R1":
                          header("Location: /admin/admin.php");

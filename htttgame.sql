@@ -187,6 +187,9 @@ INSERT INTO `detail_sales_invoice` (`DetailSalesID`, `SalesID`, `ProductID`, `Or
 
 -- --------------------------------------------------------
 
+INSERT INTO `employee` (`EmployeeID`, `Username`, `Fullname`, `BirthDay`, `Phone`, `Email`, `Address`, `Gender`, `Salary`, `StartDate`) VALUES 
+('EMP999', 'admin r2', 'Yuki Lolis', '1995-01-01', '0909123456', 'adminr2@gmail.com', '123 Đường ABC, TP.HCM', 1, 100000000, '2025-04-27');
+
 --
 -- Table structure for table `employee`
 --
