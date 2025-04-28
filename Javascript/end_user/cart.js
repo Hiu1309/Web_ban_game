@@ -257,16 +257,15 @@ function setupCheckoutHandler() {
 
         const paymentMethod =
             document.querySelector('input[name="payment-method"]:checked')?.value ||
-            document.querySelector('input[name="payment-option"]:checked')?.id || ''; // fallback
+            document.querySelector('input[name="payment-option"]:checked')?.id || '';
         const address = document.getElementById("user-address")?.value || '';
         const note = document.getElementById("user-note")?.value || '';
-    const shippingDiscountText = document.querySelector(".shipping-discount")?.textContent || "0đ";
-const shippingFeeText = document.querySelector(".shipping-fee")?.textContent || "0đ";
 
-// Chuyển từ "5.000đ" => 5000
-const shippingDiscount = parseInt(shippingDiscountText.replace(/[^\d]/g, '')) || 0;
-const shippingFee = parseInt(shippingFeeText.replace(/[^\d]/g, '')) || 0;
+        const shippingDiscountText = document.querySelector(".shipping-discount")?.textContent || "0đ";
+        const shippingFeeText = document.querySelector(".shipping-fee")?.textContent || "0đ";
 
+        const shippingDiscount = parseInt(shippingDiscountText.replace(/[^\d]/g, '')) || 0;
+        const shippingFee = parseInt(shippingFeeText.replace(/[^\d]/g, '')) || 0;
 
         if (selectedItems.length === 0) {
             showAlert2("Vui lòng chọn ít nhất một sản phẩm để đặt hàng.");
@@ -295,20 +294,30 @@ const shippingFee = parseInt(shippingFeeText.replace(/[^\d]/g, '')) || 0;
         .then(res => res.json())
         .then(data => {
             if (data.success) {
-                // Xóa các sản phẩm trong giao diện
+                // Thành công: Xóa các sản phẩm trên giao diện
                 selectedItems.forEach(item => {
                     const productBlock = document.querySelector(`.block-product[data-id="${item.productID}"]`);
                     if (productBlock) productBlock.remove();
                 });
 
-                // Xóa giỏ hàng trong localStorage nếu dùng cho khách
+                // Xóa localStorage nếu dùng cho khách
                 localStorage.removeItem("cart");
 
-                
-                window.location.href = "/gui/order_success.php";
-              
+                // Chuyển hướng sang trang thành công
+                window.location.href = data.redirect || "/gui/order_success.php";
             } else {
-                showAlert2("Đã có lỗi xảy ra khi đặt hàng hoặc do bạn chưa đăng nhập");
+                if (data.message && data.message.includes("cập nhật số điện thoại")) {
+                    // Nếu lỗi vì chưa cập nhật số điện thoại thì chuyển hướng
+                    showAlert2("Vui lòng cập nhật số điện thoại để tiếp tục đặt hàng.", () => {
+                        window.location.href = "/gui/user_detail.php";
+                    });
+                } else if (data.message && data.message.includes("đăng nhập")) {
+                    showAlert2("Bạn cần đăng nhập để đặt hàng.", () => {
+                        window.location.href = "/gui/login.php";
+                    });
+                } else {
+                    showAlert2(data.message || "Đã có lỗi xảy ra khi đặt hàng.");
+                }
             }
         })
         .catch(err => {
