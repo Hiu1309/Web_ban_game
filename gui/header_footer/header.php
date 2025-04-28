@@ -1,3 +1,14 @@
+<?php
+session_start(); // Khởi tạo session nếu chưa có
+
+// Kiểm tra quyền người dùng (R4: Người mua hàng, R0: Doanh nghiệp)
+if (isset($_SESSION["role"]) && $_SESSION["role"] !== "R4" && $_SESSION["role"] !== "R0") {
+  header("Location: /gui/account/logout.php");
+  exit;
+}
+
+?>
+
 <!DOCTYPE html>
 <html lang="en">
   <head>

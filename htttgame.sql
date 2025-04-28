@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Apr 19, 2025 at 03:24 PM
+-- Generation Time: Apr 28, 2025 at 02:28 AM
 -- Server version: 10.4.32-MariaDB
--- PHP Version: 8.1.25
+-- PHP Version: 8.2.12
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -40,11 +40,21 @@ CREATE TABLE `account` (
 --
 
 INSERT INTO `account` (`Username`, `Password`, `RoleID`, `Status`, `Lock`) VALUES
-('admin r1', '12345678', 'R1', 1, 1),
-('admin r3', '12345678', 'R3', 1, 1),
-('daonhnghiep r0', '12345678', 'R0', 1, 1),
-('Hiếu Lê', '123123123', 'R4', 1, 1),
-('Ngô Hiếu', '12345678', 'R4', 1, 1);
+('Cao Nam', '$2y$10$PZa.Nok8eP8uJR0gE3UqJeiKu0eGgMDixZTdAj893HWI5b7S/Dlp2', 'R4', 1, 1),
+('Công Phượng', '$2y$10$lzOO7uxHwyi4AoGtxcqyj.xm5cRq3RMsrQJWRZtTmUiaOmb/u6K2C', 'R3', 1, 1),
+('Hưng Thịnh', '$2y$10$MeBRrmt153ABGqV.9xfu5.3r6fTyb7TRF1MHDdJFpOCuDGb2hSiKC', 'R4', 1, 1),
+('Huyền Nữ', '$2y$10$BUb91yTT3eXOGyCynJG7.OJtjspGFOEcRt9ivxjN5z4MGkl4Xi0gW', 'R4', 1, 1),
+('Messi Lionel', '$2y$10$5DLnkgSHp/bO7VPZMxRJEuFWB28ZsKgi2uo2BzXN.JdttGqOoiaZS', 'R4', 1, 1),
+('Minh Long', '$2y$10$KLWglgMcpiOrUDjPT57Oi.WEMigTSUmXaiGL/GwFOVUW1XxagY1ei', 'R4', 1, 1),
+('Minh Vương', '$2y$10$EwaN6O6CzDt4EXcQ2vfrbe3D1t4jfMdtWMSVbRD84WRNx.1dQRIlS', 'R4', 1, 1),
+('My Nơ', '$2y$10$6r/vzhlkX1DIWgiDYJJK2eWqjmu/E8/66shjYsxvGdUY8X4g8uMF.', 'R2', 1, 1),
+('ngo hiu', '$2y$10$iM1fTwUt8yAyL1d554nVCuZH2RndeyOhVwwZzepTPfXno.2Towdze', 'R4', 1, 1),
+('Ngọc Nhi', '$2y$10$biyEf3V4sNFqwfIXj5O5ZOL5v0yaTCQI/mcVmV04LyhtfRNUE6PPK', 'R4', 1, 1),
+('Nguyễn Vũ', '$2y$10$LkXb00SmCfWyJbNhCnWTJ.f.KbmaDjk51JWDdbLhDZgkPQXVeAWbq', 'R4', 1, 1),
+('Quốc Khánh', '$2y$10$qgePwbHqo9B7WTDMq6vsDuDA9RgDwI99.0E6TdBmnOTmehwer1Ss.', 'R0', 1, 1),
+('Trần My', '$2y$10$2/0VYiuzqqZWqNYNPOwPjOSrqAjcRVaUxb4boKHgt6.D1RuoAIeIi', 'R4', 1, 1),
+('van a', '$2y$10$DH6G4q8VvOvcL5y6RAgNUerqxX6fOhIZRDr5dT3oGf/ZhjFkr0OHS', 'R4', 1, 1),
+('Đom Đóm', '$2y$10$FndH.CaC/jc8NbaMit5wAOP8gKTVhSkAlPLuMpPFgyNStsAGX7Kyu', 'R1', 1, 1);
 
 -- --------------------------------------------------------
 
@@ -63,8 +73,10 @@ CREATE TABLE `cart` (
 --
 
 INSERT INTO `cart` (`CartID`, `CustomerID`, `CreatedDate`) VALUES
-('CART6802e3', 'MT3H00001', '2025-04-19 06:41:41'),
-('CART68032d', 'MT3H00005', '2025-04-19 12:00:29');
+('CART680eb0', 'MT3H00001', '2025-04-28 05:31:21'),
+('CART680eb4', 'MT3H00002', '2025-04-28 05:47:37'),
+('CART680eb5', 'MT3H00003', '2025-04-28 05:51:50'),
+('CART680eb7', 'MT3H00014', '2025-04-28 06:02:31');
 
 -- --------------------------------------------------------
 
@@ -84,7 +96,8 @@ CREATE TABLE `cart_item` (
 --
 
 INSERT INTO `cart_item` (`CartItemID`, `CartID`, `ProductID`, `Quantity`) VALUES
-(123, 'CART6802e3', 'GAME031', 1);
+(232, 'CART680eb7', 'GAME029', 1),
+(233, 'CART680eb5', 'GAME028', 1);
 
 -- --------------------------------------------------------
 
@@ -107,11 +120,21 @@ CREATE TABLE `customer` (
 --
 
 INSERT INTO `customer` (`CustomerID`, `Fullname`, `Username`, `Email`, `Address`, `Phone`, `TotalSpending`) VALUES
-('MT3H00001', 'Ngô Hiếu', 'Ngô Hiếu', 'tienhieu2309@gmail.com', '36', '0878985119', NULL),
-('MT3H00002', 'admin r1', 'admin r1', 'adminr1@gmail.com', NULL, NULL, NULL),
-('MT3H00003', 'admin r3', 'admin r3', 'adminr3@gmail.com', NULL, NULL, NULL),
-('MT3H00004', 'daonhnghiep r0', 'daonhnghiep r0', 'dnr0@gmail.com', NULL, NULL, NULL),
-('MT3H00005', 'Hiếu Lê', 'Hiếu Lê', 'hjuiihy67@gmail.com', 'sdadadasdadadsa', '0842498241', NULL);
+('MT3H00001', 'ngo hiu', 'ngo hiu', 'ngohiu@gmail.com', '36 Lê Lợi, phường Bến Nghé, quận 1', '0878985119', NULL),
+('MT3H00002', 'Trần My', 'Trần My', 'tranmy@gmail.com', NULL, NULL, NULL),
+('MT3H00003', 'Cao Nam', 'Cao Nam', 'caonam@gmail.com', '71 Đinh Tiên Hoàng', '0900011111', NULL),
+('MT3H00004', 'Nguyễn Vũ', 'Nguyễn Vũ', 'nguyenvu@gmail.com', NULL, NULL, NULL),
+('MT3H00005', 'Minh Long', 'Minh Long', 'minhlong@gmail.com', NULL, NULL, NULL),
+('MT3H00006', 'Hưng Thịnh', 'Hưng Thịnh', 'hungthinh@gmail.com', NULL, NULL, NULL),
+('MT3H00007', 'Minh Vương', 'Minh Vương', 'minhvuong@gmail.com', NULL, NULL, NULL),
+('MT3H00008', 'Messi Lionel', 'Messi Lionel', 'messi@gmail.com', NULL, NULL, NULL),
+('MT3H00009', 'Huyền Nữ', 'Huyền Nữ', 'huyennu@gmail.com', NULL, NULL, NULL),
+('MT3H00010', 'Ngọc Nhi', 'Ngọc Nhi', 'ngocnhi@gmail.com', NULL, NULL, NULL),
+('MT3H00011', 'Quốc Khánh', 'Quốc Khánh', 'khanhr0@gmail.com', NULL, NULL, NULL),
+('MT3H00012', 'Đom Đóm', 'Đom Đóm', 'domr1@gmail.com', NULL, NULL, NULL),
+('MT3H00013', 'My Nơ', 'My Nơ', 'nor2@gmail.com', NULL, NULL, NULL),
+('MT3H00014', 'Công Phượng', 'Công Phượng', 'phuongr3@gmail.com', NULL, NULL, NULL),
+('MT3H00015', 'van a', 'van a', 'vana@gmail.com', NULL, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -149,8 +172,18 @@ CREATE TABLE `detail_sales_invoice` (
 --
 
 INSERT INTO `detail_sales_invoice` (`DetailSalesID`, `SalesID`, `ProductID`, `Order_status`, `Quantity`, `Price`, `TotalPrice`) VALUES
-(112, 6, 'GAME031', 'Đã hủy', 1, 0, 0),
-(113, 6, 'GAME016', 'Đã hủy', 3, 1529745, 4589235);
+(114, 7, 'GAME035', 'Đã duyệt', 1, 0, 0),
+(115, 7, 'GAME015', 'Đã duyệt', 1, 1019745, 1019745),
+(116, 7, 'GAME037', 'Đã duyệt', 1, 1529745, 1529745),
+(117, 8, 'GAME037', 'Đã duyệt', 1, 1529745, 1529745),
+(118, 8, 'GAME032', 'Đã duyệt', 2, 382245, 764490),
+(119, 8, 'GAME040', 'Đã duyệt', 1, 1529745, 1529745),
+(120, 9, 'GAME016', 'Đã duyệt', 1, 1529745, 1529745),
+(121, 9, 'GAME017', 'Đã duyệt', 2, 1019745, 2039490),
+(122, 9, 'GAME006', 'Đã duyệt', 1, 1499099, 1499099),
+(123, 9, 'GAME002', 'Đã duyệt', 1, 1274000, 1274000),
+(124, 10, 'GAME038', 'Đã duyệt', 3, 1274000, 3822000),
+(125, 10, 'GAME040', 'Đã duyệt', 1, 1529745, 1529745);
 
 -- --------------------------------------------------------
 
@@ -319,7 +352,10 @@ CREATE TABLE `sales_invoice` (
 --
 
 INSERT INTO `sales_invoice` (`SalesID`, `CustomerID`, `EmployeeID`, `PaymentMethod`, `ShippingAddress`, `TotalPrice`, `Note`, `Date`, `Status`) VALUES
-(6, 'MT3H00005', NULL, 'payment-option-1', 'sdadadasdadadsa', 4609235, 'âsdasdasdasdadads', '2025-04-19 19:08:05', 'Đã hủy');
+(7, 'MT3H00001', NULL, 'payment-option-1', '36 Lê Lợi, phường Bến Nghé, quận 1', 2569490, '', '2025-03-19 00:31:50', 'chờ xử lý'),
+(8, 'MT3H00001', NULL, 'payment-option-1', '36 Lê Lợi, phường Bến Nghé, quận 1', 3843980, '', '2025-04-28 00:35:16', 'chờ xử lý'),
+(9, 'MT3H00002', NULL, 'payment-option-1', '50 Trần Khánh Dư', 6362334, '', '2025-02-28 00:48:00', 'chờ xử lý'),
+(10, 'MT3H00003', NULL, 'payment-option-1', '71 Đinh Tiên Hoàng', 5371745, '', '2025-01-10 00:52:32', 'chờ xử lý');
 
 -- --------------------------------------------------------
 
@@ -522,19 +558,19 @@ ALTER TABLE `type_product`
 -- AUTO_INCREMENT for table `cart_item`
 --
 ALTER TABLE `cart_item`
-  MODIFY `CartItemID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=220;
+  MODIFY `CartItemID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=234;
 
 --
 -- AUTO_INCREMENT for table `detail_sales_invoice`
 --
 ALTER TABLE `detail_sales_invoice`
-  MODIFY `DetailSalesID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=114;
+  MODIFY `DetailSalesID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=126;
 
 --
 -- AUTO_INCREMENT for table `sales_invoice`
 --
 ALTER TABLE `sales_invoice`
-  MODIFY `SalesID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `SalesID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- Constraints for dumped tables

@@ -1,7 +1,16 @@
 <?php
+
 include_once 'data.php';
 $data = new Data();
-session_start(); 
+
+session_start(); // Khởi tạo session nếu chưa có
+
+// Kiểm tra nếu người dùng chưa đăng nhập và có quyền không hợp lệ
+if (!isset($_SESSION["role"]) || $_SESSION["role"] !== "R0") { 
+    header("Location: /gui/account/logout.php"); 
+    exit;
+}
+
 $currentUser = $_SESSION["username"]; 
 
 // AJAX xử lý top khách hàng

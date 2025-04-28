@@ -32,7 +32,7 @@
           if ($account["Lock"] == 0) {
                $error_message = "Tài khoản bị khóa, gọi Hotline: 084249xxxx để được hỗ trợ!";
           }
-          else if ($password === $account["Password"]) {
+          else if (password_verify($password, $account["Password"])) {
                // Lưu thông tin người dùng vào session
                $_SESSION["username"] = $account["Username"];
                $_SESSION["fullname"] = $account["Fullname"];

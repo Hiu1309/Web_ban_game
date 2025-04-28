@@ -1,11 +1,11 @@
 <?php
 session_start(); // Khởi tạo session
 
-// Kiểm tra xem session 'username' đã được khởi tạo chưa
-if (isset($_SESSION['username'])) {
+// Kiểm tra nếu người dùng đã đăng nhập và có quyền 'R1'
+if (isset($_SESSION['role']) && $_SESSION['role'] === 'R1') {
     echo '<div class="header">
-            <span>Xin chào, admin <span class="text-warning">' . htmlspecialchars($_SESSION['username']) . '</span></span>
-            <a href="../../index.php" class="logout-btn">Chuyển sang trang mua hàng</a>
+            <span>Xin chào, admin</span>
+            <a href="../../index.php" class="logout-btn">Thoát</a>
           </div>
           
           <div class="container">
@@ -13,11 +13,12 @@ if (isset($_SESSION['username'])) {
               <a href="admin.php?page=permission">Quyền</a>
             </div>';
 } else {
-    // Nếu session chưa tồn tại, chuyển hướng về trang đăng nhập
-    header('Location: ../../gui/account/login.php');
+    // Nếu chưa đăng nhập hoặc không phải quyền R1, chuyển hướng về trang mặc định
+    header('Location: ../../gui/account/logout.php');
     exit();
 }
 ?>
+
 <style>
     .header {
         display: flex;

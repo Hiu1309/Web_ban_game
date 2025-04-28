@@ -1,5 +1,5 @@
 <?php
-include_once '../../doanhnghiep/data.php';
+include('../doanhnghiep/data.php');
 $data = new Data();
 
 $last6MonthSales = $data->getOrderStatsLast6Months();

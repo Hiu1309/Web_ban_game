@@ -159,13 +159,6 @@ foreach ($invoices as $invoice) {
             font-style: italic;
         }
         /* Thiết lập chung */
-        body {
-            font-family: 'Roboto', sans-serif;
-            background-color: #f8f9fa;
-            color: #333;
-            margin: 0;
-            padding: 30px;
-        }
 
         .container {
             max-width: 1200px;

@@ -171,13 +171,6 @@ if ($result && $result->num_rows > 0) {
 
 
         /* Thiết lập chung */
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #f8f9fa;
-            color: #333;
-            margin: 0;
-            padding: 20px;
-        }
 
         .container {
             max-width: 1200px;

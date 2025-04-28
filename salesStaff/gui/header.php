@@ -1,13 +1,22 @@
 <?php
+session_start(); // Khởi tạo session nếu chưa có
 
-session_start(); // Khởi tạo session
-echo '  <div class="header-container">
-            <div class="header-text">
-                Nhân viên bán hàng <span class="text-warning">' . htmlspecialchars($_SESSION["username"]) . '</span>!
-            </div>
-            <a href="../../index.php" class="logout-btn">Thoát</a>
-       </div>';
+// Kiểm tra quyền người dùng (R3: Nhân viên bán hàng, R0: Doanh nghiệp)
+if (!isset($_SESSION["role"]) || ($_SESSION["role"] !== "R3" && $_SESSION["role"] !== "R0")) {
+    header("Location: /gui/account/logout.php");
+    exit;
+}
+
+echo '  
+    <div class="header-container">
+        <div class="header-text">
+            Nhân viên bán hàng <span class="text-warning">' . htmlspecialchars($_SESSION["username"]) . '</span>!
+        </div>
+        <a href="/gui/account/logout.php" class="logout-btn">Thoát</a>
+    </div>
+';
 ?>
+
 <style>
     .header-container {
         display: flex;
@@ -15,7 +24,6 @@ echo '  <div class="header-container">
         align-items: center; /* Căn giữa theo chiều dọc */
         padding: 10px 20px;
         background-color: #0056b3; /* Màu nền */
-
         color: white; /* Màu chữ */
         font-size: 18px;
         font-weight: bold;

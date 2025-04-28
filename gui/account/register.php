@@ -31,7 +31,7 @@
                $error_message = "Email đã được đăng ký!";
           } else {
                // Tạo tài khoản mới
-               $pass = $password;
+               $pass = password_hash($password, PASSWORD_DEFAULT);
                $role = "R4"; // Người mua hàng
                $query_max_id = "SELECT MAX(CustomerID) AS max_id FROM customer WHERE CustomerID LIKE 'MT3H%'";
                $result_max = mysqli_query($conn, $query_max_id);
