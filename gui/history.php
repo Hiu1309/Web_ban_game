@@ -1,5 +1,4 @@
 <?php
-session_start();
 require_once "../database/connectDB.php";
 $conn = connectDB::getConnection();
 include('header_footer/header.php');

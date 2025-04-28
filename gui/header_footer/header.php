@@ -1,11 +1,14 @@
 <?php
-session_start(); // Khởi tạo session nếu chưa có
-
-// Kiểm tra quyền người dùng (R4: Người mua hàng, R0: Doanh nghiệp)
-if (isset($_SESSION["role"]) && $_SESSION["role"] !== "R4" && $_SESSION["role"] !== "R0") {
-  header("Location: /gui/account/logout.php");
-  exit;
-}
+  if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+  }
+  // Kiểm tra quyền người dùng (R4: Người mua hàng, R0: Doanh nghiệp)
+  if (isset($_SESSION["role"])) {
+    if ($_SESSION["role"] !== "R0" && $_SESSION["role"] !== "R4") {
+        header("Location: /gui/account/logout.php");
+        exit;
+    }
+  }
 
 ?>
 
