@@ -1,6 +1,51 @@
 <?php
-echo '  <div class="container">
-        <div class="header-text non-printable">
-            Xin chào nhân viên bán hàng, <span class="text-warning"><?= $username ?></span>!
-        </div>';
+session_start(); // Khởi tạo session nếu chưa có
+
+// Kiểm tra quyền người dùng (R3: Nhân viên bán hàng, R0: Doanh nghiệp)
+if (!isset($_SESSION["role"]) || ($_SESSION["role"] !== "R3" && $_SESSION["role"] !== "R0")) {
+    header("Location: /gui/account/logout.php");
+    exit;
+}
+
+echo '  
+    <div class="header-container">
+        <div class="header-text">
+            Nhân viên bán hàng <span class="text-warning">' . htmlspecialchars($_SESSION["username"]) . '</span>!
+        </div>
+        <a href="/gui/account/logout.php" class="logout-btn">Thoát</a>
+    </div>
+';
 ?>
+
+<style>
+    .header-container {
+        display: flex;
+        justify-content: space-between; /* Căn đều hai bên */
+        align-items: center; /* Căn giữa theo chiều dọc */
+        padding: 10px 20px;
+        background-color: #0056b3; /* Màu nền */
+        color: white; /* Màu chữ */
+        font-size: 18px;
+        font-weight: bold;
+    }
+
+    .logout-btn {
+        background-color: #ff6b6b;
+        color: white;
+        border: none;
+        padding: 8px 12px;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 16px;
+        text-decoration: none; /* Xóa gạch chân */
+        transition: background-color 0.3s ease;
+    }
+
+    .logout-btn:hover {
+        background-color: #ff4444;
+    }
+
+    .text-warning {
+        color: #ffc107; /* Màu vàng cho tên nhân viên */
+    }
+</style>

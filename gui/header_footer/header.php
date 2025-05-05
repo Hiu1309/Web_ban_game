@@ -1,3 +1,17 @@
+<?php
+  if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+  }
+  // Kiểm tra quyền người dùng (R4: Người mua hàng, R0: Doanh nghiệp)
+  if (isset($_SESSION["role"])) {
+    if ($_SESSION["role"] !== "R0" && $_SESSION["role"] !== "R4") {
+        header("Location: /gui/account/logout.php");
+        exit;
+    }
+  }
+
+?>
+
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -176,9 +190,10 @@
                       type="button"
                       title="Đăng xuất"
                       class="lnw-btn disable"
+                      onclick="window.location.href='/gui/account/logout.php';"
                     >
                       <div class="font-bold uppercase">Đăng xuất</div>
-                    </button>
+                    </button>              
                   </nav>
 
                 </div>
@@ -253,10 +268,10 @@
                         class="fa-solid fa-file-invoice fa-lg"
                         style="color: var(--main-color)"
                       ></i>
-                    </span>
+                    </span><a href="/gui/history.php">
                     <p class="padding-left-8 font-size-13 font-bold">
                       Lịch sử mua hàng
-                    </p>
+                    </p></a>
                   </div>
                 </div>
 
@@ -268,9 +283,9 @@
                         style="color: var(--main-color)"
                       ></i
                     ></span>
-                    <p class="padding-left-8 font-size-13 font-bold">
+                    <a href="/gui/news.php"><p class="padding-left-8 font-size-13 font-bold">
                       Tin tức & Sự kiện
-                    </p>
+                    </p></a>
                   </div>
                 </div>
 
@@ -282,7 +297,8 @@
                         style="color: var(--main-color)"
                       ></i
                     ></span>
-                    <p class="padding-left-8 font-size-13 font-bold">MT3H</p>
+                    <a href="/gui/MT3H.php">
+                    <p class="padding-left-8 font-size-13 font-bold">MT3H</p></a>
                   </div>
                 </div>
 
@@ -294,7 +310,7 @@
                         style="color: var(--main-color)"
                       ></i>
                     </span>
-                    <p class="padding-left-8 font-size-13 font-bold">Liên hệ</p>
+                   <a href="/gui/contact.php"> <p class="padding-left-8 font-size-13 font-bold">Liên hệ</p></a>
                   </div>
                 </div>
               </div>

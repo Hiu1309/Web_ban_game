@@ -113,19 +113,35 @@
                 // Bắt đầu transaction để đảm bảo tính nhất quán dữ liệu
                 $conn->begin_transaction();
                 try {
-                    // Cập nhật username trong bảng customer trước để tránh lỗi foreign key
+                    // CẢI TIẾN: Thêm bản ghi mới vào account với username mới
+                    $sql_get_account = "SELECT Password, RoleID, Status, `Lock` FROM account WHERE Username = ?";
+                    $stmt_get = $conn->prepare($sql_get_account);
+                    $stmt_get->bind_param("s", $old_username);
+                    $stmt_get->execute();
+                    $result_account = $stmt_get->get_result();
+                    $account_data = $result_account->fetch_assoc();
+                    $stmt_get->close();
+                    
+                    // Thêm bản ghi mới cho username mới
+                    $sql_new_account = "INSERT INTO account (Username, Password, RoleID, Status, `Lock`) VALUES (?, ?, ?, ?, ?)";
+                    $stmt_new = $conn->prepare($sql_new_account);
+                    $stmt_new->bind_param("sssii", $new_username, $account_data['Password'], $roleID, $account_data['Status'], $account_data['Lock']);
+                    $stmt_new->execute();
+                    $stmt_new->close();
+                    
+                    // Cập nhật username trong bảng customer
                     $sql_update_customer = "UPDATE customer SET Username = ?, Fullname = ?, Email = ?, Address = ?, Phone = ? WHERE Username = ?";
                     $stmt_customer = $conn->prepare($sql_update_customer);
                     $stmt_customer->bind_param("ssssss", $new_username, $fullname, $email, $address, $phone, $old_username);
                     $stmt_customer->execute();
                     $stmt_customer->close();
 
-                    // Sau đó cập nhật bảng account
-                    $sql_update_account = "UPDATE account SET Username = ?, RoleID = ? WHERE Username = ?";
-                    $stmt_account = $conn->prepare($sql_update_account);
-                    $stmt_account->bind_param("sss", $new_username, $roleID, $old_username);
-                    $stmt_account->execute();
-                    $stmt_account->close();
+                      // Xóa bản ghi cũ trong account
+                      $sql_delete_old = "DELETE FROM account WHERE Username = ?";
+                      $stmt_delete = $conn->prepare($sql_delete_old);
+                      $stmt_delete->bind_param("s", $old_username);
+                      $stmt_delete->execute();
+                      $stmt_delete->close();
 
                     // Commit transaction nếu không có lỗi
                     $conn->commit();
@@ -201,12 +217,89 @@
         $stmt7->close();
     }
 
-    // Truy vấn dữ liệu để hiển thị - thêm backticks cho Lock
+    // Lấy danh sách các vai trò từ DB
+    $sql_roles = "SELECT DISTINCT RoleID FROM account ORDER BY RoleID";
+    $result_roles = $conn->query($sql_roles);
+    $roles = array();
+    
+    if ($result_roles->num_rows > 0) {
+        while($row = $result_roles->fetch_assoc()) {
+            $roles[] = $row["RoleID"];
+        }
+    }
+
+    // Xử lý tìm kiếm và lọc
+    $search = isset($_GET['search']) ? $_GET['search'] : '';
+    $role_filter = isset($_GET['role_filter']) ? $_GET['role_filter'] : '';
+
+    // Xử lý phân trang
+    $items_per_page = 5; // Số tài khoản trên mỗi trang
+    $current_page = isset($_GET['pg']) ? intval($_GET['pg']) : 1;
+    $offset = ($current_page - 1) * $items_per_page;
+
+    // Tạo câu truy vấn SQL với điều kiện tìm kiếm và lọc
+    $sql_count = "SELECT COUNT(*) as total FROM account a 
+                  JOIN customer c ON a.Username = c.Username 
+                  WHERE a.Status = 1";
+    
     $sql = "SELECT a.Username, a.RoleID, a.Status, a.`Lock`, c.CustomerID, c.Fullname, c.Email, c.Address, c.Phone, c.TotalSpending 
             FROM account a 
             JOIN customer c ON a.Username = c.Username 
             WHERE a.Status = 1";
-    $result = $conn->query($sql);
+
+    // Thêm điều kiện tìm kiếm nếu có
+    if (!empty($search)) {
+        $search_param = "%$search%";
+        $sql_count .= " AND a.Username LIKE ?";
+        $sql .= " AND a.Username LIKE ?";
+    }
+
+    // Thêm điều kiện lọc theo vai trò nếu có
+    if (!empty($role_filter)) {
+        $sql_count .= " AND a.RoleID = ?";
+        $sql .= " AND a.RoleID = ?";
+    }
+
+    // Thêm LIMIT và OFFSET cho phân trang
+    $sql .= " ORDER BY a.Username LIMIT ? OFFSET ?";
+
+    // Prepared statement cho đếm tổng số bản ghi
+    $stmt_count = $conn->prepare($sql_count);
+    
+    // Bind các tham số
+    if (!empty($search) && !empty($role_filter)) {
+        $stmt_count->bind_param("ss", $search_param, $role_filter);
+    } elseif (!empty($search)) {
+        $stmt_count->bind_param("s", $search_param);
+    } elseif (!empty($role_filter)) {
+        $stmt_count->bind_param("s", $role_filter);
+    }
+
+    // Thực thi truy vấn đếm
+    $stmt_count->execute();
+    $result_count = $stmt_count->get_result();
+    $row_count = $result_count->fetch_assoc();
+    $total_items = $row_count['total'];
+    $total_pages = ceil($total_items / $items_per_page);
+    $stmt_count->close();
+
+    // Prepared statement cho lấy dữ liệu
+    $stmt = $conn->prepare($sql);
+    
+    // Bind các tham số tùy theo điều kiện
+    if (!empty($search) && !empty($role_filter)) {
+        $stmt->bind_param("ssii", $search_param, $role_filter, $items_per_page, $offset);
+    } elseif (!empty($search)) {
+        $stmt->bind_param("sii", $search_param, $items_per_page, $offset);
+    } elseif (!empty($role_filter)) {
+        $stmt->bind_param("sii", $role_filter, $items_per_page, $offset);
+    } else {
+        $stmt->bind_param("ii", $items_per_page, $offset);
+    }
+    
+    // Thực thi truy vấn
+    $stmt->execute();
+    $result = $stmt->get_result();
 
     // Hàm chuyển đổi RoleID sang tên vai trò - Đã sửa theo yêu cầu mới
     function getRoleName($roleID)
@@ -240,6 +333,31 @@
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.0/jquery.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
         <link rel="stylesheet" href="assets/css/permission.css">
+        <style>
+            /* Thêm CSS cho phân trang */
+            .pagination {
+                margin-top: 20px;
+                justify-content: center;
+            }
+            .search-filter-container {
+                background-color: #f8f9fa;
+                padding: 15px;
+                border-radius: 5px;
+                margin-bottom: 20px;
+                box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            }
+            .btn-search {
+                height: 38px;
+            }
+            .form-select, .form-control {
+                border-radius: 5px;
+            }
+            .page-info {
+                text-align: center;
+                margin-top: 10px;
+                color: #6c757d;
+            }
+        </style>
     </head>
 
     <body>
@@ -251,6 +369,34 @@
                 <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addModal">
                     <i class="fas fa-user-plus me-1"></i> Thêm tài khoản mới
                 </button>
+            </div>
+
+            <!-- Form tìm kiếm và lọc -->
+            <div class="search-filter-container">
+                <form action="admin.php" method="GET" class="row g-3">
+                    <input type="hidden" name="page" value="permission">
+                    <div class="col-md-5">
+                        <div class="input-group">
+                            <span class="input-group-text"><i class="fas fa-search"></i></span>
+                            <input type="text" class="form-control" placeholder="Tìm kiếm theo username" name="search" value="<?php echo htmlspecialchars($search); ?>">
+                        </div>
+                    </div>
+                    <div class="col-md-5">
+                        <select class="form-select" name="role_filter">
+                            <option value="">-- Tất cả vai trò --</option>
+                            <?php foreach ($roles as $role): ?>
+                                <option value="<?php echo $role; ?>" <?php echo ($role_filter == $role) ? 'selected' : ''; ?>>
+                                    <?php echo getRoleName($role); ?>
+                                </option>
+                            <?php endforeach; ?>
+                        </select>
+                    </div>
+                    <div class="col-md-2">
+                        <button type="submit" class="btn btn-primary w-100 btn-search">
+                            <i class="fas fa-filter me-1"></i> Lọc
+                        </button>
+                    </div>
+                </form>
             </div>
 
             <!-- Bảng hiển thị tài khoản -->
@@ -265,8 +411,6 @@
                             <th>Email</th>
                             <th>Địa chỉ</th>
                             <th>Số điện thoại</th>
-                            <th>Tổng chi tiêu</th>
-                            <th>Trạng thái</th>
                             <th class="action-column-header">Chỉnh sửa</th>
                             <th class="action-column-header">Xóa</th>
                             <th class="action-column-header">Khóa</th>
@@ -284,8 +428,6 @@
                                 echo "<td>" . $row["Email"] . "</td>";
                                 echo "<td>" . $row["Address"] . "</td>";
                                 echo "<td>" . $row["Phone"] . "</td>";
-                                echo "<td>" . number_format($row["TotalSpending"]) . " VNĐ</td>";
-                                echo "<td>" . ($row["Status"] == 1 ? '<span class="badge status-badge status-active">Kích hoạt</span>' : '<span class="badge status-badge status-inactive">Chưa kích hoạt</span>') . "</td>";
 
                                 // Cột Chỉnh sửa
                                 echo "<td>
@@ -319,12 +461,44 @@
                                 echo "</tr>";
                             }
                         } else {
-                            echo "<tr><td colspan='12' class='text-center'>Không có dữ liệu</td></tr>";
+                            echo "<tr><td colspan='10' class='text-center'>Không có dữ liệu</td></tr>";
                         }
                         ?>
                     </tbody>
                 </table>
             </div>
+
+           
+
+            <!-- Phân trang -->
+            <?php if ($total_pages > 1): ?>
+            <nav aria-label="Page navigation">
+                <ul class="pagination">
+                    <!-- Nút Trang trước -->
+                    <li class="page-item <?php echo $current_page <= 1 ? 'disabled' : ''; ?>">
+                        <a class="page-link" href="<?php echo "admin.php?page=permission&pg=" . ($current_page - 1) . (!empty($search) ? "&search=$search" : "") . (!empty($role_filter) ? "&role_filter=$role_filter" : ""); ?>" aria-label="Previous">
+                            <span aria-hidden="true">&laquo;</span>
+                        </a>
+                    </li>
+                    
+                    <!-- Các nút số trang -->
+                    <?php for ($i = 1; $i <= $total_pages; $i++): ?>
+                        <li class="page-item <?php echo $i == $current_page ? 'active' : ''; ?>">
+                            <a class="page-link" href="<?php echo "admin.php?page=permission&pg=$i" . (!empty($search) ? "&search=$search" : "") . (!empty($role_filter) ? "&role_filter=$role_filter" : ""); ?>">
+                                <?php echo $i; ?>
+                            </a>
+                        </li>
+                    <?php endfor; ?>
+                    
+                    <!-- Nút Trang sau -->
+                    <li class="page-item <?php echo $current_page >= $total_pages ? 'disabled' : ''; ?>">
+                        <a class="page-link" href="<?php echo "admin.php?page=permission&pg=" . ($current_page + 1) . (!empty($search) ? "&search=$search" : "") . (!empty($role_filter) ? "&role_filter=$role_filter" : ""); ?>" aria-label="Next">
+                            <span aria-hidden="true">&raquo;</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+            <?php endif; ?>
         </div>
 
         <!-- Modal thêm tài khoản -->
@@ -361,11 +535,11 @@
                                     <label for="roleID" class="form-label">Vai trò <span
                                             class="text-danger">*</span></label>
                                     <select class="form-select" id="roleID" name="roleID" required>
-                                        <option value="R0">Quản lý doanh nghiệp</option>
-                                        <option value="R1">Admin</option>
-                                        <option value="R2">Quản lý kho</option>
-                                        <option value="R3">Nhân viên bán hàng</option>
-                                        <option value="R4" selected>Người mua hàng</option>
+                                        <?php foreach ($roles as $role): ?>
+                                            <option value="<?php echo $role; ?>" <?php echo ($role == "R4") ? 'selected' : ''; ?>>
+                                                <?php echo getRoleName($role); ?>
+                                            </option>
+                                        <?php endforeach; ?>
                                     </select>
                                 </div>
                                 <div class="col-md-6">
@@ -391,7 +565,7 @@
                             <div class="row mb-3">
                                 <div class="col-md-6">
                                     <label for="address" class="form-label">Địa chỉ <span
-                                            class="text-danger">*</span></label>
+                                            class="text-danger">*</span>
                                     <input type="text" class="form-control" id="address" name="address" required>
                                 </div>
                                 <div class="col-md-6">

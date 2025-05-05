@@ -21,6 +21,17 @@ if (!$customerID) {
     exit;
 }
 
+// Kiểm tra số điện thoại
+$stmt = $conn->prepare("SELECT Phone FROM customer WHERE CustomerID = ?");
+$stmt->bind_param("s", $customerID);
+$stmt->execute();
+$result = $stmt->get_result()->fetch_assoc();
+
+if (!$result || empty(trim($result['Phone']))) {
+    echo json_encode(["success" => false, "message" => "Vui lòng cập nhật số điện thoại trước khi đặt hàng"]);
+    exit;
+}
+
 $items = $data['items'];
 $paymentMethod = $data['paymentMethod'] ?? 'COD';
 $address = trim($data['address'] ?? '');
@@ -50,9 +61,9 @@ foreach ($items as $item) {
         exit;
     }
 
-    // Lấy giá sản phẩm nếu chưa có
+    // Lấy giá và trạng thái sản phẩm nếu chưa có
     if (!isset($productPrices[$productID])) {
-        $stmt = $conn->prepare("SELECT Price FROM product WHERE ProductID = ?");
+        $stmt = $conn->prepare("SELECT Price, Status, ProductName FROM product WHERE ProductID = ?");
         $stmt->bind_param("s", $productID);
         $stmt->execute();
         $result = $stmt->get_result()->fetch_assoc();
@@ -62,27 +73,35 @@ foreach ($items as $item) {
             exit;
         }
 
+        if ((int)$result['Status'] === 0) {
+            $productName = htmlspecialchars($result['ProductName']);
+            echo json_encode(["success" => false, "message" => "Sản phẩm \"$productName\" hiện đã ngừng bán"]);
+            exit;
+        }
+
         $productPrices[$productID] = $result['Price'];
     }
 
     $productTotal += $productPrices[$productID] * $quantity;
 }
 
-// Trừ voucher và phí ship (có thể = 0)
+// Tính tổng đơn sau khi cộng phí ship và trừ giảm giá
 $finalTotal = max(0, $productTotal + $shippingFee - $shippingDiscount);
 
 // Bắt đầu giao dịch
-$salesID = "SI" . uniqid();
 $conn->begin_transaction();
 
 try {
     // Thêm vào bảng hóa đơn
-    $stmt = $conn->prepare("INSERT INTO sales_invoice (SalesID, CustomerID, PaymentMethod, ShippingAddress, TotalPrice, Note, Date) VALUES (?, ?, ?, ?, ?, ?, ?)");
-    $stmt->bind_param("sssssss", $salesID, $customerID, $paymentMethod, $address, $finalTotal, $note, $date);
+    $stmt = $conn->prepare("INSERT INTO sales_invoice (CustomerID, PaymentMethod, ShippingAddress, TotalPrice, Note, Date) VALUES (?, ?, ?, ?, ?, ?)");
+    $stmt->bind_param("ssssss", $customerID, $paymentMethod, $address, $finalTotal, $note, $date);
 
     if (!$stmt->execute()) {
         throw new Exception("Không thể tạo hóa đơn");
     }
+
+    // Lấy SalesID vừa tạo
+    $salesID = $conn->insert_id;
 
     // Thêm chi tiết hóa đơn
     foreach ($items as $item) {
@@ -90,10 +109,10 @@ try {
         $quantity = $item['quantity'];
         $price = $productPrices[$productID];
         $totalItem = $price * $quantity;
-        $orderStatus = "Đang xử lý";
+        $orderStatus = "Chưa duyệt";
 
         $stmt = $conn->prepare("INSERT INTO detail_sales_invoice (SalesID, ProductID, Order_status, Quantity, Price, TotalPrice) VALUES (?, ?, ?, ?, ?, ?)");
-        $stmt->bind_param("sssidd", $salesID, $productID, $orderStatus, $quantity, $price, $totalItem);
+        $stmt->bind_param("issidd", $salesID, $productID, $orderStatus, $quantity, $price, $totalItem);
 
         if (!$stmt->execute()) {
             throw new Exception("Không thể thêm chi tiết đơn hàng cho sản phẩm $productID");
@@ -105,10 +124,10 @@ try {
         $stmt->execute();
     }
 
-    // Commit nếu thành công
+    // Commit giao dịch
     $conn->commit();
 
-    // Gán vào session và trả về đường dẫn chuyển hướng
+    // Gán đơn hàng vừa tạo vào session và trả về kết quả
     $_SESSION['last_order_id'] = $salesID;
     echo json_encode([
         "success" => true,
@@ -117,6 +136,7 @@ try {
     ]);
     exit;
 } catch (Exception $e) {
+    // Rollback nếu có lỗi
     $conn->rollback();
     echo json_encode(["success" => false, "message" => "Lỗi: " . $e->getMessage()]);
 }

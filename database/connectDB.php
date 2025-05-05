@@ -1,7 +1,7 @@
 <?php
 class connectDB {
     public static function getConnection() {
-        $servername = "localhost";  
+        $servername = "localhost:3306";  
         $username = "root";
         $password = "";
         $database = "htttgame";

@@ -159,18 +159,19 @@ class Data {
         return $data;
     }
 
-    public function getTop5StaffByMonth($month) {
+    public function getTop5ProductsByMonth($month) {
         $sql = "
-            SELECT u.Fullname, COUNT(h.EmployeeID) AS totalApproved
-            FROM employee u
-            JOIN sales_invoice h ON u.EmployeeID = h.EmployeeID 
-            WHERE DATE_FORMAT(h.Date, '%Y-%m') = ?   
-            GROUP BY u.EmployeeID
-            ORDER BY totalApproved DESC
+            SELECT g.ProductName AS ProductName, SUM(cthd.Quantity) AS totalSold
+            FROM sales_invoice h
+            JOIN detail_sales_invoice cthd ON h.SalesID = cthd.SalesID
+            JOIN product g ON cthd.ProductID = g.ProductID
+            WHERE DATE_FORMAT(h.Date, '%Y-%m') = ?
+            GROUP BY g.ProductID
+            ORDER BY totalSold DESC
             LIMIT 5
         ";
         $stmt = $this->conn->prepare($sql);
-        $stmt->bind_param("s", $month); 
+        $stmt->bind_param("s", $month);
         $stmt->execute();
         $result = $stmt->get_result();
         $data = [];

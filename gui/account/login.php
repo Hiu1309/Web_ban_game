@@ -1,5 +1,3 @@
-
-
 <?php
      session_start();
      include("../../database/connectDB.php");
@@ -15,7 +13,7 @@
      $conn = connectDB::getConnection();
 
      // Kiểm tra email có tồn tại không
-     $sql = "SELECT a.Username, a.Password, a.RoleID, c.Fullname, c.CustomerID
+     $sql = "SELECT a.Username, a.Password, a.RoleID, a.Status, a.Lock, c.Fullname, c.CustomerID
                FROM account a
                JOIN customer c ON a.Username = c.Username
                WHERE c.Email = ?";
@@ -26,7 +24,15 @@
 
      if ($result->num_rows == 1) {
           $account = $result->fetch_assoc();
-          if ($password === $account["Password"]) {
+          
+          // Kiểm tra Status trước khi kiểm tra mật khẩu
+          if ($account["Status"] == 0) {
+               $error_message = "Tài khoản này đã bị xóa!";
+          }
+          if ($account["Lock"] == 0) {
+               $error_message = "Tài khoản bị khóa, gọi Hotline: 084249xxxx để được hỗ trợ!";
+          }
+          else if (password_verify($password, $account["Password"])) {
                // Lưu thông tin người dùng vào session
                $_SESSION["username"] = $account["Username"];
                $_SESSION["fullname"] = $account["Fullname"];
@@ -101,7 +107,7 @@
                          header("Location: /salesStaff/index.php?page=order_management");
                          exit;
                     case "R2":
-                         header("Location: ");                         
+                         header("Location: /stock/stock.php");                         
                          exit;
                     case "R1":
                          header("Location: /admin/admin.php");
