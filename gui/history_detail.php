@@ -1,8 +1,5 @@
 <?php
-// Bắt đầu output buffering
 ob_start();
-
-// Các phần còn lại của mã PHP
 session_start();
 include('header_footer/header.php');
 require_once "../database/connectDB.php";
@@ -21,17 +18,14 @@ if (isset($_POST['cancel_order'])) {
   $conn->begin_transaction();
   
   try {
-    // Cập nhật Order_status thành 'Đã hủy' cho sản phẩm cụ thể trong đơn hàng
     $updateStatusSql = "UPDATE detail_sales_invoice SET Order_status = 'Đã hủy' WHERE SalesID = ? AND ProductID = ?";
     $stmt = $conn->prepare($updateStatusSql);
     $stmt->bind_param("ss", $salesID, $productID);
     $stmt->execute();
     $stmt->close();
 
-    // Cam kết giao dịch
     $conn->commit();
 
-    // Chuyển hướng lại trang chi tiết đơn hàng
     header("Location: history_detail.php?SalesID=" . $salesID);
     exit;
 
@@ -47,10 +41,11 @@ SELECT
     dsi.Quantity, 
     dsi.Price, 
     dsi.TotalPrice,
-    dsi.Order_status,  -- Lấy cột Order_status
+    dsi.Order_status,
     p.ProductName, 
     p.ProductImg,
-    p.ProductID  -- Thêm ProductID vào kết quả
+    p.ProductID,
+    p.DownloadLink
 FROM detail_sales_invoice dsi
 JOIN product p ON dsi.ProductID = p.ProductID
 WHERE dsi.SalesID = ?
@@ -64,7 +59,7 @@ $items = $result->fetch_all(MYSQLI_ASSOC);
 $stmt->close();
 ?>
 
-<!-- HTML và mã tiếp theo của bạn -->
+<!-- Giao diện HTML -->
 <div class="history-tracking-container margin-y-24 grid-col col-l-12 col-m-12 col-s-12">
   <section id="history-order-container" class="active">
     <div class="order-status-header padding-bottom-8 margin-bottom-16">
@@ -95,28 +90,40 @@ $stmt->close();
                 <span class="opacity-0-8 font-size-13 waiting-color"><?= htmlspecialchars($item['Order_status']) ?></span>
               <?php endif; ?>
             </div>
-            <?php if ($item['Order_status'] != 'Đã hủy'): ?>
-              <div class="flex align-center justify-space-between padding-top-8">
-                <span class="delivered-day flex opacity-0-8">
-                  <div><?= date('H:i d/m/Y') ?></div>
-                </span>
-                <div class="flex">
+
+            <!-- Nút thao tác -->
+            <div class="flex align-center justify-space-between padding-top-8">
+              <span class="delivered-day flex opacity-0-8">
+                <div><?= date('H:i d/m/Y') ?></div>
+              </span>
+              <div class="flex">
+                <?php if ($item['Order_status'] == 'Đã duyệt'): ?>
+                  <?php if (!empty($item['DownloadLink'])): ?>
+                    <a href="<?= htmlspecialchars($item['DownloadLink']) ?>" class="rmbtn button" download>
+                      <div class="capitalize">Tải Game</div>
+                    </a>
+                  <?php else: ?>
+                    <button class="rmbtn button" disabled>
+                      <div class="capitalize">Chưa có link</div>
+                    </button>
+                  <?php endif; ?>
+                <?php elseif ($item['Order_status'] != 'Đã hủy'): ?>
                   <form method="POST" onsubmit="return confirmCancel()">
                     <input type="hidden" name="ProductID" value="<?= $item['ProductID'] ?>" />
                     <button type="submit" name="cancel_order" class="rmbtn button">
                       <div class="capitalize">Hủy Sản Phẩm</div>
                     </button>
                   </form>
-                </div>
+                <?php endif; ?>
               </div>
-            <?php endif; ?>
+            </div>
+
           </div>
         </div>
       <?php endforeach; ?>
     </div>
   </section>
 </div>
-
 
 <script type="text/javascript">
   function confirmCancel() {

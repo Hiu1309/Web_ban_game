@@ -6,9 +6,7 @@ include('header_footer/header.php');
 // Kiểm tra đăng nhập
 if (!isset($_SESSION['CustomerID'])) {
   echo "<p class='text-center margin-top-24'>Vui lòng <a href='/gui/account/login.php'><span style='color: red;'>đăng nhập</span></a> để xem lịch sử mua hàng.</p>";
-
-
-    exit;
+  exit;
 }
 
 $customerID = $_SESSION['CustomerID'];
@@ -20,13 +18,15 @@ $stmt->bind_param("s", $customerID);
 $stmt->execute();
 $result = $stmt->get_result();
 
-// Kiểm tra trạng thái tất cả sản phẩm trong mỗi đơn hàng và cập nhật trạng thái đơn hàng nếu tất cả sản phẩm đều đã hủy
+// Cập nhật trạng thái đơn hàng theo chi tiết đơn hàng
 while ($row = $result->fetch_assoc()) {
     $salesID = $row['SalesID'];
     $status = $row['Status'];
 
     // Kiểm tra trạng thái của tất cả sản phẩm trong đơn hàng
-    $checkStatusSql = "SELECT COUNT(*) as total, SUM(Order_status = 'Đã hủy') as canceled 
+    $checkStatusSql = "SELECT COUNT(*) as total, 
+                              SUM(Order_status = 'Đã hủy') as canceled,
+                              SUM(Order_status = 'Đã duyệt') as approved
                        FROM detail_sales_invoice 
                        WHERE SalesID = ?";
     $checkStmt = $conn->prepare($checkStatusSql);
@@ -35,15 +35,30 @@ while ($row = $result->fetch_assoc()) {
     $checkResult = $checkStmt->get_result();
     $checkRow = $checkResult->fetch_assoc();
 
-    // Nếu tất cả sản phẩm trong đơn hàng đã hủy, cập nhật trạng thái đơn hàng thành "Đã hủy"
-    if ($checkRow['total'] == $checkRow['canceled'] && $status != 'Đã hủy') {
+    $total = (int)$checkRow['total'];
+    $canceled = (int)$checkRow['canceled'];
+    $approved = (int)$checkRow['approved'];
+
+    // Nếu tất cả sản phẩm bị hủy
+    if ($total > 0 && $total === $canceled && $status !== 'Đã hủy') {
         $updateStatusSql = "UPDATE sales_invoice SET Status = 'Đã hủy' WHERE SalesID = ?";
+        $updateStmt = $conn->prepare($updateStatusSql);
+        $updateStmt->bind_param("s", $salesID);
+        $updateStmt->execute();
+    }
+
+    // Nếu tất cả sản phẩm đã duyệt
+    elseif ($total > 0 && $total === $approved && $status !== 'Đã duyệt') {
+        $updateStatusSql = "UPDATE sales_invoice SET Status = 'Đã duyệt' WHERE SalesID = ?";
         $updateStmt = $conn->prepare($updateStatusSql);
         $updateStmt->bind_param("s", $salesID);
         $updateStmt->execute();
     }
 }
 
+// Lấy lại danh sách đơn hàng sau khi cập nhật trạng thái
+$stmt->execute();
+$result = $stmt->get_result();
 ?>
 
 <!-- history -->
@@ -55,10 +70,6 @@ while ($row = $result->fetch_assoc()) {
 
     <div class="history-order-table grid-col col-l-12 col-m-12 col-s-12 no-gutter flex-column gap-16">
       <?php
-      // Lấy lại danh sách đơn hàng sau khi cập nhật trạng thái
-      $stmt->execute();
-      $result = $stmt->get_result();
-
       if ($result->num_rows > 0) {
         while ($row = $result->fetch_assoc()) {
           $salesID = $row['SalesID'];

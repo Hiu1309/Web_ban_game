@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Apr 28, 2025 at 05:25 AM
+-- Generation Time: May 05, 2025 at 04:25 AM
 -- Server version: 10.4.32-MariaDB
--- PHP Version: 8.2.12
+-- PHP Version: 8.1.25
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -42,6 +42,7 @@ CREATE TABLE `account` (
 INSERT INTO `account` (`Username`, `Password`, `RoleID`, `Status`, `Lock`) VALUES
 ('Cao Nam', '$2y$10$PZa.Nok8eP8uJR0gE3UqJeiKu0eGgMDixZTdAj893HWI5b7S/Dlp2', 'R4', 1, 1),
 ('Công Phượng', '$2y$10$lzOO7uxHwyi4AoGtxcqyj.xm5cRq3RMsrQJWRZtTmUiaOmb/u6K2C', 'R3', 1, 1),
+('Hiếu Lê', '$2y$10$CB0M3HsH0Tcmyjf7hwVswuz2DzpayJf9w.wsrE22wXAzc3my57MaG', 'R0', 1, 1),
 ('Hưng Thịnh', '$2y$10$MeBRrmt153ABGqV.9xfu5.3r6fTyb7TRF1MHDdJFpOCuDGb2hSiKC', 'R4', 1, 1),
 ('Huyền Nữ', '$2y$10$BUb91yTT3eXOGyCynJG7.OJtjspGFOEcRt9ivxjN5z4MGkl4Xi0gW', 'R4', 1, 1),
 ('Messi Lionel', '$2y$10$5DLnkgSHp/bO7VPZMxRJEuFWB28ZsKgi2uo2BzXN.JdttGqOoiaZS', 'R4', 1, 1),
@@ -76,7 +77,8 @@ INSERT INTO `cart` (`CartID`, `CustomerID`, `CreatedDate`) VALUES
 ('CART680eb0', 'MT3H00001', '2025-04-28 05:31:21'),
 ('CART680eb4', 'MT3H00002', '2025-04-28 05:47:37'),
 ('CART680eb5', 'MT3H00003', '2025-04-28 05:51:50'),
-('CART680eb7', 'MT3H00014', '2025-04-28 06:02:31');
+('CART680eb7', 'MT3H00014', '2025-04-28 06:02:31'),
+('CART68138f', 'MT3H00016', '2025-05-01 22:13:48');
 
 -- --------------------------------------------------------
 
@@ -134,7 +136,8 @@ INSERT INTO `customer` (`CustomerID`, `Fullname`, `Username`, `Email`, `Address`
 ('MT3H00012', 'Đom Đóm', 'Đom Đóm', 'domr1@gmail.com', NULL, NULL, NULL),
 ('MT3H00013', 'My Nơ', 'My Nơ', 'nor2@gmail.com', NULL, NULL, NULL),
 ('MT3H00014', 'Công Phượng', 'Công Phượng', 'phuongr3@gmail.com', NULL, NULL, NULL),
-('MT3H00015', 'van a', 'van a', 'vana@gmail.com', NULL, NULL, NULL);
+('MT3H00015', 'van a', 'van a', 'vana@gmail.com', NULL, NULL, NULL),
+('MT3H00016', 'Hiếu Lê', 'Hiếu Lê', 'hjuiihy67@gmail.com', 'sdadadasdadadsa', '0842498241', NULL);
 
 -- --------------------------------------------------------
 
@@ -192,7 +195,13 @@ INSERT INTO `detail_sales_invoice` (`DetailSalesID`, `SalesID`, `ProductID`, `Or
 (122, 9, 'GAME006', 'Đã duyệt', 1, 1499099, 1499099),
 (123, 9, 'GAME002', 'Đã duyệt', 1, 1274000, 1274000),
 (124, 10, 'GAME038', 'Đã duyệt', 3, 1274000, 3822000),
-(125, 10, 'GAME040', 'Đã duyệt', 1, 1529745, 1529745);
+(125, 10, 'GAME040', 'Đã duyệt', 1, 1529745, 1529745),
+(126, 11, 'GAME003', 'Đã hủy', 5, 1020000, 5100000),
+(127, 11, 'GAME004', 'Đã hủy', 3, 1274000, 3822000),
+(128, 11, 'GAME028', 'Đã hủy', 1, 0, 0),
+(129, 11, 'GAME035', 'Đã hủy', 1, 0, 0),
+(130, 12, 'GAME040', 'Đã duyệt', 1, 1529745, 1529745),
+(131, 12, 'GAME038', 'Đã duyệt', 1, 1274000, 1274000);
 
 -- --------------------------------------------------------
 
@@ -252,54 +261,55 @@ CREATE TABLE `product` (
   `Price` double DEFAULT NULL,
   `Description` varchar(255) DEFAULT NULL,
   `SupplierID` varchar(10) DEFAULT NULL,
-  `Status` int(11) NOT NULL DEFAULT 1 COMMENT '1: hoạt động, 0: ngưng bán'
+  `Status` int(11) NOT NULL DEFAULT 1 COMMENT '1: hoạt động, 0: ngưng bán',
+  `DownloadLink` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `product`
 --
 
-INSERT INTO `product` (`ProductID`, `ProductName`, `ProductImg`, `Author`, `Publisher`, `Quantity`, `Price`, `Description`, `SupplierID`, `Status`) VALUES
-('GAME001', 'Cyberpunk 2077', '/Assets/Images/Game/cyberpunk.jpg', 'CD Projekt Red', 'CD Projekt', 100, 1499099, 'Game nhập vai thế giới mở', 'SUP001', 1),
-('GAME002', 'Red Dead Redemption', '/Assets/Images/Game/red_dead.jpg', 'Rockstar Games', 'Rockstar Games', 200, 1274000, 'Game phiêu lưu hành động thế giới mở', 'SUP002', 1),
-('GAME003', 'Skyrim', '/Assets/Images/Game/skyrim.jpg', 'Bethesda Softworks', 'Bethesda Softworks', 150, 1020000, 'Game nhập vai thế giới mở với nhiều lựa chọn', 'SUP003', 1),
-('GAME004', 'The Last of Us', '/Assets/Images/Game/last_of_us.jpg', 'Naughty Dog', 'Sony Computer Entertainment', 120, 1274000, 'Game hành động phiêu lưu với cốt truyện cảm động', 'SUP004', 1),
-('GAME005', 'Half-Life ', '/Assets/Images/Game/half_life.jpg', 'Valve Corporation', 'Valve Corporation', 140, 764745, 'Game bắn súng góc nhìn thứ nhất với cốt truyện hấp dẫn', 'SUP005', 1),
-('GAME006', 'The Witcher 3', '/Assets/Images/Game/witcher_3.jpg', 'CD Projekt Red', 'CD Projekt', 80, 1499099, 'Game nhập vai với thế giới mở rộng lớn', 'SUP001', 1),
-('GAME007', 'GTA V', '/Assets/Images/Game/gta_v.jpg', 'Rockstar Games', 'Rockstar Games', 284, 1019745, 'Game hành động phiêu lưu trong thế giới mở', 'SUP002', 1),
-('GAME008', 'Fallout 4', '/Assets/Images/Game/fallout_4.jpg', 'Bethesda Softworks', 'Bethesda Softworks', 90, 1147009, 'Game nhập vai thế giới mở trong bối cảnh hậu tận thế', 'SUP003', 1),
-('GAME009', 'ARK: Survival Ascended', '/Assets/Images/Game/ark.jpg', ' Studio Wildcard', ' Studio Wildcard', 110, 1274000, 'Game hành động phiêu lưu thế giới mở với đồ họa tuyệt vời', 'SUP004', 1),
-('GAME010', 'Portal 2', '/Assets/Images/Game/portal_2.jpg', 'Valve Corporation', 'Valve Corporation', 95, 509745, 'Game giải đố với cơ chế cổng không gian', 'SUP005', 1),
-('GAME011', 'Assassin\'s Creed Valhalla', '/Assets/Images/Game/acvalhalla.jpg', 'Ubisoft', 'Ubisoft', 100, 1529745, 'Game hành động thế giới mở', 'SUP001', 1),
-('GAME012', 'Watch Dogs: Legion', '/Assets/Images/Game/watchdogslegion.jpg', 'Ubisoft', 'Ubisoft', 80, 1274000, 'Game hành động phiêu lưu trong thế giới mở', 'SUP002', 1),
-('GAME013', 'Far Cry 6', '/Assets/Images/Game/farcry6.jpg', 'Ubisoft', 'Ubisoft', 90, 1529745, 'Game hành động thế giới mở', 'SUP003', 1),
-('GAME014', 'Hitman 3', '/Assets/Images/Game/hitman3.jpg', 'IO Interactive', 'IO Interactive', 70, 1274000, 'Game hành động lén lút', 'SUP004', 1),
-('GAME015', 'Far Cry 5', '/Assets/Images/Game/farcry5.jpg', 'Ubisoft', 'Ubisoft', 100, 1019745, 'Game hành động phiêu lưu', 'SUP005', 1),
-('GAME016', 'TEKKEN 8', '/Assets/Images/Game/tekken8.jpg', 'Sucker Punch Productions', 'Sony Interactive Entertainment', 60, 1529745, 'Game hành động phiêu lưu trong thế giới mở', 'SUP001', 1),
-('GAME017', 'Final Fantasy XV', '/Assets/Images/Game/ffxv.jpg', 'Square Enix', 'Square Enix', 105, 1019745, 'Game nhập vai thế giới mở', 'SUP002', 1),
-('GAME018', 'Kingdom Come: Deliverance', '/Assets/Images/Game/kingdomcome.jpg', 'Warhorse Studios', 'Deep Silver', 50, 1274000, 'Game nhập vai hành động', 'SUP003', 1),
-('GAME019', 'Monster Hunter: Wild', '/Assets/Images/Game/mhw.jpg', 'Capcom', 'Capcom', 120, 1529745, 'Game nhập vai hành động', 'SUP004', 1),
-('GAME020', 'Elden Ring', '/Assets/Images/Game/eldenring.jpg', 'FromSoftware', 'Bandai Namco Entertainment', 75, 1529745, 'Game nhập vai thế giới mở', 'SUP005', 1),
-('GAME021', 'Dying Light 2', '/Assets/Images/Game/dyinglight2.jpg', 'Techland', 'Techland', 100, 1274000, 'Game hành động thế giới mở', 'SUP001', 1),
-('GAME022', 'Horizon Zero Dawn', '/Assets/Images/Game/horizonzerodawn.jpg', 'Guerrilla Games', 'Sony Interactive Entertainment', 110, 1274000, 'Game hành động nhập vai', 'SUP002', 1),
-('GAME023', 'No Man\'s Sky', '/Assets/Images/Game/nms.jpg', 'Hello Games', 'Hello Games', 130, 1019745, 'Game phiêu lưu thế giới mở', 'SUP003', 1),
-('GAME024', 'Cyber Hunter', '/Assets/Images/Game/cyberhunter.jpg', 'Nexon', 'Nexon', 100, 0, 'Game free-to-play nhập vai hành động', 'SUP004', 1),
-('GAME025', 'PUBG', '/Assets/Images/Game/pubg.jpg', 'PUBG Corporation', 'PUBG Corporation', 200, 764745, 'Game sinh tồn', 'SUP005', 1),
-('GAME026', 'Apex Legends', '/Assets/Images/Game/apexlegends.jpg', 'Respawn Entertainment', 'Electronic Arts', 150, 0, 'Game free-to-play bắn súng', 'SUP001', 1),
-('GAME027', 'Infestation: Battle Royale', '/Assets/Images/Game/infestation.jpg', 'Epic Games', 'Epic Games', 250, 0, 'Game free-to-play sinh tồn', 'SUP002', 1),
-('GAME028', 'Warframe', '/Assets/Images/Game/warframe.jpg', '\nDigital Extremes', '\nDigital Extremes', 500, 0, 'Game MOBA free-to-play', 'SUP003', 1),
-('GAME029', 'Minecraft', '/Assets/Images/Game/minecraft.jpg', 'Mojang Studios', 'Mojang Studios', 300, 0, 'Game phiêu lưu xây dựng', 'SUP004', 1),
-('GAME030', 'Rocket League', '/Assets/Images/Game/rocketleague.jpg', 'Psyonix', 'Psyonix', 200, 0, 'Game thể thao online', 'SUP005', 1),
-('GAME031', 'The Sims 4', '/Assets/Images/Game/thesims4.jpg', 'Riot Games', 'Riot Games', 400, 0, 'Game bắn súng chiến thuật free-to-play', 'SUP001', 1),
-('GAME032', 'Hogwarts Legacy', '/Assets/Images/Game/hogwartslegacy.jpg', 'Blizzard Entertainment', 'Blizzard Entertainment', 100, 382245, 'Game nhập vai trực tuyến', 'SUP002', 1),
-('GAME033', 'The Division 2', '/Assets/Images/Game/division2.jpg', 'Ubisoft', 'Ubisoft', 150, 1529745, 'Game hành động thế giới mở', 'SUP003', 1),
-('GAME034', 'Borderlands 3', '/Assets/Images/Game/borderlands3.jpg', 'Gearbox Software', '2K Games', 180, 1274000, 'Game hành động nhập vai', 'SUP004', 1),
-('GAME035', 'Call of Duty: Warzone', '/Assets/Images/Game/codwarzone.jpg', 'Activision', 'Activision', 500, 0, 'Game bắn súng free-to-play', 'SUP005', 1),
-('GAME036', 'Shadow of the Tomb Raider', '/Assets/Images/Game/shadowoftombraider.jpg', 'Crystal Dynamics', 'Square Enix', 80, 1274000, 'Game hành động phiêu lưu', 'SUP001', 1),
-('GAME037', 'Dragon Age: Inquisition', '/Assets/Images/Game/dragonageinquisition.jpg', 'BioWare', 'Electronic Arts', 60, 1529745, 'Game nhập vai thế giới mở', 'SUP002', 1),
-('GAME038', 'Divinity: Original Sin 2', '/Assets/Images/Game/divinityoriginalsin2.jpg', 'Larian Studios', 'Larian Studios', 55, 1274000, 'Game nhập vai chiến thuật', 'SUP003', 1),
-('GAME039', 'Star Wars Jedi: Fallen Order', '/Assets/Images/Game/starwarsjedi.jpg', 'Respawn Entertainment', 'Electronic Arts', 90, 1529745, 'Game hành động phiêu lưu', 'SUP004', 1),
-('GAME040', 'Enshrouded', '/Assets/Images/Game/enshrouded.jpg', 'Cpcom', 'Cpcom', 120, 1529745, 'Game nhập vai hành động', 'SUP005', 1);
+INSERT INTO `product` (`ProductID`, `ProductName`, `ProductImg`, `Author`, `Publisher`, `Quantity`, `Price`, `Description`, `SupplierID`, `Status`, `DownloadLink`) VALUES
+('GAME001', 'Cyberpunk 2077', '/Assets/Images/Game/cyberpunk.jpg', 'CD Projekt Red', 'CD Projekt', 100, 1499099, 'Game nhập vai thế giới mở', 'SUP001', 1, 'https://docs.google.com/document/d/1tgRyQthtW6_qwUVwCK4LA1t_HQF4WkZqNoREpdyD69o/edit?usp=sharing'),
+('GAME002', 'Red Dead Redemption', '/Assets/Images/Game/red_dead.jpg', 'Rockstar Games', 'Rockstar Games', 200, 1274000, 'Game phiêu lưu hành động thế giới mở', 'SUP002', 1, 'https://docs.google.com/document/d/1tgRyQthtW6_qwUVwCK4LA1t_HQF4WkZqNoREpdyD69o/edit?usp=sharing'),
+('GAME003', 'Skyrim', '/Assets/Images/Game/skyrim.jpg', 'Bethesda Softworks', 'Bethesda Softworks', 150, 1020000, 'Game nhập vai thế giới mở với nhiều lựa chọn', 'SUP003', 1, 'https://docs.google.com/document/d/1tgRyQthtW6_qwUVwCK4LA1t_HQF4WkZqNoREpdyD69o/edit?usp=sharing'),
+('GAME004', 'The Last of Us', '/Assets/Images/Game/last_of_us.jpg', 'Naughty Dog', 'Sony Computer Entertainment', 120, 1274000, 'Game hành động phiêu lưu với cốt truyện cảm động', 'SUP004', 1, 'https://docs.google.com/document/d/1tgRyQthtW6_qwUVwCK4LA1t_HQF4WkZqNoREpdyD69o/edit?usp=sharing'),
+('GAME005', 'Half-Life ', '/Assets/Images/Game/half_life.jpg', 'Valve Corporation', 'Valve Corporation', 140, 764745, 'Game bắn súng góc nhìn thứ nhất với cốt truyện hấp dẫn', 'SUP005', 1, 'https://docs.google.com/document/d/1tgRyQthtW6_qwUVwCK4LA1t_HQF4WkZqNoREpdyD69o/edit?usp=sharing'),
+('GAME006', 'The Witcher 3', '/Assets/Images/Game/witcher_3.jpg', 'CD Projekt Red', 'CD Projekt', 80, 1499099, 'Game nhập vai với thế giới mở rộng lớn', 'SUP001', 1, 'https://docs.google.com/document/d/1tgRyQthtW6_qwUVwCK4LA1t_HQF4WkZqNoREpdyD69o/edit?usp=sharing'),
+('GAME007', 'GTA V', '/Assets/Images/Game/gta_v.jpg', 'Rockstar Games', 'Rockstar Games', 284, 1019745, 'Game hành động phiêu lưu trong thế giới mở', 'SUP002', 1, 'https://docs.google.com/document/d/1tgRyQthtW6_qwUVwCK4LA1t_HQF4WkZqNoREpdyD69o/edit?usp=sharing'),
+('GAME008', 'Fallout 4', '/Assets/Images/Game/fallout_4.jpg', 'Bethesda Softworks', 'Bethesda Softworks', 90, 1147009, 'Game nhập vai thế giới mở trong bối cảnh hậu tận thế', 'SUP003', 1, 'https://docs.google.com/document/d/1tgRyQthtW6_qwUVwCK4LA1t_HQF4WkZqNoREpdyD69o/edit?usp=sharing'),
+('GAME009', 'ARK: Survival Ascended', '/Assets/Images/Game/ark.jpg', ' Studio Wildcard', ' Studio Wildcard', 110, 1274000, 'Game hành động phiêu lưu thế giới mở với đồ họa tuyệt vời', 'SUP004', 1, 'https://docs.google.com/document/d/1tgRyQthtW6_qwUVwCK4LA1t_HQF4WkZqNoREpdyD69o/edit?usp=sharing'),
+('GAME010', 'Portal 2', '/Assets/Images/Game/portal_2.jpg', 'Valve Corporation', 'Valve Corporation', 95, 509745, 'Game giải đố với cơ chế cổng không gian', 'SUP005', 1, 'https://docs.google.com/document/d/1tgRyQthtW6_qwUVwCK4LA1t_HQF4WkZqNoREpdyD69o/edit?usp=sharing'),
+('GAME011', 'Assassin\'s Creed Valhalla', '/Assets/Images/Game/acvalhalla.jpg', 'Ubisoft', 'Ubisoft', 100, 1529745, 'Game hành động thế giới mở', 'SUP001', 1, 'https://docs.google.com/document/d/1tgRyQthtW6_qwUVwCK4LA1t_HQF4WkZqNoREpdyD69o/edit?usp=sharing'),
+('GAME012', 'Watch Dogs: Legion', '/Assets/Images/Game/watchdogslegion.jpg', 'Ubisoft', 'Ubisoft', 80, 1274000, 'Game hành động phiêu lưu trong thế giới mở', 'SUP002', 1, 'https://docs.google.com/document/d/1tgRyQthtW6_qwUVwCK4LA1t_HQF4WkZqNoREpdyD69o/edit?usp=sharing'),
+('GAME013', 'Far Cry 6', '/Assets/Images/Game/farcry6.jpg', 'Ubisoft', 'Ubisoft', 90, 1529745, 'Game hành động thế giới mở', 'SUP003', 1, 'https://docs.google.com/document/d/1tgRyQthtW6_qwUVwCK4LA1t_HQF4WkZqNoREpdyD69o/edit?usp=sharing'),
+('GAME014', 'Hitman 3', '/Assets/Images/Game/hitman3.jpg', 'IO Interactive', 'IO Interactive', 70, 1274000, 'Game hành động lén lút', 'SUP004', 1, 'https://docs.google.com/document/d/1tgRyQthtW6_qwUVwCK4LA1t_HQF4WkZqNoREpdyD69o/edit?usp=sharing'),
+('GAME015', 'Far Cry 5', '/Assets/Images/Game/farcry5.jpg', 'Ubisoft', 'Ubisoft', 100, 1019745, 'Game hành động phiêu lưu', 'SUP005', 1, 'https://docs.google.com/document/d/1tgRyQthtW6_qwUVwCK4LA1t_HQF4WkZqNoREpdyD69o/edit?usp=sharing'),
+('GAME016', 'TEKKEN 8', '/Assets/Images/Game/tekken8.jpg', 'Sucker Punch Productions', 'Sony Interactive Entertainment', 60, 1529745, 'Game hành động phiêu lưu trong thế giới mở', 'SUP001', 1, 'https://docs.google.com/document/d/1tgRyQthtW6_qwUVwCK4LA1t_HQF4WkZqNoREpdyD69o/edit?usp=sharing'),
+('GAME017', 'Final Fantasy XV', '/Assets/Images/Game/ffxv.jpg', 'Square Enix', 'Square Enix', 105, 1019745, 'Game nhập vai thế giới mở', 'SUP002', 1, 'https://docs.google.com/document/d/1tgRyQthtW6_qwUVwCK4LA1t_HQF4WkZqNoREpdyD69o/edit?usp=sharing'),
+('GAME018', 'Kingdom Come: Deliverance', '/Assets/Images/Game/kingdomcome.jpg', 'Warhorse Studios', 'Deep Silver', 50, 1274000, 'Game nhập vai hành động', 'SUP003', 1, 'https://docs.google.com/document/d/1tgRyQthtW6_qwUVwCK4LA1t_HQF4WkZqNoREpdyD69o/edit?usp=sharing'),
+('GAME019', 'Monster Hunter: Wild', '/Assets/Images/Game/mhw.jpg', 'Capcom', 'Capcom', 120, 1529745, 'Game nhập vai hành động', 'SUP004', 1, 'https://docs.google.com/document/d/1tgRyQthtW6_qwUVwCK4LA1t_HQF4WkZqNoREpdyD69o/edit?usp=sharing'),
+('GAME020', 'Elden Ring', '/Assets/Images/Game/eldenring.jpg', 'FromSoftware', 'Bandai Namco Entertainment', 75, 1529745, 'Game nhập vai thế giới mở', 'SUP005', 1, 'https://docs.google.com/document/d/1tgRyQthtW6_qwUVwCK4LA1t_HQF4WkZqNoREpdyD69o/edit?usp=sharing'),
+('GAME021', 'Dying Light 2', '/Assets/Images/Game/dyinglight2.jpg', 'Techland', 'Techland', 100, 1274000, 'Game hành động thế giới mở', 'SUP001', 1, 'https://docs.google.com/document/d/1tgRyQthtW6_qwUVwCK4LA1t_HQF4WkZqNoREpdyD69o/edit?usp=sharing'),
+('GAME022', 'Horizon Zero Dawn', '/Assets/Images/Game/horizonzerodawn.jpg', 'Guerrilla Games', 'Sony Interactive Entertainment', 110, 1274000, 'Game hành động nhập vai', 'SUP002', 1, 'https://docs.google.com/document/d/1tgRyQthtW6_qwUVwCK4LA1t_HQF4WkZqNoREpdyD69o/edit?usp=sharing'),
+('GAME023', 'No Man\'s Sky', '/Assets/Images/Game/nms.jpg', 'Hello Games', 'Hello Games', 130, 1019745, 'Game phiêu lưu thế giới mở', 'SUP003', 1, 'https://docs.google.com/document/d/1tgRyQthtW6_qwUVwCK4LA1t_HQF4WkZqNoREpdyD69o/edit?usp=sharing'),
+('GAME024', 'Cyber Hunter', '/Assets/Images/Game/cyberhunter.jpg', 'Nexon', 'Nexon', 100, 0, 'Game free-to-play nhập vai hành động', 'SUP004', 1, 'https://docs.google.com/document/d/1tgRyQthtW6_qwUVwCK4LA1t_HQF4WkZqNoREpdyD69o/edit?usp=sharing'),
+('GAME025', 'PUBG', '/Assets/Images/Game/pubg.jpg', 'PUBG Corporation', 'PUBG Corporation', 200, 764745, 'Game sinh tồn', 'SUP005', 1, 'https://docs.google.com/document/d/1tgRyQthtW6_qwUVwCK4LA1t_HQF4WkZqNoREpdyD69o/edit?usp=sharing'),
+('GAME026', 'Apex Legends', '/Assets/Images/Game/apexlegends.jpg', 'Respawn Entertainment', 'Electronic Arts', 150, 0, 'Game free-to-play bắn súng', 'SUP001', 1, 'https://docs.google.com/document/d/1tgRyQthtW6_qwUVwCK4LA1t_HQF4WkZqNoREpdyD69o/edit?usp=sharing'),
+('GAME027', 'Infestation: Battle Royale', '/Assets/Images/Game/infestation.jpg', 'Epic Games', 'Epic Games', 250, 0, 'Game free-to-play sinh tồn', 'SUP002', 1, 'https://docs.google.com/document/d/1tgRyQthtW6_qwUVwCK4LA1t_HQF4WkZqNoREpdyD69o/edit?usp=sharing'),
+('GAME028', 'Warframe', '/Assets/Images/Game/warframe.jpg', '\nDigital Extremes', '\nDigital Extremes', 500, 0, 'Game MOBA free-to-play', 'SUP003', 1, 'https://docs.google.com/document/d/1tgRyQthtW6_qwUVwCK4LA1t_HQF4WkZqNoREpdyD69o/edit?usp=sharing'),
+('GAME029', 'Minecraft', '/Assets/Images/Game/minecraft.jpg', 'Mojang Studios', 'Mojang Studios', 300, 0, 'Game phiêu lưu xây dựng', 'SUP004', 1, 'https://docs.google.com/document/d/1tgRyQthtW6_qwUVwCK4LA1t_HQF4WkZqNoREpdyD69o/edit?usp=sharing'),
+('GAME030', 'Rocket League', '/Assets/Images/Game/rocketleague.jpg', 'Psyonix', 'Psyonix', 200, 0, 'Game thể thao online', 'SUP005', 1, 'https://docs.google.com/document/d/1tgRyQthtW6_qwUVwCK4LA1t_HQF4WkZqNoREpdyD69o/edit?usp=sharing'),
+('GAME031', 'The Sims 4', '/Assets/Images/Game/thesims4.jpg', 'Riot Games', 'Riot Games', 400, 0, 'Game bắn súng chiến thuật free-to-play', 'SUP001', 1, 'https://docs.google.com/document/d/1tgRyQthtW6_qwUVwCK4LA1t_HQF4WkZqNoREpdyD69o/edit?usp=sharing'),
+('GAME032', 'Hogwarts Legacy', '/Assets/Images/Game/hogwartslegacy.jpg', 'Blizzard Entertainment', 'Blizzard Entertainment', 100, 382245, 'Game nhập vai trực tuyến', 'SUP002', 1, 'https://docs.google.com/document/d/1tgRyQthtW6_qwUVwCK4LA1t_HQF4WkZqNoREpdyD69o/edit?usp=sharing'),
+('GAME033', 'The Division 2', '/Assets/Images/Game/division2.jpg', 'Ubisoft', 'Ubisoft', 150, 1529745, 'Game hành động thế giới mở', 'SUP003', 1, 'https://docs.google.com/document/d/1tgRyQthtW6_qwUVwCK4LA1t_HQF4WkZqNoREpdyD69o/edit?usp=sharing'),
+('GAME034', 'Borderlands 3', '/Assets/Images/Game/borderlands3.jpg', 'Gearbox Software', '2K Games', 180, 1274000, 'Game hành động nhập vai', 'SUP004', 1, 'https://docs.google.com/document/d/1tgRyQthtW6_qwUVwCK4LA1t_HQF4WkZqNoREpdyD69o/edit?usp=sharing'),
+('GAME035', 'Call of Duty: Warzone', '/Assets/Images/Game/codwarzone.jpg', 'Activision', 'Activision', 500, 0, 'Game bắn súng free-to-play', 'SUP005', 1, 'https://docs.google.com/document/d/1tgRyQthtW6_qwUVwCK4LA1t_HQF4WkZqNoREpdyD69o/edit?usp=sharing'),
+('GAME036', 'Shadow of the Tomb Raider', '/Assets/Images/Game/shadowoftombraider.jpg', 'Crystal Dynamics', 'Square Enix', 80, 1274000, 'Game hành động phiêu lưu', 'SUP001', 1, 'https://docs.google.com/document/d/1tgRyQthtW6_qwUVwCK4LA1t_HQF4WkZqNoREpdyD69o/edit?usp=sharing'),
+('GAME037', 'Dragon Age: Inquisition', '/Assets/Images/Game/dragonageinquisition.jpg', 'BioWare', 'Electronic Arts', 60, 1529745, 'Game nhập vai thế giới mở', 'SUP002', 1, 'https://docs.google.com/document/d/1tgRyQthtW6_qwUVwCK4LA1t_HQF4WkZqNoREpdyD69o/edit?usp=sharing'),
+('GAME038', 'Divinity: Original Sin 2', '/Assets/Images/Game/divinityoriginalsin2.jpg', 'Larian Studios', 'Larian Studios', 55, 1274000, 'Game nhập vai chiến thuật', 'SUP003', 1, 'https://docs.google.com/document/d/1tgRyQthtW6_qwUVwCK4LA1t_HQF4WkZqNoREpdyD69o/edit?usp=sharing'),
+('GAME039', 'Star Wars Jedi: Fallen Order', '/Assets/Images/Game/starwarsjedi.jpg', 'Respawn Entertainment', 'Electronic Arts', 90, 1529745, 'Game hành động phiêu lưu', 'SUP004', 1, 'https://docs.google.com/document/d/1tgRyQthtW6_qwUVwCK4LA1t_HQF4WkZqNoREpdyD69o/edit?usp=sharing'),
+('GAME040', 'Enshrouded', '/Assets/Images/Game/enshrouded.jpg', 'Cpcom', 'Cpcom', 120, 1529745, 'Game nhập vai hành động', 'SUP005', 1, 'https://docs.google.com/document/d/1tgRyQthtW6_qwUVwCK4LA1t_HQF4WkZqNoREpdyD69o/edit?usp=sharing');
 
 -- --------------------------------------------------------
 
@@ -350,7 +360,9 @@ INSERT INTO `sales_invoice` (`SalesID`, `CustomerID`, `EmployeeID`, `PaymentMeth
 (7, 'MT3H00001', NULL, 'payment-option-1', '36 Lê Lợi, phường Bến Nghé, quận 1', 2569490, '', '2025-03-19 00:31:50', 'chờ xử lý'),
 (8, 'MT3H00001', NULL, 'payment-option-1', '36 Lê Lợi, phường Bến Nghé, quận 1', 3843980, '', '2025-04-28 00:35:16', 'chờ xử lý'),
 (9, 'MT3H00002', NULL, 'payment-option-1', '50 Trần Khánh Dư', 6362334, '', '2025-02-28 00:48:00', 'chờ xử lý'),
-(10, 'MT3H00003', NULL, 'payment-option-1', '71 Đinh Tiên Hoàng', 5371745, '', '2025-01-10 00:52:32', 'chờ xử lý');
+(10, 'MT3H00003', NULL, 'payment-option-1', '71 Đinh Tiên Hoàng', 5371745, '', '2025-01-10 00:52:32', 'chờ xử lý'),
+(11, 'MT3H00016', NULL, 'payment-option-2', 'sdadadasdadadsa', 8942000, '', '2025-05-01 17:17:28', 'Đã hủy'),
+(12, 'MT3H00016', NULL, 'payment-option-1', 'sdadadasdadadsa', 2823745, '', '2025-05-05 04:02:38', 'Đã duyệt');
 
 -- --------------------------------------------------------
 
@@ -540,19 +552,19 @@ ALTER TABLE `type_product`
 -- AUTO_INCREMENT for table `cart_item`
 --
 ALTER TABLE `cart_item`
-  MODIFY `CartItemID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=234;
+  MODIFY `CartItemID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=240;
 
 --
 -- AUTO_INCREMENT for table `detail_sales_invoice`
 --
 ALTER TABLE `detail_sales_invoice`
-  MODIFY `DetailSalesID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=126;
+  MODIFY `DetailSalesID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=132;
 
 --
 -- AUTO_INCREMENT for table `sales_invoice`
 --
 ALTER TABLE `sales_invoice`
-  MODIFY `SalesID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `SalesID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
 -- Constraints for dumped tables
