@@ -14,9 +14,7 @@
     />
     <link rel="stylesheet" href="/Assets/CSS/index.css" />
     <link rel="stylesheet" href="/Assets/CSS/Responsive.css" />
-    <script type="module" src="/Javascript/end_user/search_filter.js"></script>
-    <script type="module" src="/Javascript/end_user/account.js"></script>
-    <script src="/Javascript/end_user/pagination.js"></script>
+    <script type="module" src="/Javascript/end_user/index.js"></script>
     <title>Welcome to MT3H</title>
   </head>
 
@@ -106,11 +104,7 @@
             <section
               class="header-items grid-col col-l-5 col-m-2 col-s-2 s-m-hidden font-size-14"
             >
-              <!-- <div id="change-bg-btn" class="full-height">
-                  <a href="#" onclick="return false" title="Change background color" >
-                      <i class="fa-solid fa-circle-half-stroke fa-xl btn" style="color: var(--main-color);"></i>
-                  </a>
-            </div> -->
+              
 
               <div class="hotline full-height">
                 <div class="flex align-center full-height">
@@ -137,7 +131,6 @@
                 </div>
               </a>
 
-
               <div id="user-account" class="account full-height">
                 <div class="flex align-center full-height">
                   <div id="no-sign-in" class="flex justify-center align-center">
@@ -147,8 +140,10 @@
                     ></i>
                     <p class="padding-left-8">Tài khoản</p>
                   </div>
+                  <a href="/gui/account/user_detail.php?featured=true">
 
                   <div class="header-user-info flex justify-center align-center disable">
+                    
                     <i
                       class="fa-brands fa-napster fa-xl"
                       style="color: var(--main-color)"
@@ -156,7 +151,7 @@
                     <div class="user-name padding-left-8 uppercase">
                       user-profile
                     </div>
-                  </div>
+                  </div></a>
 
                   <!-- account -->
                   <nav class="nav-account flex justify-center align-center flex-direction-y">
@@ -177,7 +172,6 @@
                     >
                       <div class="font-bold uppercase">Đăng ký</div>
                     </button>
-
                     <button
                       type="button"
                       title="Đăng xuất"
@@ -193,6 +187,7 @@
           </section>
         </section>
       </header>
+      
 
       <main id="main-container">
         <!-- html for sub header -->
@@ -327,7 +322,9 @@
                  </div>
             </div>
        </section>
-
+       <!-- Thông báo địa chỉ -->
+<div id="address-warning" class="address-warning hidden">Chưa có địa chỉ mặc định.</div>
+<div id="cart-added-alert" class="cart-added-alert hidden">Đã thêm vào giỏ hàng!</div>
        <!-- html for main content -->
        <section id="main-content">
             

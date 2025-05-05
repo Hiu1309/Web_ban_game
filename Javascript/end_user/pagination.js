@@ -1,3 +1,4 @@
+import { attachAddToCartEvents, updateCartCount } from './cart.js';
 document.addEventListener("DOMContentLoaded", function () {
   let currentPage = 1;
   const resultsContainer = document.querySelector(".product-container");
@@ -44,9 +45,9 @@ document.addEventListener("DOMContentLoaded", function () {
       const productHtml = `
         <div class="product-item grid-col col-l-2-4 col-m-3 col-s-6">
           <div class="block-product product-resize">
-            <span class="product-image js-item">
-              <img src="${product.ProductImg}" alt="${product.ProductName}">
-            </span>
+            <a href="/gui/game_detail.php?id=${product.ProductID}" class="product-image js-item">
+  <img src="${product.ProductImg}" alt="${product.ProductName}">
+</a>
             <div class="sale-off font-bold capitalize ${
               product.Quantity > 0 ? "" : "active"
             }">Hết hàng</div>
@@ -66,14 +67,9 @@ document.addEventListener("DOMContentLoaded", function () {
             </div>
           </div>
           <div class="action ${product.Quantity > 0 ? "" : "disable"}">
-            <div class="buy-btn">
-              <div title="Mua ngay" class="button">
-                <i class="fa-solid fa-bag-shopping fa-lg" style="color: var(--primary-white);"></i>
-              </div>
-            </div>
             <div class="add-to-cart">
-              <div title="Thêm vào giỏ hàng" class="button">
-                <i class="fa-solid fa-basket-shopping fa-lg" style="color: var(--primary-white);"></i>
+              <div title="Thêm vào giỏ hàng" class="button add-to-cart-btn" data-id="${product.ProductID}">
+              <i class="fa-solid fa-plus" style="color: var(--primary-white);"></i>
               </div>
             </div>
           </div>
@@ -81,6 +77,9 @@ document.addEventListener("DOMContentLoaded", function () {
       `;
       resultsContainer.innerHTML += productHtml;
     });
+    attachAddToCartEvents();
+    updateCartCount();
+    
   }
 
   function renderPagination(totalPages, currentPage) {
@@ -99,6 +98,7 @@ document.addEventListener("DOMContentLoaded", function () {
       paginationContainer.appendChild(pageBtn);
     }
   }
+
 
   fetchProducts(currentPage);
 });

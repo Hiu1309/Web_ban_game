@@ -31,7 +31,7 @@
                $error_message = "Email đã được đăng ký!";
           } else {
                // Tạo tài khoản mới
-               $hash_pass = password_hash($password, PASSWORD_DEFAULT);
+               $pass = $password;
                $role = "R4"; // Người mua hàng
                $query_max_id = "SELECT MAX(CustomerID) AS max_id FROM customer WHERE CustomerID LIKE 'MT3H%'";
                $result_max = mysqli_query($conn, $query_max_id);
@@ -47,7 +47,7 @@
                // Insert vào account
                $insert_account = "INSERT INTO account (Username, Password, RoleID) VALUES (?, ?, ?)";
                $stmt1 = $conn->prepare($insert_account);
-               $stmt1->bind_param("sss", $username, $hash_pass, $role);
+               $stmt1->bind_param("sss", $username, $pass, $role);
 
                // Insert vào customer
                $insert_customer = "INSERT INTO customer (CustomerID, Fullname, Username, Email) VALUES (?, ?, ?, ?)";
